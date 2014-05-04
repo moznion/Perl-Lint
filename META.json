@@ -52,6 +52,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/moznion/Perl-Lint/issues"
+      },
+      "homepage" : "https://github.com/moznion/Perl-Lint",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/moznion/Perl-Lint.git",
+         "web" : "https://github.com/moznion/Perl-Lint"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:MOZNION"
 }
