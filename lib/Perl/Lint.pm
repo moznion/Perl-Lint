@@ -3,20 +3,28 @@ use 5.008005;
 use strict;
 use warnings;
 use Compiler::Lexer;
+use parent "Exporter";
+our @EXPORT_OK = qw/lint/;
 
 our $VERSION = "0.01";
 
 sub lint {
-    my ($self, $file) = @_;
+    my ($file) = @_;
+
+    my $tokens = _tokenize($file);
+
+    my $violations = [];
+    return $violations;
+}
+
+sub _tokenize {
+    my ($file) = @_;
 
     open my $fh, '<', $file or die "Cannnot open $file: $!";
     my $src = do { local $/; <$fh> };
 
     my $lexer = Compiler::Lexer->new($file);
-    my $tokens = $lexer->tokenize($src);
-
-    my $violations = [];
-    return $violations;
+    $lexer->tokenize($src);
 }
 
 1;
