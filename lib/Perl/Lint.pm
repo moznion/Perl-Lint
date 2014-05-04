@@ -2,10 +2,22 @@ package Perl::Lint;
 use 5.008005;
 use strict;
 use warnings;
+use Compiler::Lexer;
 
 our $VERSION = "0.01";
 
+sub lint {
+    my ($self, $file) = @_;
 
+    open my $fh, '<', $file or die "Cannnot open $file: $!";
+    my $src = do { local $/; <$fh> };
+
+    my $lexer = Compiler::Lexer->new($file);
+    my $tokens = $lexer->tokenize($src);
+
+    my $violations = [];
+    return $violations;
+}
 
 1;
 __END__
