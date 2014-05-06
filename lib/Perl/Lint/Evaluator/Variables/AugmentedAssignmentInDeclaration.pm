@@ -1,7 +1,6 @@
 package Perl::Lint::Evaluator::Variables::AugmentedAssignmentInDeclaration;
 use strict;
 use warnings;
-use utf8;
 use Compiler::Lexer::Constants;
 use parent "Perl::Lint::Evaluator";
 
