@@ -19,12 +19,13 @@ sub lint {
 
 sub _tokenize {
     my ($file) = @_;
-
     open my $fh, '<', $file or die "Cannnot open $file: $!";
     my $src = do { local $/; <$fh> };
 
     my $lexer = Compiler::Lexer->new($file);
-    $lexer->tokenize($src);
+    my $tokens = $lexer->tokenize($src);
+
+    return $tokens;
 }
 
 1;
