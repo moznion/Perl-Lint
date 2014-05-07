@@ -14,7 +14,7 @@ sub fetch_violations {
     close $fh;
 
     my $tokens = Perl::Lint::_tokenize($filename);
-    my $violations = "Perl::Lint::Evaluator::Variables::$class"->evaluate($filename, $tokens);
+    my $violations = "Perl::Lint::Evaluator::$class"->evaluate($filename, $tokens);
 }
 
 1;

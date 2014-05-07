@@ -8,7 +8,7 @@ use Perl::Lint::Evaluator::Variables::ConditionalDeclarations;
 use t::Evaluate::Util qw/fetch_violations/;
 use Test::More;
 
-my $class_name   = 'ConditionalDeclarations';
+my $class_name = 'Variables::ConditionalDeclarations';
 
 subtest 'with if at post-position' => sub {
     my $src = <<'...';

@@ -8,7 +8,7 @@ use Perl::Lint::Evaluator::Variables::AugmentedAssignmentInDeclaration;
 use t::Evaluate::Util qw/fetch_violations/;
 use Test::More;
 
-my $class_name   = 'AugmentedAssignmentInDeclaration';
+my $class_name = 'Variables::AugmentedAssignmentInDeclaration';
 
 subtest 'Normal assignment ok' => sub {
     my $src = <<'...';
