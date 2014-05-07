@@ -13,6 +13,7 @@ our @EXPORT = qw(
     ASSIGN
     LEFT_BRACE
     RIGHT_PAREN
+    KEY
     IF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT
 );
 
@@ -41,6 +42,8 @@ use constant {
 
     LEFT_BRACE  => Compiler::Lexer::TokenType::T_LeftBrace,
     RIGHT_PAREN => Compiler::Lexer::TokenType::T_RightParenthesis,
+
+    KEY => Compiler::Lexer::TokenType::T_Key,
 
     SEMI_COLON => Compiler::Lexer::TokenType::T_SemiColon,
     ASSIGN     => Compiler::Lexer::TokenType::T_Assign,

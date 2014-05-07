@@ -1,0 +1,44 @@
+package Perl::Lint::Evaluator::Objects::IndirectSyntax;
+use strict;
+use warnings;
+use List::Util 1.38 qw/any/;
+use Perl::Lint::Evaluator::Constants::Type;
+use parent "Perl::Lint::Evaluator";
+
+use constant {
+    DESC => 'Subroutine "%s" called using indirect syntax',
+    EXPL => '"$s" should be method',
+};
+
+sub evaluate {
+    my ($class, $file, $tokens, $args) = @_;
+
+    my @forbidden  = ('new');
+    my $forbid_arg = $args->{indirect_syntax}->{forbid};
+    if ($forbid_arg && ref $forbid_arg eq 'ARRAY') {
+        push @forbidden, @{$forbid_arg};
+    }
+
+    my @violations;
+    my $token_num = scalar @$tokens;
+    for (my $i = 0; $i < $token_num; $i++) {
+        my $token = $tokens->[$i];
+        my $token_data = $token->{data};
+        if ($token->{type} == KEY && any { $token_data eq $_ } @forbidden) {
+            my $token_type = $tokens->[++$i]->{type};
+            if (any { $token_type == $_ } (KEY, GLOBAL_VAR, VAR, LEFT_BRACE)) {
+                push @violations, {
+                    filename => $file,
+                    line     => $token->{line},
+                    description => sprintf(DESC, $token_data),
+                    explanation => sprintf(EXPL, $token_data),
+                };
+            }
+        }
+    }
+
+    return \@violations;
+}
+
+1;
+
