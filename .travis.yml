@@ -7,5 +7,5 @@ perl:
 after_success:
   - cpanm --quiet --notest --skip-satisfied Devel::Cover::Report::Coveralls
   - cover -delete
-  - perl Build.PL && ./Build build && HARNESS_PERL_SWITCHES="-MDevel::Cover=+ignore,inc" PERL5LIB="lib" prove t/
+  - perl Build.PL && ./Build build && HARNESS_PERL_SWITCHES="-MDevel::Cover=+ignore,inc" PERL5LIB="lib" ./Build test
   - cover -report coveralls
