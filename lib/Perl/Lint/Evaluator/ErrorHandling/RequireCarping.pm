@@ -1,7 +1,7 @@
 package Perl::Lint::Evaluator::ErrorHandling::RequireCarping;
 use strict;
 use warnings;
-use Perl::Lint::Evaluator::Constants::Type;
+use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Evaluator";
 
 # TODO msg!

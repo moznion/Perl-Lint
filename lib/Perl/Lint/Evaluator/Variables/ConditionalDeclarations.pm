@@ -1,7 +1,7 @@
 package Perl::Lint::Evaluator::Variables::ConditionalDeclarations;
 use strict;
 use warnings;
-use Perl::Lint::Evaluator::Constants::Type;
+use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Evaluator";
 
 use constant {

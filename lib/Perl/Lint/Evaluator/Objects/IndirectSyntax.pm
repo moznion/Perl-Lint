@@ -2,7 +2,7 @@ package Perl::Lint::Evaluator::Objects::IndirectSyntax;
 use strict;
 use warnings;
 use List::Util 1.38 qw/any/;
-use Perl::Lint::Evaluator::Constants::Type;
+use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Evaluator";
 
 use constant {

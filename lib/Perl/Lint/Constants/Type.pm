@@ -1,4 +1,4 @@
-package Perl::Lint::Evaluator::Constants::Type;
+package Perl::Lint::Constants::Type;
 use strict;
 use warnings;
 use Compiler::Lexer::Constants;
