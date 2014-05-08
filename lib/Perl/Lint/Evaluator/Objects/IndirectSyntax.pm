@@ -26,7 +26,11 @@ sub evaluate {
         my $token_data = $token->{data};
         if ($token->{type} == KEY && any { $token_data eq $_ } @forbidden) {
             my $token_type = $tokens->[++$i]->{type};
-            if (any { $token_type == $_ } (KEY, GLOBAL_VAR, VAR, LEFT_BRACE)) {
+            if ($token_type == KEY        ||
+                $token_type == GLOBAL_VAR ||
+                $token_type == VAR        ||
+                $token_type == LEFT_BRACE
+            ) {
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
