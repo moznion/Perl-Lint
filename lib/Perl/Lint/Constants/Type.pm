@@ -24,6 +24,7 @@ our @EXPORT = qw(
     BUILTIN_FUNC
     PACKAGE
     AND OR ALPHABET_AND ALPHABET_OR
+    SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
 );
 
@@ -89,6 +90,11 @@ use constant {
     OR  => Compiler::Lexer::TokenType::T_Or,
     ALPHABET_AND => Compiler::Lexer::TokenType::T_AlphabetAnd,
     ALPHABET_OR  => Compiler::Lexer::TokenType::T_AlphabetOr,
+
+    SHORT_SCALAR_DEREFERENCE => Compiler::Lexer::TokenType::T_ShortScalarDereference,
+    SHORT_ARRAY_DEREFERENCE  => Compiler::Lexer::TokenType::T_ShortArrayDereference,
+    SHORT_HASH_DEREFERENCE   => Compiler::Lexer::TokenType::T_ShortHashDereference,
+    SHORT_CODE_DEREFERENCE   => Compiler::Lexer::TokenType::T_ShortCodeDereference,
 
     PACKAGE => Compiler::Lexer::TokenType::T_Package,
 };
