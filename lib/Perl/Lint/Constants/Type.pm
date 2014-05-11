@@ -13,6 +13,7 @@ our @EXPORT = qw(
     ASSIGN
     RIGHT_BRACE LEFT_BRACE
     RIGHT_PAREN LEFT_PAREN
+    RIGHT_BRACKET LEFT_BRACKET
     KEY METHOD
     STRING RAW_STRING
     HERE_DOCUMENT RAW_HERE_DOCUMENT HERE_DOCUMENT_END HERE_DOCUMENT_TAG HERE_DOCUMENT_RAW_TAG
@@ -21,6 +22,8 @@ our @EXPORT = qw(
     IF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
     BUILTIN_FUNC
     PACKAGE
+    AND OR ALPHABET_AND ALPHABET_OR
+    THREE_TERM_OP
 );
 
 use constant {
@@ -54,6 +57,8 @@ use constant {
     LEFT_BRACE  => Compiler::Lexer::TokenType::T_LeftBrace,
     RIGHT_PAREN => Compiler::Lexer::TokenType::T_RightParenthesis,
     LEFT_PAREN  => Compiler::Lexer::TokenType::T_LeftParenthesis,
+    RIGHT_BRACKET => Compiler::Lexer::TokenType::T_RightBracket,
+    LEFT_BRACKET  => Compiler::Lexer::TokenType::T_LeftBracket,
 
     METHOD     => Compiler::Lexer::TokenType::T_Method,
     KEY        => Compiler::Lexer::TokenType::T_Key,
@@ -71,9 +76,16 @@ use constant {
 
     REG_DELIM => Compiler::Lexer::TokenType::T_RegDelim,
 
+    THREE_TERM_OP => Compiler::Lexer::TokenType::T_ThreeTermOperator,
+
     COMMA      => Compiler::Lexer::TokenType::T_Comma,
     SEMI_COLON => Compiler::Lexer::TokenType::T_SemiColon,
     ASSIGN     => Compiler::Lexer::TokenType::T_Assign,
+
+    AND => Compiler::Lexer::TokenType::T_And,
+    OR  => Compiler::Lexer::TokenType::T_Or,
+    ALPHABET_AND => Compiler::Lexer::TokenType::T_AlphabetAnd,
+    ALPHABET_OR  => Compiler::Lexer::TokenType::T_AlphabetOr,
 
     PACKAGE => Compiler::Lexer::TokenType::T_Package,
 };
