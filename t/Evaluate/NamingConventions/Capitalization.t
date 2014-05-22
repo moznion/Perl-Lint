@@ -110,3 +110,12 @@ use constant FOO => 42;
 use constant { BAR => 3, BAZ => 7 };
 use constant 1.16 FOO => 42;
 use constant 1.16 { BAR => 3, BAZ => 7 };
+
+===
+--- dscr: Constants must be all caps, failures
+--- failures: 3
+--- params: {}
+--- input
+Readonly::Scalar my $Foo = 23;
+Readonly::Scalar my $foo = 23;
+const my $fooBAR = 23;

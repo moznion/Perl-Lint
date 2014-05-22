@@ -29,24 +29,29 @@ sub evaluate {
             next;
         }
 
+        my $must_be_all_caps_fullname = '';
+
         # for `const my $CONST`
+        # use Data::Dumper::Concise; warn Dumper($token); # TODO remove
         if ($token_type == KEY && $token->{data} eq 'const') {
+            $i++;
             my $next_token_type = $next_token->{type};
             if ($next_token_type == VAR_DECL || $next_token_type == OUR_DECL) {
+                $must_be_all_caps_fullname = substr $tokens->[++$i]->{data}, 1;
                 $next_token = undef;
-                $i += 3;
-                next;
             }
         }
 
         my $fullname = '';
         if (
             $declared &&
-            ($token_type == VAR             ||
-            $token_type == LOCAL_VAR       ||
-            $token_type == LOCAL_ARRAY_VAR ||
-            $token_type == LOCAL_HASH_VAR  ||
-            $token_type == GLOBAL_VAR) # XXX
+            (
+                $token_type == VAR             ||
+                $token_type == LOCAL_VAR       ||
+                $token_type == LOCAL_ARRAY_VAR ||
+                $token_type == LOCAL_HASH_VAR  ||
+                $token_type == GLOBAL_VAR # XXX
+            )
         ) {
             next if ($next_token->{type} == NAMESPACE_RESOLVER);
             $fullname = substr $token->{data}, 1;
@@ -78,30 +83,46 @@ sub evaluate {
         elsif ($token_type == NAMESPACE) {
             # for `Readonly::Scalar my $CONSTANT`
             if ($token->{data} eq 'Readonly') {
-                my $offset = $i + 2;
-                my $after_token = $tokens->[$offset];
+                $i += 2;
+                my $after_token = $tokens->[$i];
                 if (
                     $after_token->{type} == NAMESPACE &&
                     $after_token->{data} eq 'Scalar'
                 ) {
-                    $after_token = $tokens->[++$offset];
+                    $after_token = $tokens->[++$i];
                     my $after_token_type = $after_token->{type};
                     if (
                         $after_token_type == VAR_DECL ||
                         $after_token_type == OUR_DECL
                     ) {
-                        $i += $offset;
-                        next;
+                        $must_be_all_caps_fullname = substr $tokens->[++$i]->{data}, 1;
+                        $next_token = undef;
                     }
                 }
             }
-
-            $fullname = $token->{data};
+            else {
+                $fullname = $token->{data};
+            }
         }
 
         if ($fullname) {
             for my $name (wordsplit($fullname)) {
                 if (ucfirst($name) ne $name) { # XXX
+                    push @violations, {
+                        filename => $file,
+                        line     => $token->{line},
+                        description => DESC,
+                        explanation => EXPL,
+                    };
+                    last;
+                }
+            }
+            next;
+        }
+
+        if ($must_be_all_caps_fullname) {
+            for my $name (wordsplit($must_be_all_caps_fullname)) {
+                if ($name !~ /\A[A-Z]+\Z/) {
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
