@@ -24,7 +24,7 @@ sub evaluate {
     my @violations;
     my $token_num = scalar @$tokens;
     for (my $i = 0; $i < $token_num; $i++) {
-        my $token   = $tokens->[$i];
+        my $token      = $tokens->[$i];
         my $token_type = $token->{type};
 
         if ($token_type == FOR_STATEMENT || $token_type == FOREACH_STATEMENT) {
