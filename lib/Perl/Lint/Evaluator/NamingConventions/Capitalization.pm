@@ -21,21 +21,21 @@ sub evaluate {
         my $token      = $tokens->[$i];
         my $token_type = $token->{type};
 
-        my $name = '';
+        my $fullname = '';
         if (
             $token_type == LOCAL_VAR       ||
             $token_type == LOCAL_ARRAY_VAR ||
             $token_type == LOCAL_HASH_VAR  ||
             $token_type == GLOBAL_VAR # XXX
         ) {
-            $name = substr $token->{data}, 1;
+            $fullname = substr $token->{data}, 1;
         }
         elsif ($token_type == FUNCTION) {
-            $name = $token->{data};
+            $fullname = $token->{data};
         }
 
-        if ($name) {
-            for my $name (wordsplit($name)) {
+        if ($fullname) {
+            for my $name (wordsplit($fullname)) {
                 if (lcfirst($name) ne $name) { # XXX
                     push @violations, {
                         filename => $file,
@@ -49,11 +49,16 @@ sub evaluate {
             next;
         }
 
-        if (
-            $token_type == CLASS ||
-            $token_type == NAMESPACE
-        ) {
-            for my $name (wordsplit($token->{data})) {
+        if ($token_type == CLASS) {
+            $fullname = $token->{data};
+            next if $fullname eq 'main';
+        }
+        elsif ($token_type == NAMESPACE) {
+            $fullname = $token->{data};
+        }
+
+        if ($fullname) {
+            for my $name (wordsplit($fullname)) {
                 if (ucfirst($name) ne $name) { # XXX
                     push @violations, {
                         filename => $file,

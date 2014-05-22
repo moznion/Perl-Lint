@@ -49,7 +49,6 @@ package YYZ;
 --- failures: 14
 --- params: {}
 --- input
-
 my  $Foo;
 our $Bar;
 my  @Foo;
@@ -68,3 +67,10 @@ sub foo123Bar {}
 package pragma;
 package Foo::baz;
 package baz::FooBar;
+
+===
+--- dscr: Special case: main
+--- failures: 0
+--- params: {}
+--- input
+package main;
