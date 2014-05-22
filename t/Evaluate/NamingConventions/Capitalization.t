@@ -119,3 +119,11 @@ use constant 1.16 { BAR => 3, BAZ => 7 };
 Readonly::Scalar my $Foo = 23;
 Readonly::Scalar my $foo = 23;
 const my $fooBAR = 23;
+
+===
+--- dscr: PPI misparses part of ternary as a label (RT #41170, imported from Perl::Critic)
+--- failures: 0
+--- params: {}
+--- input
+my $foo = $condition ? $objection->method : $alternative;
+my $foo = $condition ? undef : 1;
