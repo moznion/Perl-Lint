@@ -25,7 +25,7 @@ sub evaluate {
         $next_token = $tokens->[$i + 1] || {};
         my $token_type = $token->{type};
 
-        my $declared_name = '';
+        my @words;
 
         if (
             $token_type == VAR             ||
@@ -34,26 +34,24 @@ sub evaluate {
             $token_type == LOCAL_HASH_VAR  ||
             $token_type == GLOBAL_VAR
         ) {
-            $declared_name = substr $token->{data}, 1;
+            push @words, wordsplit(substr $token->{data}, 1);
         }
         elsif ($token_type == FUNCTION || $token_type == NAMESPACE) {
-            $declared_name = $token->{data};
+            push @words, $token->{data};
         }
 
-        if ($declared_name) {
-            for my $word (wordsplit($declared_name)) {
-                if (grep {$_ eq $word} @{+DEFAULT_FORBIDDEN_WORDS}) { # TODO
-                    push @violations, {
-                        filename => $file,
-                        line     => $token->{line},
-                        description => DESC,
-                        explanation => EXPL,
-                    };
-                    last;
-                }
+        for my $word (@words) {
+            if (grep {$_ eq $word} @{+DEFAULT_FORBIDDEN_WORDS}) { # TODO
+                push @violations, {
+                    filename => $file,
+                    line     => $token->{line},
+                    description => DESC,
+                    explanation => EXPL,
+                };
+                last;
             }
-            next;
         }
+        next;
     }
 
     return \@violations;
