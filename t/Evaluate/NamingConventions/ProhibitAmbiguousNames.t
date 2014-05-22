@@ -56,3 +56,58 @@ some_func $main::contract;
 my %hash = (left => 1, center => 'right');
 sub no_left_turn {}
 local $\; # for Devel::Cover; an example of a var declaration without \w
+
+===
+--- dscr: Ambiguous name on rhs.
+--- failures: 0
+--- params: {}
+--- input
+my ($foo) = ($left);
+
+===
+--- dscr: Ambiguous, but exempt by convention
+--- failures: 0
+--- params: {}
+--- input
+no warnings;
+close $fh;
+
+===
+--- dscr: Custom null configuration
+--- failures: 0
+--- params: { prohibit_ambiguous_names => { forbid => q{} } }
+--- input
+my $left;
+my $close;
+END_PERL
+
+===
+--- dscr: Custom configuration: "foo bar baz quux"
+--- failures: 2
+--- params: { prohibit_ambiguous_names => { forbid => 'foo bar baz quux' } }
+--- input
+my $left;
+my $close;
+my $foo;
+my $bar;
+
+===
+--- dscr: Custom configuration: "foo bar baz quux"
+--- failures: 4
+--- params: { prohibit_ambiguous_names => { forbid => 'foo bar left close' } }
+--- input
+my $left;
+my $close;
+my $foo;
+my $bar;
+
+#%config = ( forbid => join q{ }, qw(foo bar baz quux), @default );
+
+===
+--- dscr: Custom null configuration
+--- params: { prohibit_ambiguous_names => { forbid => undef } }
+--- failures: 2
+--- input
+my $left;
+my $close;
+

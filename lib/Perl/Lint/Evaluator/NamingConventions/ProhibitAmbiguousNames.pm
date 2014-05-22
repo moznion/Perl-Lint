@@ -16,6 +16,11 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $args) = @_;
 
+    my @forbidden_words = @{+DEFAULT_FORBIDDEN_WORDS};
+    if (defined(my $forbiddens = $args->{prohibit_ambiguous_names}->{forbid})) {
+        @forbidden_words = split / /, $forbiddens;
+    }
+
     my @violations;
     my $token_num = scalar @$tokens;
     for (my $i = 0; $i < $token_num; $i++) {
@@ -78,7 +83,7 @@ sub evaluate {
 
         for my $word_block (@word_blocks) {
             for my $word (@$word_block) {
-                if (grep {$_ eq $word} @{+DEFAULT_FORBIDDEN_WORDS}) { # TODO
+                if (grep {$_ eq $word} @forbidden_words) {
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
