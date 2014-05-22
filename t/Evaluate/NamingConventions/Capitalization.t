@@ -43,3 +43,28 @@ package This;
 package This::Thing;
 package Acme::12345;
 package YYZ;
+
+===
+--- dscr: Basic Failures
+--- failures: 14
+--- params: {}
+--- input
+
+my  $Foo;
+our $Bar;
+my  @Foo;
+my  %Bar;
+sub Foo {}
+
+my  $foo_Bar;
+sub foo_Bar {}
+
+my  $FooBar;
+sub FooBar {}
+
+my  $foo123Bar;
+sub foo123Bar {}
+
+package pragma;
+package Foo::baz;
+package baz::FooBar;

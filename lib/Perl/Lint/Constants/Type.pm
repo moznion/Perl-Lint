@@ -6,6 +6,7 @@ use parent qw/Exporter/;
 
 our @EXPORT = qw(
     VAR_DECL OUR_DECL FUNCTION_DECL
+    FUNCTION
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HAHS_VAR
     LOCAL_VAR LOCAL_ARRAY_VAR LOCAL_HASH_VAR
@@ -22,7 +23,7 @@ our @EXPORT = qw(
     REG_EXP
     IF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
     BUILTIN_FUNC
-    PACKAGE
+    PACKAGE CLASS NAMESPACE
     AND OR ALPHABET_AND ALPHABET_OR
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
@@ -32,6 +33,8 @@ use constant {
     VAR_DECL      => Compiler::Lexer::TokenType::T_VarDecl,
     OUR_DECL      => Compiler::Lexer::TokenType::T_OurDecl,
     FUNCTION_DECL => Compiler::Lexer::TokenType::T_FunctionDecl,
+
+    FUNCTION => Compiler::Lexer::TokenType::T_Function,
 
     VAR       => Compiler::Lexer::TokenType::T_Var,
     CODE_VAR  => Compiler::Lexer::TokenType::T_CodeVar,
@@ -96,7 +99,9 @@ use constant {
     SHORT_HASH_DEREFERENCE   => Compiler::Lexer::TokenType::T_ShortHashDereference,
     SHORT_CODE_DEREFERENCE   => Compiler::Lexer::TokenType::T_ShortCodeDereference,
 
-    PACKAGE => Compiler::Lexer::TokenType::T_Package,
+    PACKAGE   => Compiler::Lexer::TokenType::T_Package,
+    CLASS     => Compiler::Lexer::TokenType::T_Class,
+    NAMESPACE => Compiler::Lexer::TokenType::T_Namespace,
 };
 
 1;
