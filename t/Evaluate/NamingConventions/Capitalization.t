@@ -80,6 +80,14 @@ package main;
 --- failures: 2
 --- params: {}
 --- input
-
 my($foo, $Bar);
 our($Bar, $foo);
+
+===
+--- dscr: Variables from other packages should pass
+--- failures: 0
+--- params: {}
+--- input
+local $Other::Package::Foo;
+$Other::Package::Foo;
+
