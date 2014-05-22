@@ -5,7 +5,7 @@ use Compiler::Lexer::Constants;
 use parent qw/Exporter/;
 
 our @EXPORT = qw(
-    VAR_DECL OUR_DECL FUNCTION_DECL
+    VAR_DECL OUR_DECL LOCAL_DECL FUNCTION_DECL
     FUNCTION
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HAHS_VAR
@@ -27,11 +27,13 @@ our @EXPORT = qw(
     AND OR ALPHABET_AND ALPHABET_OR
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
+    GLOB
 );
 
 use constant {
     VAR_DECL      => Compiler::Lexer::TokenType::T_VarDecl,
     OUR_DECL      => Compiler::Lexer::TokenType::T_OurDecl,
+    LOCAL_DECL    => Compiler::Lexer::TokenType::T_LocalDecl,
     FUNCTION_DECL => Compiler::Lexer::TokenType::T_FunctionDecl,
 
     FUNCTION => Compiler::Lexer::TokenType::T_Function,
@@ -103,6 +105,8 @@ use constant {
     CLASS     => Compiler::Lexer::TokenType::T_Class,
     NAMESPACE => Compiler::Lexer::TokenType::T_Namespace,
     NAMESPACE_RESOLVER => Compiler::Lexer::TokenType::T_NamespaceResolver,
+
+    GLOB => Compiler::Lexer::TokenType::T_Glob,
 };
 
 1;

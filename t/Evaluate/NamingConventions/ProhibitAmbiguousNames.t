@@ -43,3 +43,16 @@ my ($last, $set);
 --- input
 my $last_record;
 my $first_record;
+
+===
+--- dscr: Basic passes.
+--- failures: 0
+--- params: {}
+--- input
+for my $bases () {}
+foreach my $bases () {}
+print $main::contract;
+some_func $main::contract;
+my %hash = (left => 1, center => 'right');
+sub no_left_turn {}
+local $\; # for Devel::Cover; an example of a var declaration without \w
