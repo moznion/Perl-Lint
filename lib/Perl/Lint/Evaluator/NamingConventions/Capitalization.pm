@@ -29,6 +29,16 @@ sub evaluate {
             next;
         }
 
+        # for `const my $CONST`
+        if ($token_type == KEY && $token->{data} eq 'const') {
+            my $next_token_type = $next_token->{type};
+            if ($next_token_type == VAR_DECL || $next_token_type == OUR_DECL) {
+                $next_token = undef;
+                $i += 3;
+                next;
+            }
+        }
+
         my $fullname = '';
         if (
             $declared &&
@@ -66,6 +76,26 @@ sub evaluate {
             next if $fullname eq 'main';
         }
         elsif ($token_type == NAMESPACE) {
+            # for `Readonly::Scalar my $CONSTANT`
+            if ($token->{data} eq 'Readonly') {
+                my $offset = $i + 2;
+                my $after_token = $tokens->[$offset];
+                if (
+                    $after_token->{type} == NAMESPACE &&
+                    $after_token->{data} eq 'Scalar'
+                ) {
+                    $after_token = $tokens->[++$offset];
+                    my $after_token_type = $after_token->{type};
+                    if (
+                        $after_token_type == VAR_DECL ||
+                        $after_token_type == OUR_DECL
+                    ) {
+                        $i += $offset;
+                        next;
+                    }
+                }
+            }
+
             $fullname = $token->{data};
         }
 

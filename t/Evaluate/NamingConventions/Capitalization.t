@@ -98,3 +98,15 @@ $Other::Package::Foo;
 --- input
 Foo();
 $Foo = 42;
+
+===
+--- dscr: Constants must be all caps, passes
+--- failures: 0
+--- params: {}
+--- input
+Readonly::Scalar my $CONSTANT = 23;
+const my $CONSTANT = 23;
+use constant FOO => 42;
+use constant { BAR => 3, BAZ => 7 };
+use constant 1.16 FOO => 42;
+use constant 1.16 { BAR => 3, BAZ => 7 };
