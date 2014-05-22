@@ -17,8 +17,10 @@ sub evaluate {
     my @violations;
     my $token_num = scalar @$tokens;
     # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
+    my $next_token;
     for (my $i = 0; $i < $token_num; $i++) {
-        my $token      = $tokens->[$i];
+        my $token   = $next_token || $tokens->[$i];
+        $next_token = $tokens->[$i + 1] || {};
         my $token_type = $token->{type};
 
         my $fullname = '';
@@ -29,6 +31,7 @@ sub evaluate {
             $token_type == LOCAL_HASH_VAR  ||
             $token_type == GLOBAL_VAR # XXX
         ) {
+            next if ($next_token->{type} == NAMESPACE_RESOLVER);
             $fullname = substr $token->{data}, 1;
         }
         elsif ($token_type == FUNCTION) {
