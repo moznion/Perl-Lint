@@ -91,3 +91,10 @@ our($Bar, $foo);
 local $Other::Package::Foo;
 $Other::Package::Foo;
 
+===
+--- dscr: Only cares about declarations
+--- failures: 0
+--- params: {}
+--- input
+Foo();
+$Foo = 42;
