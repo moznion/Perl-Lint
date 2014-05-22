@@ -74,3 +74,12 @@ package baz::FooBar;
 --- params: {}
 --- input
 package main;
+
+===
+--- dscr: Combined passes and fails
+--- failures: 2
+--- params: {}
+--- input
+
+my($foo, $Bar);
+our($Bar, $foo);

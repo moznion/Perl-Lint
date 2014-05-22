@@ -23,6 +23,7 @@ sub evaluate {
 
         my $fullname = '';
         if (
+            $token_type == VAR             ||
             $token_type == LOCAL_VAR       ||
             $token_type == LOCAL_ARRAY_VAR ||
             $token_type == LOCAL_HASH_VAR  ||
