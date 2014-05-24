@@ -1,6 +1,7 @@
 package Perl::Lint::Evaluator::TestingAndDebugging::RequireTestLabels;
 use strict;
 use warnings;
+use List::Util qw/any/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Evaluator";
 
@@ -14,8 +15,12 @@ sub evaluate {
     my ($class, $file, $tokens, $args) = @_;
 
     # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
+    my @target_test_module = ('Test::More');
+    if (my $required_modules = $args->{require_test_labels}->{modules}) {
+        push @target_test_module, split / /, $required_modules;
+    }
     my @violations;
-    my $is_loaded_test_more = 0;
+    my $is_loaded = 0;
     my $token_num = scalar @$tokens;
     for (my $i = 0; $i < $token_num; $i++) {
         my $token = $tokens->[$i];
@@ -24,21 +29,22 @@ sub evaluate {
 
         # for checking Test::More is loaded
         if ($token_type == USE_DECL || $token_type == REQUIRE_DECL) {
-            $token = $tokens->[++$i];
-            if (
-                $token &&
-                $token->{type} == NAMESPACE &&
-                $token->{data} eq 'Test'
-            ) {
-                $token = $tokens->[$i+2];
-                if (
-                    $token->{type} == NAMESPACE &&
-                    $token->{data} eq 'More'
-                ) {
-                    $is_loaded_test_more = 1;
-                    $i += 2;
-                    next;
+            next if $is_loaded;
+
+            my $used_module_name = '';
+            for ($i++; $i < $token_num; $i++) {
+                my $token = $tokens->[$i];
+                my $token_type = $token->{type};
+                if ($token_type == NAMESPACE || $token_type == NAMESPACE_RESOLVER) {
+                    $used_module_name .= $token->{data};
                 }
+                else {
+                    last;
+                }
+            }
+
+            if (any {$_ eq $used_module_name} @target_test_module) {
+                $is_loaded = 1;
             }
             next;
         }
@@ -139,7 +145,7 @@ sub evaluate {
         }
     }
 
-    return \@violations if $is_loaded_test_more;
+    return \@violations if $is_loaded;
     return [];
 }
 
