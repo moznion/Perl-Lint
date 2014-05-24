@@ -6,6 +6,7 @@ use parent qw/Exporter/;
 
 our @EXPORT = qw(
     VAR_DECL OUR_DECL LOCAL_DECL FUNCTION_DECL
+    USE_DECL REQUIRE_DECL
     FUNCTION
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HAHS_VAR
@@ -35,6 +36,9 @@ use constant {
     OUR_DECL      => Compiler::Lexer::TokenType::T_OurDecl,
     LOCAL_DECL    => Compiler::Lexer::TokenType::T_LocalDecl,
     FUNCTION_DECL => Compiler::Lexer::TokenType::T_FunctionDecl,
+
+    USE_DECL     => Compiler::Lexer::TokenType::T_UseDecl,
+    REQUIRE_DECL => Compiler::Lexer::TokenType::T_RequireDecl,
 
     FUNCTION => Compiler::Lexer::TokenType::T_Function,
 
