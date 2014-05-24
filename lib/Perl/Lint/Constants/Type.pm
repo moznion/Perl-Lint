@@ -7,12 +7,14 @@ use parent qw/Exporter/;
 our @EXPORT = qw(
     VAR_DECL OUR_DECL LOCAL_DECL FUNCTION_DECL
     USE_DECL REQUIRE_DECL
+    USED_NAME
     FUNCTION
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HAHS_VAR
     LOCAL_VAR LOCAL_ARRAY_VAR LOCAL_HASH_VAR
     SEMI_COLON COMMA
     ASSIGN
+    DOUBLE
     RIGHT_BRACE LEFT_BRACE
     RIGHT_PAREN LEFT_PAREN
     RIGHT_BRACKET LEFT_BRACKET
@@ -39,6 +41,8 @@ use constant {
 
     USE_DECL     => Compiler::Lexer::TokenType::T_UseDecl,
     REQUIRE_DECL => Compiler::Lexer::TokenType::T_RequireDecl,
+
+    USED_NAME => Compiler::Lexer::TokenType::T_UsedName,
 
     FUNCTION => Compiler::Lexer::TokenType::T_Function,
 
@@ -94,6 +98,8 @@ use constant {
     COMMA      => Compiler::Lexer::TokenType::T_Comma,
     SEMI_COLON => Compiler::Lexer::TokenType::T_SemiColon,
     ASSIGN     => Compiler::Lexer::TokenType::T_Assign,
+
+    DOUBLE => Compiler::Lexer::TokenType::T_Double,
 
     AND => Compiler::Lexer::TokenType::T_And,
     OR  => Compiler::Lexer::TokenType::T_Or,
