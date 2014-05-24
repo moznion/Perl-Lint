@@ -23,7 +23,7 @@ __DATA__
 
 ===
 --- dscr: standard failures
---- failures: 12
+--- failures: 15
 --- params: {}
 --- input
 use Test::More tests => 10;
@@ -39,6 +39,9 @@ is_deeply([], []);
 is_deeply({}, {});
 pass();
 fail();
+pass;
+fail;
+ok $foo;
 
 ===
 --- dscr: name standard passing
@@ -92,24 +95,21 @@ is_deeply({},{},'label');
 use Test::Bar tests => 10;
 ok($foo);
 
-# #-----------------------------------------------------------------------------
-#
-# ## name more exceptions
-# ## failures 0
-# ## parms {modules => 'Test::Foo Test::Bar'}
-# ## cut
-#
-# use Test::Baz tests => 10;
-# ok($foo);
-#
-# #-----------------------------------------------------------------------------
-#
-# ## name RT 24924, is_deeply
-# ## failures 0
-# ## cut
-#
-# use Test::More;
-#
-# is_deeply( { foo => 1 }, { foo => 1 }, 'Boldly criticize where nobody has criticize before.' );
-#
-# is_deeply( { get_empty_array() }, {}, 'Wrap sub-call in hash constructor' );
+===
+--- dscr: more exceptions
+--- failures: 0
+--- params: {require_test_labels => {modules => 'Test::Foo Test::Bar'}}
+--- input
+use Test::Baz tests => 10;
+ok($foo);
+
+===
+--- dscr: RT 24924, is_deeply (from Perl::Critic)
+--- failures: 0
+--- params: {}
+--- input
+use Test::More;
+
+is_deeply( { foo => 1 }, { foo => 1 }, 'Boldly criticize where nobody has criticize before.' );
+
+is_deeply( { get_empty_array() }, {}, 'Wrap sub-call in hash constructor' );
