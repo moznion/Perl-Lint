@@ -9,7 +9,7 @@ use Test::Base::Less;
 my $class_name = 'TestingAndDebugging::ProhibitNoStrict';
 
 filters {
-    params => [qw/eval/],
+    params => [qw/eval/], # TODO wrong!
 };
 
 for my $block (blocks) {

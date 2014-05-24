@@ -2,7 +2,6 @@ package Perl::Lint::Evaluator::TestingAndDebugging::RequireTestLabels;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;
-use List::Util qw/any/;
 use parent "Perl::Lint::Evaluator";
 
 # TODO msg!
