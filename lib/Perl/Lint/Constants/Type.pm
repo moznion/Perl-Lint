@@ -15,6 +15,7 @@ our @EXPORT = qw(
     SEMI_COLON COMMA ARROW
     ASSIGN
     DOUBLE
+    DEFAULT
     RIGHT_BRACE LEFT_BRACE
     RIGHT_PAREN LEFT_PAREN
     RIGHT_BRACKET LEFT_BRACKET
@@ -104,6 +105,8 @@ use constant {
     ASSIGN     => Compiler::Lexer::TokenType::T_Assign,
 
     DOUBLE => Compiler::Lexer::TokenType::T_Double,
+
+    DEFAULT => Compiler::Lexer::TokenType::T_Default,
 
     AND => Compiler::Lexer::TokenType::T_And,
     OR  => Compiler::Lexer::TokenType::T_Or,
