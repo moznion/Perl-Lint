@@ -25,12 +25,12 @@ our @EXPORT = qw(
     REG_DELIM
     REG_EXP
     IF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
-    BUILTIN_FUNC
+    BUILTIN_FUNC GOTO
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
-    AND OR ALPHABET_AND ALPHABET_OR
+    AND OR ALPHABET_AND ALPHABET_OR BIT_AND
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
-    GLOB
+    GLOB REF
 );
 
 use constant {
@@ -67,6 +67,7 @@ use constant {
     UNTIL_STATEMENT   => Compiler::Lexer::TokenType::T_UntilStmt,
 
     BUILTIN_FUNC => Compiler::Lexer::TokenType::T_BuiltinFunc,
+    GOTO         => Compiler::Lexer::TokenType::T_Goto,
 
     RIGHT_BRACE => Compiler::Lexer::TokenType::T_RightBrace,
     LEFT_BRACE  => Compiler::Lexer::TokenType::T_LeftBrace,
@@ -106,6 +107,7 @@ use constant {
     OR  => Compiler::Lexer::TokenType::T_Or,
     ALPHABET_AND => Compiler::Lexer::TokenType::T_AlphabetAnd,
     ALPHABET_OR  => Compiler::Lexer::TokenType::T_AlphabetOr,
+    BIT_AND => Compiler::Lexer::TokenType::T_BitAnd,
 
     SHORT_SCALAR_DEREFERENCE => Compiler::Lexer::TokenType::T_ShortScalarDereference,
     SHORT_ARRAY_DEREFERENCE  => Compiler::Lexer::TokenType::T_ShortArrayDereference,
@@ -118,6 +120,7 @@ use constant {
     NAMESPACE_RESOLVER => Compiler::Lexer::TokenType::T_NamespaceResolver,
 
     GLOB => Compiler::Lexer::TokenType::T_Glob,
+    REF  => Compiler::Lexer::TokenType::T_Ref,
 };
 
 1;
