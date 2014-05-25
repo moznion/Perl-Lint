@@ -8,7 +8,7 @@ our @EXPORT = qw(
     VAR_DECL OUR_DECL LOCAL_DECL FUNCTION_DECL
     USE_DECL REQUIRE_DECL
     USED_NAME
-    FUNCTION
+    CALL FUNCTION
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HAHS_VAR
     LOCAL_VAR LOCAL_ARRAY_VAR LOCAL_HASH_VAR
@@ -44,6 +44,7 @@ use constant {
 
     USED_NAME => Compiler::Lexer::TokenType::T_UsedName,
 
+    CALL     => Compiler::Lexer::TokenType::T_Call,
     FUNCTION => Compiler::Lexer::TokenType::T_Function,
 
     VAR       => Compiler::Lexer::TokenType::T_Var,

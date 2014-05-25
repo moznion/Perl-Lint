@@ -4,6 +4,7 @@ requires 'feature';
 requires 'parent';
 requires 'List::Util', '1.38';
 requires 'String::CamelCase';
+requires 'B::Keywords';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';
