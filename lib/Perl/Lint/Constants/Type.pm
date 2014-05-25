@@ -30,7 +30,7 @@ our @EXPORT = qw(
     AND OR ALPHABET_AND ALPHABET_OR BIT_AND
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
-    GLOB REF
+    GLOB REF PROTOTYPE
 );
 
 use constant {
@@ -122,6 +122,7 @@ use constant {
 
     GLOB => Compiler::Lexer::TokenType::T_Glob,
     REF  => Compiler::Lexer::TokenType::T_Ref,
+    PROTOTYPE => Compiler::Lexer::TokenType::T_Prototype,
 };
 
 1;
