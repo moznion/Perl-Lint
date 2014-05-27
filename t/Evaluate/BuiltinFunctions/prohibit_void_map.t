@@ -9,7 +9,7 @@ use Test::Base::Less;
 my $class_name = 'BuiltinFunctions::ProhibitVoidMap';
 
 filters {
-    params => [qw/eval/], # TODO wrong!
+    params => [qw/eval/],
 };
 
 for my $block (blocks) {
@@ -38,7 +38,7 @@ for( map { foo($_) } @list ) {}
 
 ===
 --- dscr: Basic failure
---- failures: 7
+--- failures: 8
 --- params:
 --- input
 map "$foo", @list;
@@ -47,6 +47,7 @@ map { foo($_) } @list;
 map({ foo($_) } @list);
 
 if( $condition ){ map { foo($_) } @list }
+unless( $condition ){ map { foo($_) } @list }
 while( $condition ){ map { foo($_) } @list }
 for( @list ){ map { foo($_) } @list }
 
@@ -58,7 +59,6 @@ for( @list ){ map { foo($_) } @list }
 map { foo($_) }
   map { bar($_) }
     map { baz($_) } @list;
-
 
 ===
 --- dscr: not builtin map
@@ -78,3 +78,4 @@ delete @hash{ map { uc $_ } keys %hash };
 delete @hash{ map uc( $_ ), keys %hash };
 # This is the form analogous to what failed under RT #79289.
 delete @hash{ map ( uc( $_ ), keys %hash ) };
+

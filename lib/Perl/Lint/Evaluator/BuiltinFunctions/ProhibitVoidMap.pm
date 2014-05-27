@@ -4,6 +4,8 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Evaluator";
 
+# TODO REFACTOR!!!
+
 # TODO msg!
 use constant {
     DESC => '',
@@ -15,7 +17,7 @@ sub evaluate {
 
     my @violations;
     my $is_in_context = 0;
-    my $is_before_comma = 0; # XXX
+    my $is_before_comma = 0; # XXX to decide context or not
     my $is_in_map = 0;
     my $is_in_ctrl_statement = 0;
     my $left_brace_num = 0;
@@ -25,6 +27,7 @@ sub evaluate {
         if ($token_type == BUILTIN_FUNC) {
             if ($token_data eq 'map') {
                 next if $is_in_map;
+
                 if ($is_in_ctrl_statement) {
                     if ($left_brace_num) {
                         push @violations, {
@@ -43,6 +46,7 @@ sub evaluate {
                         explanation => EXPL,
                     };
                 }
+
                 $is_in_map = 1;
                 next;
             }
@@ -51,10 +55,11 @@ sub evaluate {
         elsif ($token_type == ASSIGN) {
             $is_in_context = 1;
         }
-        elsif ( # TODO
-            $token_type == IF_STATEMENT ||
-            $token_type == FOR_STATEMENT ||
-            $token_type == WHILE_STATEMENT
+        elsif ( # NOTE enough?
+            $token_type == IF_STATEMENT    ||
+            $token_type == FOR_STATEMENT   ||
+            $token_type == WHILE_STATEMENT ||
+            $token_type == UNLESS_STATEMENT
         ) {
             $is_in_ctrl_statement = 1;
         }
