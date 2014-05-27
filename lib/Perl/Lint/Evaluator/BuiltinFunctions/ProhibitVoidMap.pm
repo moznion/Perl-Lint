@@ -16,6 +16,7 @@ sub evaluate {
     my @violations;
     my $is_in_context = 0;
     my $is_before_comma = 0; # XXX
+    my $is_in_map = 0;
     my $is_in_ctrl_statement = 0;
     my $left_brace_num = 0;
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
@@ -23,6 +24,7 @@ sub evaluate {
         my $token_data = $token->{data};
         if ($token_type == BUILTIN_FUNC) {
             if ($token_data eq 'map') {
+                next if $is_in_map;
                 if ($is_in_ctrl_statement) {
                     if ($left_brace_num) {
                         push @violations, {
@@ -41,6 +43,7 @@ sub evaluate {
                         explanation => EXPL,
                     };
                 }
+                $is_in_map = 1;
                 next;
             }
             $is_in_context = 1;
@@ -63,11 +66,13 @@ sub evaluate {
                 $left_brace_num--;
                 if ($left_brace_num <= 0) {
                     $is_in_ctrl_statement = 0;
+                    $is_in_map = 0;
                 }
             }
         }
         elsif ($token_type == SEMI_COLON) {
             $is_in_context = 0;
+            $is_in_map     = 0;
         }
         elsif ($token_type == COMMA) {
             $is_before_comma = 1;

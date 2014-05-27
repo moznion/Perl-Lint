@@ -49,3 +49,32 @@ map({ foo($_) } @list);
 if( $condition ){ map { foo($_) } @list }
 while( $condition ){ map { foo($_) } @list }
 for( @list ){ map { foo($_) } @list }
+
+===
+--- dscr: Chained void map
+--- failures: 1
+--- params:
+--- input
+map { foo($_) }
+  map { bar($_) }
+    map { baz($_) } @list;
+
+
+===
+--- dscr: not builtin map
+--- failures: 0
+--- params:
+--- input
+$self->map('Pennsylvania Ave, Washington, DC');
+
+===
+--- dscr: Subscript map (derived from Perl::Critic RT #79289)
+--- failures: 0
+--- params:
+--- input
+my %hash;
+
+delete @hash{ map { uc $_ } keys %hash };
+delete @hash{ map uc( $_ ), keys %hash };
+# This is the form analogous to what failed under RT #79289.
+delete @hash{ map ( uc( $_ ), keys %hash ) };
