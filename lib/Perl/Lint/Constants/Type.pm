@@ -25,13 +25,16 @@ our @EXPORT = qw(
     REG_QUOTE REG_DOUBLE_QUOTE
     REG_DELIM
     REG_EXP
-    IF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
+    IF_STATEMENT ELSE_STATEMENT ELSIF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
+    CONTINUE
     BUILTIN_FUNC GOTO RETURN
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
     AND OR ALPHABET_AND ALPHABET_OR BIT_AND
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
+    DO
     GLOB REF PROTOTYPE
+    MOD_WORD
 );
 
 use constant {
@@ -62,11 +65,15 @@ use constant {
     LOCAL_HASH_VAR  => Compiler::Lexer::TokenType::T_LocalHashVar,
 
     IF_STATEMENT      => Compiler::Lexer::TokenType::T_IfStmt,
+    ELSE_STATEMENT    => Compiler::Lexer::TokenType::T_ElseStmt,
+    ELSIF_STATEMENT    => Compiler::Lexer::TokenType::T_ElsifStmt,
     UNLESS_STATEMENT  => Compiler::Lexer::TokenType::T_UnlessStmt,
     WHILE_STATEMENT   => Compiler::Lexer::TokenType::T_WhileStmt,
     FOR_STATEMENT     => Compiler::Lexer::TokenType::T_ForStmt,
     FOREACH_STATEMENT => Compiler::Lexer::TokenType::T_ForeachStmt,
     UNTIL_STATEMENT   => Compiler::Lexer::TokenType::T_UntilStmt,
+
+    CONTINUE => Compiler::Lexer::TokenType::T_Continue,
 
     BUILTIN_FUNC => Compiler::Lexer::TokenType::T_BuiltinFunc,
     GOTO         => Compiler::Lexer::TokenType::T_Goto,
@@ -127,6 +134,10 @@ use constant {
     GLOB => Compiler::Lexer::TokenType::T_Glob,
     REF  => Compiler::Lexer::TokenType::T_Ref,
     PROTOTYPE => Compiler::Lexer::TokenType::T_Prototype,
+
+    DO => Compiler::Lexer::TokenType::T_Do,
+
+    MOD_WORD => Compiler::Lexer::TokenType::T_ModWord,
 };
 
 1;
