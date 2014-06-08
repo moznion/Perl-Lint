@@ -14,7 +14,7 @@ use constant {
 };
 
 sub evaluate {
-    my ($class, $file, $tokens, $args) = @_;
+    my ($class, $file, $tokens, $src, $args) = @_;
 
     my @marshals = ('strict', 'Moose', 'Moose::Role', 'Moose::Util::TypeConstraints');
     if (my $equivalents = $args->{require_use_strict}->{equivalent_modules}) {

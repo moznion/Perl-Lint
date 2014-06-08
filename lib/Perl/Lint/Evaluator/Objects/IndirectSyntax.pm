@@ -11,7 +11,7 @@ use constant {
 };
 
 sub evaluate {
-    my ($class, $file, $tokens, $args) = @_;
+    my ($class, $file, $tokens, $src, $args) = @_;
 
     my @forbidden  = ('new');
     my $forbid_arg = $args->{indirect_syntax}->{forbid};

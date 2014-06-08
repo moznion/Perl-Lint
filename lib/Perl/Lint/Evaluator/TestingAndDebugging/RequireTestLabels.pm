@@ -12,7 +12,7 @@ use constant {
 };
 
 sub evaluate {
-    my ($class, $file, $tokens, $args) = @_;
+    my ($class, $file, $tokens, $src, $args) = @_;
 
     # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     my @target_test_module = ('Test::More');

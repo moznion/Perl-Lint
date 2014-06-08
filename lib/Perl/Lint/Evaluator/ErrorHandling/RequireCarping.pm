@@ -11,7 +11,7 @@ use constant {
 };
 
 sub evaluate {
-    my ($class, $file, $tokens, $args) = @_;
+    my ($class, $file, $tokens, $src, $args) = @_;
 
     my $options = $args->{require_carping};
     my $allow_messages_ending_with_newlines = 1;

@@ -10,34 +10,8 @@ use constant {
     EXPL => '',
 };
 
-# sub evaluate {
-#     my ($class, $file, $tokens, $args) = @_;
-#
-#     my @violations;
-#     my $token_num = scalar @$tokens;
-#     for (my $i = 0; $i < $token_num; $i++) {
-#         my $token = $tokens->[$i];
-#         my $token_type = $token->{type};
-#
-#         if ($token_type == BUILTIN_FUNC and $token->{data} eq 'no') {
-#             $token = $tokens->[++$i];
-#
-#             if ($token->{type} == KEY && $token->{data} eq 'warnings') {
-#                 push @violations, {
-#                     filename => $file,
-#                     line     => $token->{line},
-#                     description => DESC,
-#                     explanation => EXPL,
-#                 };
-#                 next;
-#             }
-#         }
-#     }
-#
-#     return \@violations;
-# }
 sub evaluate {
-    my ($class, $file, $tokens, $args) = @_;
+    my ($class, $file, $tokens, $src, $args) = @_;
 
     my @arg_allows;
     if (my $allow = $args->{prohibit_no_warnings}->{allow}) {

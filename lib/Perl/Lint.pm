@@ -11,7 +11,7 @@ our $VERSION = "0.01";
 sub lint {
     my ($file) = @_;
 
-    my $tokens = _tokenize($file);
+    my ($tokens, $src) = _tokenize($file);
 
     my $violations = [];
     return $violations;
@@ -25,7 +25,7 @@ sub _tokenize {
     my $lexer = Compiler::Lexer->new($file);
     my $tokens = $lexer->tokenize($src);
 
-    return $tokens;
+    return ($tokens, $src);
 }
 
 1;

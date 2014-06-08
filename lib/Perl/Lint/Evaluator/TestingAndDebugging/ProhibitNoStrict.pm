@@ -12,7 +12,7 @@ use constant {
 };
 
 sub evaluate {
-    my ($class, $file, $tokens, $args) = @_;
+    my ($class, $file, $tokens, $src, $args) = @_;
 
     my @arg_allows;
     if ($args->{allow}) {

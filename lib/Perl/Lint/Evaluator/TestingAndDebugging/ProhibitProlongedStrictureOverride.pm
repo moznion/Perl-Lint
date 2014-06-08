@@ -14,7 +14,7 @@ use constant {
 };
 
 sub evaluate {
-    my ($class, $file, $tokens, $args) = @_;
+    my ($class, $file, $tokens, $src, $args) = @_;
 
     my $statements_arg = $args->{prohibit_prolonged_stricture_override}->{statements};
     my $allow_statements_num = defined $statements_arg ? $statements_arg : DEFAULT_ALLOW_STATEMENTS_NUM;

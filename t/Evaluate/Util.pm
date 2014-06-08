@@ -7,14 +7,14 @@ use parent qw/Exporter/;
 our @EXPORT_OK = qw/fetch_violations/;
 
 sub fetch_violations {
-    my ($class, $src, $args) = @_;
+    my ($class, $input, $args) = @_;
 
     my ($fh, $filename) = tempfile(UNLINK => 1);
-    print $fh $src;
+    print $fh $input;
     close $fh;
 
-    my $tokens = Perl::Lint::_tokenize($filename);
-    my $violations = "Perl::Lint::Evaluator::$class"->evaluate($filename, $tokens, $args);
+    my ($tokens, $src) = Perl::Lint::_tokenize($filename);
+    my $violations = "Perl::Lint::Evaluator::$class"->evaluate($filename, $tokens, $src, $args);
 }
 
 1;
