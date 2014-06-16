@@ -21,6 +21,7 @@ our @EXPORT = qw(
     RIGHT_BRACKET LEFT_BRACKET
     KEY METHOD
     STRING RAW_STRING
+    INT
     HERE_DOCUMENT RAW_HERE_DOCUMENT HERE_DOCUMENT_END HERE_DOCUMENT_TAG HERE_DOCUMENT_RAW_TAG
     REG_QUOTE REG_DOUBLE_QUOTE
     REG_DELIM
@@ -91,6 +92,8 @@ use constant {
     KEY        => Compiler::Lexer::TokenType::T_Key,
     STRING     => Compiler::Lexer::TokenType::T_String,
     RAW_STRING => Compiler::Lexer::TokenType::T_RawString,
+
+    INT => Compiler::Lexer::TokenType::T_Int,
 
     HERE_DOCUMENT         => Compiler::Lexer::TokenType::T_HereDocument,
     RAW_HERE_DOCUMENT     => Compiler::Lexer::TokenType::T_RawHereDocument,
