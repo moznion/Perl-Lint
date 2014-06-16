@@ -110,6 +110,7 @@ sub foo {}
 --- params:
 --- input
 1;
+
 END {}
 
 ===
