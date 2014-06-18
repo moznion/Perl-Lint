@@ -202,23 +202,21 @@ Inner::frobulate( @ARGV );
 #!/usr/bin/perl
 package Wibble;
 
-# TODO
-# ===
-# --- dscr: using #line directive with double-quoted filename
-# --- filename: Foo.pm
-# --- failures: 0
-# --- input
-# #line 99 "Bar.pm"
-# package Bar;
+===
+--- dscr: using #line directive with double-quoted filename
+--- filename: Foo.pm
+--- failures: 0
+--- input
+#line 99 "Bar.pm"
+package Bar;
 
-# TODO
-# ===
-# --- dscr: using #line directive with bareword filename
-# --- filename: Foo.pm
-# --- failures: 0
-# --- input
-# #line 99 Bar.pm
-# package Bar;
+===
+--- dscr: using #line directive with bareword filename
+--- filename: Foo.pm
+--- failures: 0
+--- input
+#line 99 Bar.pm
+package Bar;
 
 ===
 --- dscr: #line directive appears after package declaration
@@ -228,38 +226,38 @@ package Wibble;
 package Bar;
 #line 99 Bar.pm
 
-# ===
-# --- dscr: multiple #line directives
-# --- filename: Foo.pm
-# --- failures: 1
-# --- input
-# #line 99 Bar.pm
-# #line 999 Baz.pm
-# package Bar;
+===
+--- dscr: multiple #line directives
+--- filename: Foo.pm
+--- failures: 1
+--- input
+#line 99 Bar.pm
+#line 999 Baz.pm
+package Bar;
 
-# ===
-# --- dscr: #line directive with multi-part path
-# --- filename: Wrong.pm
-# --- failures: 0
-# --- input
-# #line 99 Foo/Bar/Baz.pm
-# package Foo::Bar::Baz;
+===
+--- dscr: #line directive with multi-part path
+--- filename: Wrong.pm
+--- failures: 0
+--- input
+#line 99 Foo/Bar/Baz.pm
+package Foo::Bar::Baz;
 
-# ===
-# --- dscr: #line directive with multi-part path in lib/ dir
-# --- filename: lib/Wrong.pm
-# --- failures: 0
-# --- input
-# #line 99 lib/Foo/Bar/Baz.pm
-# package Foo::Bar::Baz;
+===
+--- dscr: #line directive with multi-part path in lib/ dir
+--- filename: lib/Wrong.pm
+--- failures: 0
+--- input
+#line 99 lib/Foo/Bar/Baz.pm
+package Foo::Bar::Baz;
 
-# ===
-# --- dscr: #line directive with partially matching multi-part path
-# --- filename: Wrong.pm
-# --- failures: 0
-# --- input
-# #line 99 Foo/Bar/Baz.pm
-# package Baz;
+===
+--- dscr: #line directive with partially matching multi-part path
+--- filename: Wrong.pm
+--- failures: 0
+--- input
+#line 99 Foo/Bar/Baz.pm
+package Baz;
 
 ===
 --- dscr: no package declaration at all

@@ -11,10 +11,38 @@ use constant {
 };
 
 sub evaluate {
-    my ($class, $file, $tokens, $src, $args) = @_;
+    my ($class, $realfile, $tokens, $src, $args) = @_;
 
     if ($src =~ /\A#!/) { # for exempt
         return [];
+    }
+
+    my $file;
+    my @src_rows = split /\r?\n/, $src;
+    my $row = 0;
+    my $directive_declared_row = 0;
+    for my $src_row (@src_rows) {
+        $row++;
+        if ($src_row =~ /^#line\s\d+\s(.+)$/m) {
+            if ($file) {
+                return [{
+                    filename => $realfile,
+                    line     => $row,
+                    description => DESC, # TODO ?
+                    explanation => EXPL, # TODO ?
+                }];
+            }
+            ($file = $1) =~ s/['"]//g;
+            $directive_declared_row = $row;
+        }
+    }
+    $file ||= $realfile;
+
+    if (my @directives = $src =~ /^#line\s\d+\s(.+)$/gm) {
+        if (scalar @directives > 1) {
+        }
+        (my $directive = $directives[0]) =~ s/"//g;
+        $file = $directive;
     }
 
     my @violations;
@@ -54,51 +82,52 @@ sub evaluate {
     }
 
     for my $p (@paths) {
+        my $is_directive_declared_after = 0;
+        my $should_be_no_error = 0;
+
         my $path = $p->{path};
         my $package_declared_line = $p->{line};
 
-        if ($path eq 'main') {
-            last;
-        }
-
-        if ($file !~ m!/!) {
-            my $last_path = @{[split(/\//, $path)]}[-1] || '';
-            if ($file =~ /$last_path\.p[ml]/) {
-                next;
-            }
-        }
-
-        if ($file =~ /$path\.p[ml]/) {
-            next;
+        if ($directive_declared_row && $package_declared_line < $directive_declared_row) {
+            $is_directive_declared_after = 1;
         }
 
         my $last_path = @{[split(/\//, $path)]}[-1];
         (my $module_name = $path) =~ s!/!-!;
-        if ($file =~ m!$module_name(?:-\d[\d\.]*?\d)?/$last_path!) {
-            next;
+
+        if ($path eq 'main' && !$is_directive_declared_after) {
+            last;
+        }
+        elsif ($file !~ m!/!) {
+            my $last_path = @{[split(/\//, $path)]}[-1] || '';
+            if ($file =~ /$last_path\.p[ml]/) {
+                $should_be_no_error = 1;
+            }
+        }
+        elsif ($file =~ /$path\.p[ml]/) {
+            $should_be_no_error = 1;
+        }
+        elsif ($file =~ m!$module_name(?:-\d[\d\.]*?\d)?/$last_path!) {
+            $should_be_no_error = 1;
+        }
+        elsif ($file =~ m![A-Z]\w*-\d[\d\.]*\d/$last_path!) {
+            $should_be_no_error = 1;
         }
 
-        if ($file =~ m![A-Z]\w*-\d[\d\.]*\d/$last_path!) {
-            next;
+        if (
+            !$should_be_no_error ||
+            ($should_be_no_error && $is_directive_declared_after)
+        ) {
+            push @violations, {
+                filename => $realfile,
+                line     => $package_declared_line,
+                description => DESC,
+                explanation => EXPL,
+            };
         }
-
-        push @violations, {
-            filename => $file,
-            line     => $package_declared_line,
-            description => DESC,
-            explanation => EXPL,
-        };
     }
 
     return \@violations;
-    # (my $filename_without_extension = $file) =~ s/\.p[ml]\Z//;
-    # my $file_only = @{[split(/\//, $file)]}[-1];
-    # # my @paths = split(/\//, $path);
-    # if ($filename_without_extension !~ $re_with_module_name) {
-    # }
-    # if ($path !~ /$filename_without_extension\Z/ && $filename_without_extension !~ /$path\Z/) {
-    # # if ($file_only !~ /\A$last_path.p[ml]\Z/ && $file !~ /$path.p[ml]\Z/) {
-    # }
 }
 
 1;
