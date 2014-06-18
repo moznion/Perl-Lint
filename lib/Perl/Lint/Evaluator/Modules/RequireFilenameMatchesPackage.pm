@@ -17,13 +17,14 @@ sub evaluate {
         return [];
     }
 
+    # Determine the filename with considering directive
     my $file;
     my @src_rows = split /\r?\n/, $src;
     my $row = 0;
     my $directive_declared_row = 0;
     for my $src_row (@src_rows) {
         $row++;
-        if ($src_row =~ /^#line\s\d+\s(.+)$/m) {
+        if ($src_row =~ /\A#line\s\d+\s(.+)\Z/) {
             if ($file) {
                 return [{
                     filename => $realfile,
@@ -37,13 +38,6 @@ sub evaluate {
         }
     }
     $file ||= $realfile;
-
-    if (my @directives = $src =~ /^#line\s\d+\s(.+)$/gm) {
-        if (scalar @directives > 1) {
-        }
-        (my $directive = $directives[0]) =~ s/"//g;
-        $file = $directive;
-    }
 
     my @violations;
     my $next_token;
