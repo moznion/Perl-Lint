@@ -30,10 +30,11 @@ our @EXPORT = qw(
     CONTINUE
     BUILTIN_FUNC GOTO RETURN
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
-    AND OR ALPHABET_AND ALPHABET_OR BIT_AND
+    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND OR_EQUAL AND_EQUAL
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
     DO
+    RIGHT_SHIFT LEFT_SHIFT
     GLOB REF PROTOTYPE
     MOD_WORD
 );
@@ -123,7 +124,10 @@ use constant {
     OR  => Compiler::Lexer::TokenType::T_Or,
     ALPHABET_AND => Compiler::Lexer::TokenType::T_AlphabetAnd,
     ALPHABET_OR  => Compiler::Lexer::TokenType::T_AlphabetOr,
+    ALPHABET_XOR => Compiler::Lexer::TokenType::T_AlphabetXOr,
     BIT_AND => Compiler::Lexer::TokenType::T_BitAnd,
+    OR_EQUAL => Compiler::Lexer::TokenType::T_OrEqual,
+    AND_EQUAL => Compiler::Lexer::TokenType::T_AndEqual,
 
     SHORT_SCALAR_DEREFERENCE => Compiler::Lexer::TokenType::T_ShortScalarDereference,
     SHORT_ARRAY_DEREFERENCE  => Compiler::Lexer::TokenType::T_ShortArrayDereference,
@@ -140,6 +144,9 @@ use constant {
     PROTOTYPE => Compiler::Lexer::TokenType::T_Prototype,
 
     DO => Compiler::Lexer::TokenType::T_Do,
+
+    RIGHT_SHIFT => Compiler::Lexer::TokenType::T_RightShift,
+    LEFT_SHIFT => Compiler::Lexer::TokenType::T_LeftShift,
 
     MOD_WORD => Compiler::Lexer::TokenType::T_ModWord,
 };
