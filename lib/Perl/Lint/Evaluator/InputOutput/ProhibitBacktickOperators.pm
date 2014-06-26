@@ -2,6 +2,7 @@ package Perl::Lint::Evaluator::InputOutput::ProhibitBacktickOperators;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;
+use Perl::Lint::Constants::Kind;
 use parent "Perl::Lint::Evaluator";
 
 # TODO msg!
@@ -21,21 +22,14 @@ sub evaluate {
     my $is_in_ctrl_context;
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         my $token_type = $token->{type};
+        my $token_kind = $token->{kind};
 
         if ($token_type == BUILTIN_FUNC || $token_type == KEY) {
             $is_in_call_context = 1;
             next;
         }
 
-        if (
-            $token_type == IF_STATEMENT ||
-            $token_type == ELSIF_STATEMENT ||
-            $token_type == UNLESS_STATEMENT ||
-            $token_type == FOR_STATEMENT ||
-            $token_type == FOREACH_STATEMENT ||
-            $token_type == WHILE_STATEMENT ||
-            $token_type == UNTIL_STATEMENT
-        ) {
+        if ($token_kind == KIND_STMT) {
             $is_in_ctrl_context = 1;
             next;
         }
