@@ -38,6 +38,7 @@ our @EXPORT = qw(
     GLOB REF PROTOTYPE
     MOD_WORD
     TYPE_STDIN
+    HANDLE
 );
 
 use constant {
@@ -154,6 +155,8 @@ use constant {
     MOD_WORD => Compiler::Lexer::TokenType::T_ModWord,
 
     TYPE_STDIN => Compiler::Lexer::TokenType::T_STDIN, # STDIN is reserved by main::
+
+    HANDLE => Compiler::Lexer::TokenType::T_Handle,
 };
 
 1;
