@@ -20,12 +20,12 @@ our @EXPORT = qw(
     RIGHT_PAREN LEFT_PAREN
     RIGHT_BRACKET LEFT_BRACKET
     KEY METHOD
-    STRING RAW_STRING
+    STRING RAW_STRING EXEC_STRING
     INT
     HERE_DOCUMENT RAW_HERE_DOCUMENT HERE_DOCUMENT_END HERE_DOCUMENT_TAG HERE_DOCUMENT_RAW_TAG
     REG_QUOTE REG_DOUBLE_QUOTE
     REG_DELIM
-    REG_EXP
+    REG_EXP REG_EXEC
     IF_STATEMENT ELSE_STATEMENT ELSIF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
     CONTINUE
     BUILTIN_FUNC GOTO RETURN
@@ -89,10 +89,11 @@ use constant {
     RIGHT_BRACKET => Compiler::Lexer::TokenType::T_RightBracket,
     LEFT_BRACKET  => Compiler::Lexer::TokenType::T_LeftBracket,
 
-    METHOD     => Compiler::Lexer::TokenType::T_Method,
-    KEY        => Compiler::Lexer::TokenType::T_Key,
-    STRING     => Compiler::Lexer::TokenType::T_String,
-    RAW_STRING => Compiler::Lexer::TokenType::T_RawString,
+    METHOD      => Compiler::Lexer::TokenType::T_Method,
+    KEY         => Compiler::Lexer::TokenType::T_Key,
+    STRING      => Compiler::Lexer::TokenType::T_String,
+    RAW_STRING  => Compiler::Lexer::TokenType::T_RawString,
+    EXEC_STRING => Compiler::Lexer::TokenType::T_ExecString,
 
     INT => Compiler::Lexer::TokenType::T_Int,
 
@@ -107,7 +108,8 @@ use constant {
 
     REG_DELIM => Compiler::Lexer::TokenType::T_RegDelim,
 
-    REG_EXP => Compiler::Lexer::TokenType::T_RegExp,
+    REG_EXP  => Compiler::Lexer::TokenType::T_RegExp,
+    REG_EXEC => Compiler::Lexer::TokenType::T_RegExec,
 
     THREE_TERM_OP => Compiler::Lexer::TokenType::T_ThreeTermOperator,
 
