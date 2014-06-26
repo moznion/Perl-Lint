@@ -38,7 +38,7 @@ our @EXPORT = qw(
     GLOB REF PROTOTYPE
     MOD_WORD
     TYPE_STDIN
-    HANDLE
+    HANDLE HANDLE_DELIM DIAMOND
 );
 
 use constant {
@@ -157,6 +157,8 @@ use constant {
     TYPE_STDIN => Compiler::Lexer::TokenType::T_STDIN, # STDIN is reserved by main::
 
     HANDLE => Compiler::Lexer::TokenType::T_Handle,
+    HANDLE_DELIM => Compiler::Lexer::TokenType::T_HandleDelim,
+    DIAMOND => Compiler::Lexer::TokenType::T_Diamond,
 };
 
 1;
