@@ -37,6 +37,7 @@ our @EXPORT = qw(
     RIGHT_SHIFT LEFT_SHIFT
     GLOB REF PROTOTYPE
     MOD_WORD
+    TYPE_STDIN
 );
 
 use constant {
@@ -151,6 +152,8 @@ use constant {
     LEFT_SHIFT => Compiler::Lexer::TokenType::T_LeftShift,
 
     MOD_WORD => Compiler::Lexer::TokenType::T_ModWord,
+
+    TYPE_STDIN => Compiler::Lexer::TokenType::T_STDIN, # STDIN is reserved by main::
 };
 
 1;
