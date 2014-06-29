@@ -40,6 +40,7 @@ our @EXPORT = qw(
     TYPE_STDIN
     HANDLE HANDLE_DELIM DIAMOND
     LESS
+    STRING_ADD
 );
 
 use constant {
@@ -164,6 +165,8 @@ use constant {
     DIAMOND => Compiler::Lexer::TokenType::T_Diamond,
 
     LESS => Compiler::Lexer::TokenType::T_Less,
+
+    STRING_ADD => Compiler::Lexer::TokenType::T_StringAdd,
 };
 
 1;

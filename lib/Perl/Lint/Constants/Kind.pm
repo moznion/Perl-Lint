@@ -10,6 +10,7 @@ our @EXPORT = qw(
     KIND_OP
     KIND_STMT
     KIND_STMT_END
+    KIND_TERM
 );
 
 use constant {
@@ -18,6 +19,7 @@ use constant {
     KIND_OP   => Compiler::Lexer::Kind::T_Operator,
     KIND_STMT => Compiler::Lexer::Kind::T_Stmt,
     KIND_STMT_END => Compiler::Lexer::Kind::T_StmtEnd,
+    KIND_TERM => Compiler::Lexer::Kind::T_Term,
 };
 
 1;
