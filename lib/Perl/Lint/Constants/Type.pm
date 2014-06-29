@@ -12,7 +12,7 @@ our @EXPORT = qw(
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HAHS_VAR
     LOCAL_VAR LOCAL_ARRAY_VAR LOCAL_HASH_VAR
-    SEMI_COLON COMMA ARROW
+    SEMI_COLON COMMA ARROW COLON
     ASSIGN
     DOUBLE
     DEFAULT
@@ -119,6 +119,7 @@ use constant {
 
     COMMA      => Compiler::Lexer::TokenType::T_Comma,
     SEMI_COLON => Compiler::Lexer::TokenType::T_SemiColon,
+    COLON      => Compiler::Lexer::TokenType::T_Colon,
     ARROW      => Compiler::Lexer::TokenType::T_Arrow,
     ASSIGN     => Compiler::Lexer::TokenType::T_Assign,
 
