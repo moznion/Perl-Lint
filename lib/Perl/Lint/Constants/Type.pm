@@ -24,8 +24,8 @@ our @EXPORT = qw(
     INT
     HERE_DOCUMENT RAW_HERE_DOCUMENT HERE_DOCUMENT_END HERE_DOCUMENT_TAG HERE_DOCUMENT_RAW_TAG
     REG_QUOTE REG_DOUBLE_QUOTE
-    REG_DELIM
-    REG_EXP REG_EXEC REG_LIST
+    REG_DELIM REG_OPT
+    REG_EXP REG_EXEC REG_LIST REG_ALL_REPLACE
     IF_STATEMENT ELSE_STATEMENT ELSIF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
     CONTINUE
     BUILTIN_FUNC GOTO RETURN
@@ -111,10 +111,12 @@ use constant {
     REG_DOUBLE_QUOTE => Compiler::Lexer::TokenType::T_RegDoubleQuote,
 
     REG_DELIM => Compiler::Lexer::TokenType::T_RegDelim,
+    REG_OPT   => Compiler::Lexer::TokenType::T_RegOpt,
 
     REG_EXP  => Compiler::Lexer::TokenType::T_RegExp,
     REG_EXEC => Compiler::Lexer::TokenType::T_RegExec,
     REG_LIST => Compiler::Lexer::TokenType::T_RegList,
+    REG_ALL_REPLACE => Compiler::Lexer::TokenType::T_RegAllReplace,
 
     THREE_TERM_OP => Compiler::Lexer::TokenType::T_ThreeTermOperator,
 
