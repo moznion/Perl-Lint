@@ -39,8 +39,8 @@ our @EXPORT = qw(
     MOD_WORD
     TYPE_STDIN
     HANDLE HANDLE_DELIM DIAMOND
-    LESS
-    STRING_ADD
+    LESS GREATER
+    MUL STRING_ADD
 );
 
 use constant {
@@ -168,7 +168,9 @@ use constant {
     DIAMOND => Compiler::Lexer::TokenType::T_Diamond,
 
     LESS => Compiler::Lexer::TokenType::T_Less,
+    GREATER => Compiler::Lexer::TokenType::T_Greater,
 
+    MUL => Compiler::Lexer::TokenType::T_Mul,
     STRING_ADD => Compiler::Lexer::TokenType::T_StringAdd,
 };
 
