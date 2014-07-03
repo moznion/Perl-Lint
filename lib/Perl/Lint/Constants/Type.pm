@@ -42,6 +42,7 @@ our @EXPORT = qw(
     LESS GREATER
     MUL STRING_ADD
     SPECIFIC_VALUE
+    DEFAULT
 );
 
 use constant {
@@ -175,6 +176,8 @@ use constant {
     STRING_ADD => Compiler::Lexer::TokenType::T_StringAdd,
 
     SPECIFIC_VALUE => Compiler::Lexer::TokenType::T_SpecificValue,
+
+    DEFAULT => Compiler::Lexer::TokenType::T_Default,
 };
 
 1;
