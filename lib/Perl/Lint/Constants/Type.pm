@@ -73,7 +73,7 @@ use constant {
 
     IF_STATEMENT      => Compiler::Lexer::TokenType::T_IfStmt,
     ELSE_STATEMENT    => Compiler::Lexer::TokenType::T_ElseStmt,
-    ELSIF_STATEMENT    => Compiler::Lexer::TokenType::T_ElsifStmt,
+    ELSIF_STATEMENT   => Compiler::Lexer::TokenType::T_ElsifStmt,
     UNLESS_STATEMENT  => Compiler::Lexer::TokenType::T_UnlessStmt,
     WHILE_STATEMENT   => Compiler::Lexer::TokenType::T_WhileStmt,
     FOR_STATEMENT     => Compiler::Lexer::TokenType::T_ForStmt,
