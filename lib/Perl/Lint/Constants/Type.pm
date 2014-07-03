@@ -39,7 +39,7 @@ our @EXPORT = qw(
     MOD_WORD
     TYPE_STDIN
     HANDLE HANDLE_DELIM DIAMOND
-    LESS GREATER
+    LESS GREATER COMPARE STRING_COMPARE
     MUL STRING_ADD
     SPECIFIC_VALUE
     DEFAULT
@@ -171,6 +171,8 @@ use constant {
 
     LESS => Compiler::Lexer::TokenType::T_Less,
     GREATER => Compiler::Lexer::TokenType::T_Greater,
+    COMPARE => Compiler::Lexer::TokenType::T_Compare,
+    STRING_COMPARE => Compiler::Lexer::TokenType::T_StringCompare,
 
     MUL => Compiler::Lexer::TokenType::T_Mul,
     STRING_ADD => Compiler::Lexer::TokenType::T_StringAdd,
