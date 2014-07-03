@@ -41,6 +41,7 @@ our @EXPORT = qw(
     HANDLE HANDLE_DELIM DIAMOND
     LESS GREATER
     MUL STRING_ADD
+    SPECIFIC_VALUE
 );
 
 use constant {
@@ -172,6 +173,8 @@ use constant {
 
     MUL => Compiler::Lexer::TokenType::T_Mul,
     STRING_ADD => Compiler::Lexer::TokenType::T_StringAdd,
+
+    SPECIFIC_VALUE => Compiler::Lexer::TokenType::T_SpecificValue,
 };
 
 1;
