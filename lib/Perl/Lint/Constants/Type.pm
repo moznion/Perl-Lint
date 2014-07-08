@@ -7,7 +7,7 @@ use parent qw/Exporter/;
 our @EXPORT = qw(
     VAR_DECL OUR_DECL LOCAL_DECL FUNCTION_DECL FORMAT_DECL
     USE_DECL REQUIRE_DECL
-    USED_NAME
+    USED_NAME REQUIRED_NAME
     CALL FUNCTION
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HAHS_VAR
@@ -20,7 +20,7 @@ our @EXPORT = qw(
     RIGHT_PAREN LEFT_PAREN
     RIGHT_BRACKET LEFT_BRACKET
     KEY METHOD
-    STRING RAW_STRING EXEC_STRING
+    STRING RAW_STRING EXEC_STRING VERSION_STRING
     INT
     HERE_DOCUMENT RAW_HERE_DOCUMENT HERE_DOCUMENT_END HERE_DOCUMENT_TAG HERE_DOCUMENT_RAW_TAG
     REG_QUOTE REG_DOUBLE_QUOTE
@@ -55,7 +55,8 @@ use constant {
     USE_DECL     => Compiler::Lexer::TokenType::T_UseDecl,
     REQUIRE_DECL => Compiler::Lexer::TokenType::T_RequireDecl,
 
-    USED_NAME => Compiler::Lexer::TokenType::T_UsedName,
+    USED_NAME     => Compiler::Lexer::TokenType::T_UsedName,
+    REQUIRED_NAME => Compiler::Lexer::TokenType::T_RequiredName,
 
     CALL     => Compiler::Lexer::TokenType::T_Call,
     FUNCTION => Compiler::Lexer::TokenType::T_Function,
@@ -95,11 +96,12 @@ use constant {
     RIGHT_BRACKET => Compiler::Lexer::TokenType::T_RightBracket,
     LEFT_BRACKET  => Compiler::Lexer::TokenType::T_LeftBracket,
 
-    METHOD      => Compiler::Lexer::TokenType::T_Method,
-    KEY         => Compiler::Lexer::TokenType::T_Key,
-    STRING      => Compiler::Lexer::TokenType::T_String,
-    RAW_STRING  => Compiler::Lexer::TokenType::T_RawString,
-    EXEC_STRING => Compiler::Lexer::TokenType::T_ExecString,
+    METHOD         => Compiler::Lexer::TokenType::T_Method,
+    KEY            => Compiler::Lexer::TokenType::T_Key,
+    STRING         => Compiler::Lexer::TokenType::T_String,
+    RAW_STRING     => Compiler::Lexer::TokenType::T_RawString,
+    EXEC_STRING    => Compiler::Lexer::TokenType::T_ExecString,
+    VERSION_STRING => Compiler::Lexer::TokenType::T_VersionString,
 
     INT => Compiler::Lexer::TokenType::T_Int,
 
