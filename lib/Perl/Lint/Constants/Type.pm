@@ -12,7 +12,7 @@ our @EXPORT = qw(
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HASH_VAR
     LOCAL_VAR LOCAL_ARRAY_VAR LOCAL_HASH_VAR
-    SEMI_COLON COMMA ARROW COLON
+    SEMI_COLON COMMA ARROW COLON POINTER
     ASSIGN
     DOUBLE
     DEFAULT
@@ -41,7 +41,7 @@ our @EXPORT = qw(
     HANDLE HANDLE_DELIM DIAMOND
     LESS GREATER COMPARE STRING_COMPARE
     MUL STRING_ADD
-    SPECIFIC_VALUE
+    SPECIFIC_VALUE SPECIFIC_KEYWORD
     DEFAULT
 );
 
@@ -132,6 +132,7 @@ use constant {
     COLON      => Compiler::Lexer::TokenType::T_Colon,
     ARROW      => Compiler::Lexer::TokenType::T_Arrow,
     ASSIGN     => Compiler::Lexer::TokenType::T_Assign,
+    POINTER    => Compiler::Lexer::TokenType::T_Pointer,
 
     DOUBLE => Compiler::Lexer::TokenType::T_Double,
 
@@ -182,7 +183,8 @@ use constant {
     MUL => Compiler::Lexer::TokenType::T_Mul,
     STRING_ADD => Compiler::Lexer::TokenType::T_StringAdd,
 
-    SPECIFIC_VALUE => Compiler::Lexer::TokenType::T_SpecificValue,
+    SPECIFIC_VALUE   => Compiler::Lexer::TokenType::T_SpecificValue,
+    SPECIFIC_KEYWORD => Compiler::Lexer::TokenType::T_SpecificKeyword,
 
     DEFAULT => Compiler::Lexer::TokenType::T_Default,
 };
