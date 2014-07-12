@@ -5,6 +5,7 @@ use Compiler::Lexer::Constants;
 use parent qw/Exporter/;
 
 our @EXPORT = qw(
+    KIND_ASSIGN
     KIND_CTRL
     KIND_DECL
     KIND_OP
@@ -14,6 +15,7 @@ our @EXPORT = qw(
 );
 
 use constant {
+    KIND_ASSIGN => Compiler::Lexer::Kind::T_Assign,
     KIND_CTRL => Compiler::Lexer::Kind::T_Control,
     KIND_DECL => Compiler::Lexer::Kind::T_Decl,
     KIND_OP   => Compiler::Lexer::Kind::T_Operator,

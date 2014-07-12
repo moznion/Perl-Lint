@@ -10,7 +10,7 @@ our @EXPORT = qw(
     USED_NAME REQUIRED_NAME
     CALL FUNCTION
     VAR CODE_VAR ARRAY_VAR HASH_VAR
-    GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HAHS_VAR
+    GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HASH_VAR
     LOCAL_VAR LOCAL_ARRAY_VAR LOCAL_HASH_VAR
     SEMI_COLON COMMA ARROW COLON
     ASSIGN
@@ -68,7 +68,7 @@ use constant {
 
     GLOBAL_VAR       => Compiler::Lexer::TokenType::T_GlobalVar,
     GLOBAL_ARRAY_VAR => Compiler::Lexer::TokenType::T_GlobalArrayVar,
-    GLOBAL_HAHS_VAR  => Compiler::Lexer::TokenType::T_GlobalHashVar,
+    GLOBAL_HASH_VAR  => Compiler::Lexer::TokenType::T_GlobalHashVar,
 
     LOCAL_VAR       => Compiler::Lexer::TokenType::T_LocalVar,
     LOCAL_ARRAY_VAR => Compiler::Lexer::TokenType::T_LocalArrayVar,
