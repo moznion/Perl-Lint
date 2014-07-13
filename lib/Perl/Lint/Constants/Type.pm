@@ -12,6 +12,7 @@ our @EXPORT = qw(
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HASH_VAR
     LOCAL_VAR LOCAL_ARRAY_VAR LOCAL_HASH_VAR
+    ARGUMENT_ARRAY
     SEMI_COLON COMMA ARROW COLON POINTER
     ASSIGN
     DOUBLE
@@ -43,6 +44,7 @@ our @EXPORT = qw(
     MUL STRING_ADD
     SPECIFIC_VALUE SPECIFIC_KEYWORD
     DEFAULT
+    PROTOTYPE
 );
 
 use constant {
@@ -73,6 +75,8 @@ use constant {
     LOCAL_VAR       => Compiler::Lexer::TokenType::T_LocalVar,
     LOCAL_ARRAY_VAR => Compiler::Lexer::TokenType::T_LocalArrayVar,
     LOCAL_HASH_VAR  => Compiler::Lexer::TokenType::T_LocalHashVar,
+
+    ARGUMENT_ARRAY => Compiler::Lexer::TokenType::T_ArgumentArray,
 
     IF_STATEMENT      => Compiler::Lexer::TokenType::T_IfStmt,
     ELSE_STATEMENT    => Compiler::Lexer::TokenType::T_ElseStmt,
@@ -187,6 +191,8 @@ use constant {
     SPECIFIC_KEYWORD => Compiler::Lexer::TokenType::T_SpecificKeyword,
 
     DEFAULT => Compiler::Lexer::TokenType::T_Default,
+
+    PROTOTYPE => Compiler::Lexer::TokenType::T_Prototype,
 };
 
 1;
