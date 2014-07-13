@@ -61,16 +61,16 @@ sub foo { return 1 ? 1 : 2 ? 2 : 3; }
 sub foo { 1 }
 sub foo { 'Club sandwich'; }
 
-# ===
-# --- dscr: return in a constant loop
-# --- failures: 1
-# --- params:
-# --- input
-# sub foo {
-#     while (1==1) {
-#         return;
-#     }
-# }
+===
+--- dscr: return in a constant loop
+--- failures: 1
+--- params:
+--- input
+sub foo {
+    while (1==1) {
+        return;
+    }
+}
 
 ===
 --- dscr: not all code paths returns

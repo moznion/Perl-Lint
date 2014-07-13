@@ -33,6 +33,7 @@ sub evaluate {
                     my $left_brace_num = 1;
                     my $is_returned = 0;
                     my $is_returned_in_cond = undef;
+                    my %constant_loop;
                     for ($i++; $token = $tokens->[$i]; $i++) {
                         $token_type = $token->{type};
                         my $token_data = $token->{data};
@@ -41,6 +42,7 @@ sub evaluate {
                             $left_brace_num++;
                         }
                         elsif ($token_type == RIGHT_BRACE) {
+                            delete $constant_loop{$left_brace_num};
                             if (--$left_brace_num <= 0) {
                                 if (!$is_returned && !$is_returned_in_cond) {
                                     push @violations, {
@@ -83,10 +85,26 @@ sub evaluate {
                                 }
                             }
                         }
+                        elsif (
+                            $token_type == FOR_STATEMENT     ||
+                            $token_type == FOREACH_STATEMENT ||
+                            $token_type == WHILE_STATEMENT   ||
+                            $token_type == UNTIL_STATEMENT
+                        ) {
+                            $constant_loop{$left_brace_num+1} = 1;
+                        }
                         elsif ($token_type == RETURN || $token_type == GOTO) {
+                            if ($constant_loop{$left_brace_num}) {
+                                next;
+                            }
+
                             $is_returned = 1;
                         }
                         elsif ($token_type == BUILTIN_FUNC) {
+                            if ($constant_loop{$left_brace_num}) {
+                                next;
+                            }
+
                             if (
                                 $token_data eq 'die'  ||
                                 $token_data eq 'exec' ||
@@ -101,6 +119,10 @@ sub evaluate {
                             }
                         }
                         elsif ($token_type == KEY) {
+                            if ($constant_loop{$left_brace_num}) {
+                                next;
+                            }
+
                             if (
                                 $token_data eq 'croak'   ||
                                 $token_data eq 'confess' ||
@@ -130,6 +152,10 @@ sub evaluate {
                             }
                         }
                         elsif ($token_type == NAMESPACE && $token_data eq 'Carp') {
+                            if ($constant_loop{$left_brace_num}) {
+                                next;
+                            }
+
                             my $target_token = $tokens->[$i+2];
                             if ($target_token->{type} == NAMESPACE) {
                                 my $target_token_data = $target_token->{data};
