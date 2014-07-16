@@ -49,7 +49,12 @@ sub evaluate {
         #     explanation => EXPL,
         # };
     }
+
+    return \\\@violations;
 }
+
+1;
+
 ...
 }
 
