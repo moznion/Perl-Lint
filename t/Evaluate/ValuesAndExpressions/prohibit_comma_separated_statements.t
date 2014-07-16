@@ -231,10 +231,11 @@ return
 
 ===
 --- dscr: RT #27654 - NKH example 2 - without allow_last_statement_to_be_comma_separated_in_map_and_grep
---- failures: 1
+--- failures: 2
 --- params:
 --- input
 %hash = map {$_, 1} @list ;
+%hash = grep {$_, 1} @list ;
 
 ===
 --- dscr: RT #27654 - NKH example 2 - with allow_last_statement_to_be_comma_separated_in_map_and_grep
@@ -242,6 +243,7 @@ return
 --- params: {prohibit_comma_separated_statements => {allow_last_statement_to_be_comma_separated_in_map_and_grep => 1}}
 --- input
 %hash = map {$_, 1} @list ;
+%hash = grep {$_, 1} @list ;
 
 ===
 --- dscr: RT #27654 - NKH example 3
