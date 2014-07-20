@@ -4,11 +4,11 @@ use strict;
 use warnings;
 use utf8;
 use Perl::Lint;
-use Perl::Lint::Evaluator::Variables::ConditionalDeclarations;
+use Perl::Lint::Evaluator::Variables::ProhibitConditionalDeclarations;
 use t::Evaluate::Util qw/fetch_violations/;
 use Test::More;
 
-my $class_name = 'Variables::ConditionalDeclarations';
+my $class_name = 'Variables::ProhibitConditionalDeclarations';
 
 subtest 'with if at post-position' => sub {
     my $src = <<'...';

@@ -1,4 +1,4 @@
-package Perl::Lint::Evaluator::Variables::AugmentedAssignmentInDeclaration;
+package Perl::Lint::Evaluator::Variables::ProhibitAugmentedAssignmentInDeclaration;
 use strict;
 use warnings;
 use Compiler::Lexer::Constants;

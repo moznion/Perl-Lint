@@ -1,4 +1,4 @@
-package Perl::Lint::Evaluator::Variables::ConditionalDeclarations;
+package Perl::Lint::Evaluator::Variables::ProhibitConditionalDeclarations;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;

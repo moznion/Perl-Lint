@@ -4,11 +4,11 @@ use strict;
 use warnings;
 use utf8;
 use Perl::Lint;
-use Perl::Lint::Evaluator::Variables::AugmentedAssignmentInDeclaration;
+use Perl::Lint::Evaluator::Variables::ProhibitAugmentedAssignmentInDeclaration;
 use t::Evaluate::Util qw/fetch_violations/;
 use Test::More;
 
-my $class_name = 'Variables::AugmentedAssignmentInDeclaration';
+my $class_name = 'Variables::ProhibitAugmentedAssignmentInDeclaration';
 
 subtest 'Normal assignment ok' => sub {
     my $src = <<'...';
