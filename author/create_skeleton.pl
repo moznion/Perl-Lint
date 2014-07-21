@@ -21,8 +21,13 @@ my $project_root = "$FindBin::Bin/..";
     mkpath($category_dir);
 
     my $pm_file = "$category_dir/$polycy.pm";
-    open my $fh, '>', $pm_file or die "Cannot open $pm_file: $!";
-    print $fh <<"...";
+
+    if (-f $pm_file) {
+        print "[WARN] '$pm_file' has already existed\n";
+    }
+    else {
+        open my $fh, '>', $pm_file or die "Cannot open $pm_file: $!";
+        print $fh <<"...";
 package Perl::Lint::Evaluator::$category\:\:$polycy;
 use strict;
 use warnings;
@@ -39,8 +44,8 @@ sub evaluate {
     my (\$class, \$file, \$tokens, \$src, \$args) = \@_;
 
     my \@violations;
-    for (my \$i = 0; my \$token = \$tokens->[\$i]; \$i++) {
-        my \$token_type = \$token->{type};
+    for (my \$i = 0, my \$token_type; my \$token = \$tokens->[\$i]; \$i++) {
+        \$token_type = \$token->{type};
 
         # push \@violations, {
         #     filename => \$file,
@@ -56,6 +61,9 @@ sub evaluate {
 1;
 
 ...
+        print "[INFO] Created '$pm_file'\n";
+    }
+
 }
 
 {
@@ -63,8 +71,13 @@ sub evaluate {
     mkpath($test_category_dir);
 
     my $test_file = "$test_category_dir/" . decamelize($polycy) . '.t';
-    open my $fh, '>', $test_file or die "Cannot open $test_file: $!";
-    print $fh <<"...";
+
+    if (-f $test_file) {
+        print "[WARN] '$test_file' has already existed\n";
+    }
+    else {
+        open my $fh, '>', $test_file or die "Cannot open $test_file: $!";
+        print $fh <<"...";
 use strict;
 use warnings;
 use Perl::Lint::Evaluator::$category\:\:$polycy;
@@ -87,6 +100,8 @@ done_testing;
 __DATA__
 
 ...
+        print "[INFO] Created '$test_file'\n";
+    }
 }
 
 __END__
