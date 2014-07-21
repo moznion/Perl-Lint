@@ -39,25 +39,31 @@ sub evaluate {
                         }
                     }
                     elsif ($token_type == GLOBAL_VAR || $token_type == VAR) {
-                        if ($token->{data} =~ /\A\$[a-z]/) {
-                            $violation ||= +{
-                                filename => $file,
-                                line     => $token->{line},
-                                description => DESC,
-                                explanation => EXPL,
-                            };
+                        if ($token->{data} !~ /\A\$[A-Z_]+\Z/) {
+                            my $next_token = $tokens->[$i+1];
+                            if ($next_token->{type} != NAMESPACE_RESOLVER) {
+                                $violation ||= +{
+                                    filename => $file,
+                                    line     => $token->{line},
+                                    description => DESC,
+                                    explanation => EXPL,
+                                };
+                            }
                         }
                     }
                 }
             }
             elsif ($token_type == GLOBAL_VAR || $token_type == VAR) {
-                if ($token->{data} =~ /\A\$[a-z]/) {
-                    push @violations, {
-                        filename => $file,
-                        line     => $token->{line},
-                        description => DESC,
-                        explanation => EXPL,
-                    };
+                if ($token->{data} !~ /\A\$[A-Z_]+\Z/) {
+                    my $next_token = $tokens->[$i+1];
+                    if ($next_token->{type} != NAMESPACE_RESOLVER) {
+                        push @violations, {
+                            filename => $file,
+                            line     => $token->{line},
+                            description => DESC,
+                            explanation => EXPL,
+                        };
+                    }
                 }
             }
         }
