@@ -1,5 +1,5 @@
 requires 'perl', '5.008005';
-requires 'Compiler::Lexer';
+requires 'Compiler::Lexer', '0.19';
 requires 'feature';
 requires 'parent';
 requires 'List::Util', '1.38';
