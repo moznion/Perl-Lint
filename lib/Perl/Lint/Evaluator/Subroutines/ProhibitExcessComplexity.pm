@@ -53,7 +53,8 @@ sub evaluate {
                     $token_type == UNTIL_STATEMENT ||
                     $token_type == FOR_STATEMENT ||
                     $token_type == FOREACH_STATEMENT ||
-                    (($token_type == RIGHT_SHIFT || $token_type == LEFT_SHIFT) && $next_token_type && $next_token_type == ASSIGN)
+                    $token_type == LEFT_SHIFT_EQUAL ||
+                    $token_type == RIGHT_SHIFT_EQUAL
                 ) {
                     $mccabe++;
                 }
