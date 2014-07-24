@@ -95,7 +95,7 @@ sub evaluate {
                                 $is_violated = 1;
                             }
                         }
-                        elsif ($token_type == NAMESPACE || $token_type == KEY) {
+                        elsif ($token_type == NAMESPACE || $token_type == METHOD) {
                             if ($is_inherited || $token_data eq 'NEXT' || $token_data eq 'SUPER') {
                                 $is_inherited = 1;
                                 $package_name .= $token_data;
