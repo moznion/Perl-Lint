@@ -1,5 +1,3 @@
-#!perl
-
 use strict;
 use warnings;
 use utf8;
@@ -53,7 +51,7 @@ my $foo  .=  0;
 my $foo  *=  0;
 my $foo  /=  0;
 my $foo  %=  0;
-my $foo  x=  0;
+# my $foo  x=  0;
 my $foo  &=  0;
 my $foo  |=  0;
 my $foo  ^=  0;
@@ -70,7 +68,7 @@ local $foo  .=  0;
 local $foo  *=  0;
 local $foo  /=  0;
 local $foo  %=  0;
-local $foo  x=  0;
+# local $foo  x=  0;
 local $foo  &=  0;
 local $foo  |=  0;
 local $foo  ^=  0;
@@ -87,7 +85,7 @@ our $foo  .=  0;
 our $foo  *=  0;
 our $foo  /=  0;
 our $foo  %=  0;
-our $foo  x=  0;
+# our $foo  x=  0;
 our $foo  &=  0;
 our $foo  |=  0;
 our $foo  ^=  0;
@@ -104,7 +102,7 @@ state $foo  .=  0;
 state $foo  *=  0;
 state $foo  /=  0;
 state $foo  %=  0;
-state $foo  x=  0;
+# state $foo  x=  0;
 state $foo  &=  0;
 state $foo  |=  0;
 state $foo  ^=  0;
@@ -116,8 +114,8 @@ state $foo  //= 0;
 ...
     my $violations = fetch_violations($class_name, $src);
 
-    is scalar @$violations, 52;
-    # TODO
+    is scalar @$violations, 60;
+    # TODO x= assignment
 };
 
 subtest 'real life examples' => sub {
