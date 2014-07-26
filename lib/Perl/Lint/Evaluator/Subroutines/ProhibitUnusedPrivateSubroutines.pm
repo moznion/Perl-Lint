@@ -55,7 +55,7 @@ sub evaluate {
                                 elsif ($token_type == RIGHT_BRACE) {
                                     last if --$left_brace_num <= 0;
                                 }
-                                elsif ($token_type == CALL || $token_type == KEY) {
+                                elsif ($token_type == CALL || $token_type == KEY || $token_type == METHOD) {
                                     $token_data = $token->{data};
                                     if ($token_data eq $declared_private_function) {
                                         next;
@@ -72,7 +72,7 @@ sub evaluate {
                 }
             }
         }
-        elsif ($token_type == CALL || $token_type == KEY) {
+        elsif ($token_type == CALL || $token_type == KEY || $token_type == METHOD) {
             $called{$token_data} = 1;
         }
         elsif ($token_type == USED_NAME && $token_data eq 'overload') {
@@ -113,7 +113,7 @@ sub evaluate {
 
                     for (my $i = 0; $token = $replace_to_tokens->[$i]; $i++) {
                         my $token_type = $token->{type};
-                        if ($token_type == CALL || $token_type == KEY) {
+                        if ($token_type == CALL || $token_type == KEY || $token_type == METHOD) {
                             $called{$token->{data}} = 1;
                         }
                     }
