@@ -43,16 +43,16 @@ use vars '$fooBar', '@EXPORT';
 use vars ('$fooBar', '$baz');
 use vars ('$fooBar', '@EXPORT');
 
-# ===
-# --- dscr: Basic passes - our
-# --- failures: 0
-# --- params:
-# --- input
-# our $VAR1 = 'foo';
-# our (%VAR2, %VAR3) = ();
-# our $VERSION = '1.0';
-# our @EXPORT = qw(some symbols);
-#
+===
+--- dscr: Basic passes - our
+--- failures: 0
+--- params:
+--- input
+our $VAR1 = 'foo';
+our (%VAR2, %VAR3) = ();
+our $VERSION = '1.0';
+our @EXPORT = qw(some symbols);
+
 # ===
 # --- dscr: Basic passes - use vars
 # --- failures: 0

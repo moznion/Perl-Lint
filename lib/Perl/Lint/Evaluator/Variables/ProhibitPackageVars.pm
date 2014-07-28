@@ -47,7 +47,7 @@ sub evaluate {
                         $token_type == ARRAY_VAR ||
                         $token_type == HASH_VAR
                     ) {
-                        if ($token->{data} !~ /\A\$[A-Z_]+\Z/) {
+                        if ($token->{data} !~ /\A.[A-Z0-9_]+\Z/) {
                             $violation ||= +{
                                 filename => $file,
                                 line     => $token->{line},
@@ -66,7 +66,7 @@ sub evaluate {
                 $token_type == ARRAY_VAR ||
                 $token_type == HASH_VAR
             ) {
-                if ($token->{data} !~ /\A\$[A-Z_]+\Z/) {
+                if ($token->{data} !~ /\A.[A-Z0-9_]+\Z/) {
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
