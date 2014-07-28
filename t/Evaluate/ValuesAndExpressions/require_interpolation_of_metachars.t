@@ -203,29 +203,30 @@ use vars qw< $FOO @BAR >, '$BAZ';
 --- input
 use Generic::Module '$FOO';
 
-# ===
-# --- dscr: Things that look like email addresses.
-# --- failures: 0
-# --- params:
-# --- input
-# $simple  = 'me@foo.bar';
-# $complex = q{don-quixote@man-from.lamancha.org};
-#
-# ===
-# --- dscr: More things that look like email addresses.
-# --- failures: 0
-# --- params:
-# --- input
-# $simple  = 'Email: me@foo.bar';
-# $complex = q{"don-quixote@man-from.lamancha.org" is my address};
-# send_email_to ('foo@bar.com', ...);
-#
+===
+--- dscr: Things that look like email addresses.
+--- failures: 0
+--- params:
+--- input
+$simple  = 'me@foo.bar';
+$complex = q{don-quixote@man-from.lamancha.org};
+
+===
+--- dscr: More things that look like email addresses.
+--- failures: 0
+--- params:
+--- input
+$simple  = 'Email: me@foo.bar';
+$complex = q{"don-quixote@man-from.lamancha.org" is my address};
+send_email_to ('foo@bar.com', ...);
+
+# TODO Policy is not smart enough to handle this yet.
+# TODO Impl
 # ===
 # --- dscr: Email addresses with embedded violations.
 # --- failures: 2
 # --- params:
 # --- input
-# ## TODO Policy is not smart enough to handle this yet.
 # $simple  = 'Email: $name@$company.$domain';
 # send_email_to('$some_var: foo@bar.com', ...);
 

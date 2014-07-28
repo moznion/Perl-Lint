@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Perl::Lint::Constants::Type;
 use List::Util qw/any/;
+use Email::Address;
 use parent "Perl::Lint::Evaluator";
 
 # TODO msg!
@@ -42,7 +43,13 @@ sub evaluate {
                 next;
             }
 
-            if (my @captures = $token_data =~ /(\\*)(?:[\$\@]([^\s{]\S*)|\\[tnrfbae01234567xcNluLUEQ])/g) {
+            if (my @captures = $token_data =~ /
+                (\\*)
+                (?:
+                    [\$\@]([^\s{]\S*) |
+                    \\[tnrfbae01234567xcNluLUEQ]
+                )/gx
+            ) {
                 my $length_of_captures = scalar @captures;
                 my $is_violated = 0;
                 for (my $i = 0; $i < $length_of_captures; $i++) {
@@ -52,6 +59,16 @@ sub evaluate {
                             $is_violated = 1;
                         }
                     } else {
+                        if (
+                            # ports from Perl::Critic::Policy::ValuesAndExpressions::RequireInterpolationOfMetachars
+                            index ($token_data, q<@>) >= 0      &&
+                            $token_data !~ m< \W \@ >xms        &&
+                            $token_data !~ m< \A \@ \w+ \b >xms &&
+                            $token_data =~ $Email::Address::addr_spec
+                        ) {
+                            next;
+                        }
+
                         my ($var_name) = ($captures[$i] || '') =~ /\A(\w+)/;
 
                         if (any {$_ eq $var_name} @rcs_keywords) {
