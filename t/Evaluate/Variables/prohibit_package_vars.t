@@ -53,17 +53,17 @@ our (%VAR2, %VAR3) = ();
 our $VERSION = '1.0';
 our @EXPORT = qw(some symbols);
 
-# ===
-# --- dscr: Basic passes - use vars
-# --- failures: 0
-# --- params:
-# --- input
-# use vars qw($VERSION @EXPORT);
-# use vars ('$VERSION, '@EXPORT');
-# use vars  '$VERSION, '@EXPORT';
-#
-# use vars  '+foo'; #Illegal, but not a violaton
-#
+===
+--- dscr: Basic passes - use vars
+--- failures: 0
+--- params:
+--- input
+use vars qw($VERSION @EXPORT);
+use vars ('$VERSION', '@EXPORT');
+use vars  '$VERSION', '@EXPORT';
+
+use vars  '+foo'; #Illegal, but not a violaton
+
 # # ## name Basic passes - symbols
 # # ## failures 0
 # # ## cut

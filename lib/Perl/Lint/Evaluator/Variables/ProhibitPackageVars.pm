@@ -14,7 +14,7 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @violations;
-    use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
+    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
         $token_data = $token->{data};
@@ -113,18 +113,21 @@ sub evaluate {
 
                 if ($token_type == REG_EXP) {
                     for my $elem (split /\s+/, $token_data) {
-                        if ($elem =~ /\A[\$\@\%]/) {
+                        if ($elem =~ /\A[\$\@\%](.*)\Z/) {
+                            if ($1 !~ /\A[A-Z0-9_]+\Z/) {
+                                $is_used_package_var = 1;
+                            }
+                        }
+                    }
+                }
+                elsif ($token_type == STRING || $token_type == RAW_STRING) {
+                    if ($token_data =~ /\A[\$\@\%](.*)\Z/) {
+                        if ($1 !~ /\A[A-Z0-9_]+\Z/) {
                             $is_used_package_var = 1;
                         }
                     }
                 }
-                if ($token_type == STRING || $token_type == RAW_STRING) {
-                    if ($token_data =~ /\A[\$\@\%]/) {
-                        $is_used_package_var = 1;
-                    }
-                }
-
-                if ($token_type == SEMI_COLON) {
+                elsif ($token_type == SEMI_COLON) {
                     last;
                 }
             }
