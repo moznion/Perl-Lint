@@ -2,6 +2,7 @@ package Perl::Lint::Evaluator::ValuesAndExpressions::RequireInterpolationOfMetac
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;
+use List::Util qw/any/;
 use parent "Perl::Lint::Evaluator";
 
 # TODO msg!
@@ -12,6 +13,8 @@ use constant {
 
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
+
+    my @rcs_keywords = split /\s+/, $args->{require_interpolation_of_matchers}->{rcs_keywords} || '';
 
     my $is_used_vers = 0;
 
@@ -33,27 +36,40 @@ sub evaluate {
 
             $token_data = $token->{data}; # It is REG_EXP, e.g. q{THIS ONE}
             $token_type = RAW_STRING; # XXX
-        }
+        } # straight through!
         if ($token_type == RAW_STRING) {
             if ($is_used_vers) {
                 next;
             }
 
-            if (my @backslashes = $token_data =~ /(\\*)(?:[\$\@][^\s{]\S*|\\[tnrfbae01234567xcNluLUEQ])/g) {
-                my $is_not_escaped = 0;
-                for my $backslash (@backslashes) {
-                    if (length($backslash) % 2 == 0) { # check escaped or not
-                        $is_not_escaped = 1;
-                    }
-                }
+            if (my @captures = $token_data =~ /(\\*)(?:[\$\@]([^\s{]\S*)|\\[tnrfbae01234567xcNluLUEQ])/g) {
+                my $length_of_captures = scalar @captures;
+                my $is_violated = 0;
+                for (my $i = 0; $i < $length_of_captures; $i++) {
+                    if ($i % 2 == 0) {
+                        my $backslash = $captures[$i];
+                        if (length($backslash) % 2 == 0) { # check escaped or not
+                            $is_violated = 1;
+                        }
+                    } else {
+                        my ($var_name) = ($captures[$i] || '') =~ /\A(\w+)/;
 
-                if ($is_not_escaped) {
-                    push @violations, {
-                        filename => $file,
-                        line     => $token->{line},
-                        description => DESC,
-                        explanation => EXPL,
-                    };
+                        if (any {$_ eq $var_name} @rcs_keywords) {
+                            $is_violated = 0;
+                            next;
+                        }
+
+                        if ($is_violated) {
+                            push @violations, {
+                                filename => $file,
+                                line     => $token->{line},
+                                description => DESC,
+                                explanation => EXPL,
+                            };
+                            $is_violated = 0;
+                            last;
+                        }
+                    }
                 }
             }
 

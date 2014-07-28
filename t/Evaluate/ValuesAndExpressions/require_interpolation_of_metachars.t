@@ -147,20 +147,20 @@ our (undef, $AUTHOR, undef, undef, $VERSION) = split m/\s+/, q<$Author$ $Revisio
 # Yes, silly example, but still need to check it.
 if ( ($VERSION) = q<$Revision$> =~ m/(\d+)/mx ) {}
 
-# ===
-# --- dscr: Don't complain about RCS variables, if turned on.
-# --- failures: 0
-# --- params: {require_interpolation_of_matchers => {rcs_keywords => 'Revision Author'}}
-# --- input
-# $VERSION = q<$Revision$>;
-# ($VERSION) = q<$Revision$> =~ m/(\d+)/mx;
-# our $VERSION = substr(q/$Revision$/, 10);
-# our ($VERSION) = q<$Revision$> =~ m/(\d+)/mx;
-# our ($VERSION) = (q<$Revision$> =~ m/(\d+)/mx);
-# our (undef, $AUTHOR, undef, undef, $VERSION) = split m/\s+/, q<$Author$ $Revision$>;
-#
-# # Yes, silly example, but still need to check it.
-# if ( ($VERSION) = q<$Revision$> =~ m/(\d+)/mx ) {}
+===
+--- dscr: Don't complain about RCS variables, if turned on.
+--- failures: 0
+--- params: {require_interpolation_of_matchers => {rcs_keywords => 'Revision Author'}}
+--- input
+$VERSION = q<$Revision$>;
+($VERSION) = q<$Revision$> =~ m/(\d+)/mx;
+our $VERSION = substr(q/$Revision$/, 10);
+our ($VERSION) = q<$Revision$> =~ m/(\d+)/mx;
+our ($VERSION) = (q<$Revision$> =~ m/(\d+)/mx);
+our (undef, $AUTHOR, undef, undef, $VERSION) = split m/\s+/, q<$Author$ $Revision$>;
+
+# Yes, silly example, but still need to check it.
+if ( ($VERSION) = q<$Revision$> =~ m/(\d+)/mx ) {}
 
 ===
 --- dscr: Don't complain about '${}' and '@{}' because they're invalid syntax. See RT #38528/commit r3077 for original problem/solution.
