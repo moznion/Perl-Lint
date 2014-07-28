@@ -5,6 +5,7 @@ requires 'parent';
 requires 'List::Util', '1.38';
 requires 'String::CamelCase';
 requires 'B::Keywords';
+requires 'Email::Address';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';
@@ -18,4 +19,6 @@ on test => sub {
 
 on develop => sub {
     requires 'Test::Perl::Critic';
+    requires 'Pod::Usage';
+    requires 'autodie';
 };
