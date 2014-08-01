@@ -112,39 +112,34 @@ use lib catdir( $FindBin::Bin, qw< .. lib perl5 > );
 local $Log::Log4perl::caller_depth = $Log::Log4perl::caller_depth + 1;
 local ($Log::Log4perl::foo, $Log::Log4perl::bar) = (1, 2);
 
-# #-----------------------------------------------------------------------------
-#
-# ## name Add to default exceptions
-# ## parms {add_packages => 'Addl::Package'}
-# ## failures 3
-# ## cut
-#
-# use File::Find;
-# print $File::Find::dir;
-#
-# $Addl::Package::bar = 27;
-#
-# $Addl::Other::wango = 9;
-# $Addl::Other::tango = 9;
-# $Addl::Other::bango = 9;
-#
-# #-----------------------------------------------------------------------------
-#
-# ## name Override default package exceptions
-# ## parms {add_packages => 'Incorrect::Override::Package'}
-# ## failures 2
-# ## cut
-#
-# use File::Find;
-# print $File::Find::dir;
-# $Override::Defaults::wango = $x;
-# $Override::Defaults::tango = 47;
-#
-#
-# ===
-# --- dscr: Override default package exceptions, null package
-# --- failures: 1
-# --- params: {prohibit_package_vars => {add_packages => 'Incorrect::Override::Package'}}
-# --- input
-# $::foo = 1;
-#
+===
+--- dscr: Add to default exceptions
+--- failures: 3
+--- params: {prohibit_package_vars => {add_packages => 'Addl::Package'}}
+--- input
+use File::Find;
+print $File::Find::dir;
+
+$Addl::Package::bar = 27;
+
+$Addl::Other::wango = 9;
+$Addl::Other::tango = 9;
+$Addl::Other::bango = 9;
+
+===
+--- dscr: Override default package exceptions
+--- failures: 2
+--- params: {prohibit_package_vars => {add_packages => 'Incorrect::Override::Package'}}
+--- input
+use File::Find;
+print $File::Find::dir;
+$Override::Defaults::wango = $x;
+$Override::Defaults::tango = 47;
+
+===
+--- dscr: Override default package exceptions, null package
+--- failures: 1
+--- params: {prohibit_package_vars => {add_packages => 'Incorrect::Override::Package'}}
+--- input
+$::foo = 1;
+

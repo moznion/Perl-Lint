@@ -15,9 +15,11 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @allowed_packages = qw/Data::Dumper File::Find FindBin Log::Log4perl/;
+    if (my $add_packages = $args->{prohibit_package_vars}->{add_packages}) {
+        push @allowed_packages, split /\s+/, $add_packages;
+    }
 
     my @violations;
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
         $token_data = $token->{data};
@@ -127,7 +129,7 @@ sub evaluate {
                             }
                         }
 
-                        # TODO @var_names
+                        # TODO check @var_names ?
 
                         if ($is_violated) {
                             push @violations, {
@@ -189,8 +191,7 @@ sub evaluate {
         ) {
             my @namespaces = ($token->{data});
 
-            $token = $tokens->[++$i];
-            my $does_exist_namespace_resolver = $token->{type} == NAMESPACE_RESOLVER ? 1 : 0;
+            my $does_exist_namespace_resolver = $tokens->[$i+1]->{type} == NAMESPACE_RESOLVER ? 1 : 0;
 
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};
