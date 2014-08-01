@@ -25,7 +25,7 @@ sub evaluate {
             if ($token_type == LEFT_PAREN) {
                 my $violation;
                 my $left_paren_num = 1;
-                for ($i++; my $token = $tokens->[$i]; $i++) {
+                for ($i++; $token = $tokens->[$i]; $i++) {
                     $token_type = $token->{type};
                     if ($token_type == LEFT_PAREN) {
                         $left_paren_num++;
@@ -76,6 +76,78 @@ sub evaluate {
                 }
             }
         }
+        elsif ($token_type == LOCAL_DECL) {
+            $token = $tokens->[++$i];
+            $token_type = $token->{type};
+            if ($token_type == LEFT_PAREN) {
+                my $violation;
+                my $left_paren_num = 1;
+                my $does_exist_namespace_resolver = 0;
+                my @var_names;
+                for ($i++; $token = $tokens->[$i]; $i++) {
+                    $token_type = $token->{type};
+                    if ($token_type == LEFT_PAREN) {
+                        $left_paren_num++;
+                    }
+                    elsif ($token_type == RIGHT_PAREN) {
+                        push @var_names, $tokens->[$i-1];
+                        if (--$left_paren_num <= 0) {
+                            if ($violation) {
+                                push @violations, $violation;
+                                undef $violation;
+                            }
+                            last;
+                        }
+                    }
+                    elsif ($token_type == COMMA) {
+                        push @var_names, $tokens->[$i-1];
+                    }
+                    elsif ($token_type == NAMESPACE_RESOLVER) {
+                        $does_exist_namespace_resolver = 1;
+                    }
+                }
+
+                if ($does_exist_namespace_resolver) {
+                    $token = $tokens->[++$i];
+                    if ($token->{type} == ASSIGN) {
+                        # TODO @var_names
+                        push @violations, {
+                            filename => $file,
+                            line     => $token->{line},
+                            description => DESC,
+                            explanation => EXPL,
+                        };
+                    }
+                }
+            }
+            else {
+                my $does_exist_namespace_resolver = 0;
+                my $is_assigned = 0;
+                for ($i++; $token = $tokens->[$i]; $i++) {
+                    $token_type = $token->{type};
+                    if ($token_type == NAMESPACE_RESOLVER) {
+                        $does_exist_namespace_resolver = 1;
+                    }
+                    elsif ($token_type == ASSIGN) {
+                        $is_assigned = 1;
+                        last;
+                    }
+                    elsif ($token_type == SEMI_COLON) {
+                        last;
+                    }
+                }
+
+                if ($does_exist_namespace_resolver && $is_assigned) {
+                    # TODO check the var name
+                    push @violations, {
+                        filename => $file,
+                        line     => $token->{line},
+                        description => DESC,
+                        explanation => EXPL,
+                    };
+                }
+            }
+        }
         elsif (
             $token_type == GLOBAL_VAR ||
             $token_type == GLOBAL_ARRAY_VAR ||
@@ -85,7 +157,18 @@ sub evaluate {
             $token_type == HASH_VAR
         ) {
             $token = $tokens->[++$i];
-            if ($token->{type} == NAMESPACE_RESOLVER) {
+            my $does_exist_namespace_resolver = $token->{type} == NAMESPACE_RESOLVER ? 1 : 0;
+
+            my $var_token;
+            for ($i++; $token = $tokens->[$i]; $i++) {
+                $token_type = $token->{type};
+                if ($token_type == ASSIGN || $token_type == SEMI_COLON) {
+                    $var_token = $tokens->[$i-1]; # XXX
+                    last;
+                }
+            }
+
+            if ($does_exist_namespace_resolver && $var_token->{data} !~ /\A.[A-Z0-9_]+\Z/) {
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
@@ -96,7 +179,20 @@ sub evaluate {
         }
         elsif ($token_type == SPECIFIC_VALUE && $token_data eq '$:') {
             $token = $tokens->[++$i];
-            if ($token->{type} == COLON) {
+            my $does_exist_namespace_resolver = $token->{type} == COLON ? 1 : 0;
+
+            my $var_token;
+            for ($i++; $token = $tokens->[$i]; $i++) {
+                $token_type = $token->{type};
+                if ($token_type == ASSIGN) {
+                    $var_token = $tokens->[$i-1];
+                }
+                elsif ($token_type == SEMI_COLON) { # XXX skip to the edge
+                    last;
+                }
+            }
+
+            if ($does_exist_namespace_resolver && $var_token->{data} !~ /\A.[A-Z0-9_]+\Z/) {
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
