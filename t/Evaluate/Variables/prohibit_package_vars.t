@@ -96,30 +96,28 @@ my $var1 = 'foo';
 my %var2 = 'foo';
 my ($foo, $bar) = ();
 
-# #-----------------------------------------------------------------------------
-#
-# ## name Default package exceptions
-# ## failures 0
-# ## cut
-#
-# use File::Find;
-# print $File::Find::dir;
-# use Data::Dumper;
-# $Data::Dumper::Indent = 1;
-#
-#
-# use File::Spec::Functions qw< catdir >;
-# use lib catdir( $FindBin::Bin, qw< .. lib perl5 > );
-#
-# local $Log::Log4perl::caller_depth = $Log::Log4perl::caller_depth + 1;
-#
+===
+--- dscr: Default package exceptions
+--- failures: 0
+--- params:
+--- input
+use File::Find;
+print $File::Find::dir;
+use Data::Dumper;
+$Data::Dumper::Indent = 1;
+
+use File::Spec::Functions qw< catdir >;
+use lib catdir( $FindBin::Bin, qw< .. lib perl5 > );
+
+local $Log::Log4perl::caller_depth = $Log::Log4perl::caller_depth + 1;
+local ($Log::Log4perl::foo, $Log::Log4perl::bar) = (1, 2);
+
 # #-----------------------------------------------------------------------------
 #
 # ## name Add to default exceptions
 # ## parms {add_packages => 'Addl::Package'}
 # ## failures 3
 # ## cut
-#
 #
 # use File::Find;
 # print $File::Find::dir;
@@ -129,7 +127,6 @@ my ($foo, $bar) = ();
 # $Addl::Other::wango = 9;
 # $Addl::Other::tango = 9;
 # $Addl::Other::bango = 9;
-#
 #
 # #-----------------------------------------------------------------------------
 #
@@ -143,12 +140,11 @@ my ($foo, $bar) = ();
 # $Override::Defaults::wango = $x;
 # $Override::Defaults::tango = 47;
 #
-# #-----------------------------------------------------------------------------
 #
-# ## name Override default package exceptions, null package
-# ## parms {add_packages => 'Incorrect::Override::Package'}
-# ## failures 1
-# ## cut
-#
+# ===
+# --- dscr: Override default package exceptions, null package
+# --- failures: 1
+# --- params: {prohibit_package_vars => {add_packages => 'Incorrect::Override::Package'}}
+# --- input
 # $::foo = 1;
 #

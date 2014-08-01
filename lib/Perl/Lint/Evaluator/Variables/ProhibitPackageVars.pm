@@ -1,6 +1,7 @@
 package Perl::Lint::Evaluator::Variables::ProhibitPackageVars;
 use strict;
 use warnings;
+use List::Util qw/any/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Evaluator";
 
@@ -12,6 +13,8 @@ use constant {
 
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
+
+    my @allowed_packages = qw/Data::Dumper File::Find FindBin Log::Log4perl/;
 
     my @violations;
     # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
@@ -83,6 +86,10 @@ sub evaluate {
                 my $violation;
                 my $left_paren_num = 1;
                 my $does_exist_namespace_resolver = 0;
+
+                my @namespaces;
+
+                my @packages;
                 my @var_names;
                 for ($i++; $token = $tokens->[$i]; $i++) {
                     $token_type = $token->{type};
@@ -90,42 +97,60 @@ sub evaluate {
                         $left_paren_num++;
                     }
                     elsif ($token_type == RIGHT_PAREN) {
-                        push @var_names, $tokens->[$i-1];
+                        push @var_names, pop @namespaces;
+                        push @packages, join '::', @namespaces;
                         if (--$left_paren_num <= 0) {
-                            if ($violation) {
-                                push @violations, $violation;
-                                undef $violation;
-                            }
                             last;
                         }
+                        @namespaces = ();
                     }
                     elsif ($token_type == COMMA) {
-                        push @var_names, $tokens->[$i-1];
+                        push @var_names, pop @namespaces;
+                        push @packages, join '::', @namespaces;
+                        @namespaces = ();
                     }
                     elsif ($token_type == NAMESPACE_RESOLVER) {
                         $does_exist_namespace_resolver = 1;
+                    }
+                    else {
+                        push @namespaces, $token->{data};
                     }
                 }
 
                 if ($does_exist_namespace_resolver) {
                     $token = $tokens->[++$i];
                     if ($token->{type} == ASSIGN) {
+                        my $is_violated = 0;
+                        for my $package (@packages) {
+                            if (!any {$package =~ /\A[\$\@\%]$_/} @allowed_packages) {
+                                $is_violated = 1;
+                            }
+                        }
+
                         # TODO @var_names
-                        push @violations, {
-                            filename => $file,
-                            line     => $token->{line},
-                            description => DESC,
-                            explanation => EXPL,
-                        };
+
+                        if ($is_violated) {
+                            push @violations, {
+                                filename => $file,
+                                line     => $token->{line},
+                                description => DESC,
+                                explanation => EXPL,
+                            };
+                        }
                     }
                 }
             }
             else {
                 my $does_exist_namespace_resolver = 0;
                 my $is_assigned = 0;
+                my @namespaces = ($token->{data});
                 for ($i++; $token = $tokens->[$i]; $i++) {
                     $token_type = $token->{type};
-                    if ($token_type == NAMESPACE_RESOLVER) {
+                    $token_data = $token->{data};
+                    if ($token_type == NAMESPACE) {
+                        push @namespaces, $token_data;
+                    }
+                    elsif ($token_type == NAMESPACE_RESOLVER) {
                         $does_exist_namespace_resolver = 1;
                     }
                     elsif ($token_type == ASSIGN) {
@@ -138,6 +163,12 @@ sub evaluate {
                 }
 
                 if ($does_exist_namespace_resolver && $is_assigned) {
+                    pop @namespaces; # throw variable name away
+                    my $package_name = join '::', @namespaces;
+                    if (any {$package_name =~ /\A[\$\@\%]$_/} @allowed_packages) {
+                        next;
+                    }
+
                     # TODO check the var name
                     push @violations, {
                         filename => $file,
@@ -156,25 +187,37 @@ sub evaluate {
             $token_type == ARRAY_VAR ||
             $token_type == HASH_VAR
         ) {
+            my @namespaces = ($token->{data});
+
             $token = $tokens->[++$i];
             my $does_exist_namespace_resolver = $token->{type} == NAMESPACE_RESOLVER ? 1 : 0;
 
-            my $var_token;
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};
                 if ($token_type == ASSIGN || $token_type == SEMI_COLON) {
-                    $var_token = $tokens->[$i-1]; # XXX
                     last;
+                }
+                elsif ($token_type == NAMESPACE) {
+                    push @namespaces, $token->{data};
                 }
             }
 
-            if ($does_exist_namespace_resolver && $var_token->{data} !~ /\A.[A-Z0-9_]+\Z/) {
-                push @violations, {
-                    filename => $file,
-                    line     => $token->{line},
-                    description => DESC,
-                    explanation => EXPL,
-                };
+            if ($does_exist_namespace_resolver) {
+                my $var_name = pop @namespaces;
+
+                my $package_name = join '::', @namespaces;
+                if (any {$package_name =~ /\A[\$\@\%]$_/} @allowed_packages) {
+                    next;
+                }
+
+                if ($var_name !~ /\A.[A-Z0-9_]+\Z/) {
+                    push @violations, {
+                        filename => $file,
+                        line     => $token->{line},
+                        description => DESC,
+                        explanation => EXPL,
+                    };
+                }
             }
         }
         elsif ($token_type == SPECIFIC_VALUE && $token_data eq '$:') {
