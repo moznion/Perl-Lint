@@ -31,7 +31,7 @@ our @EXPORT = qw(
     CONTINUE
     BUILTIN_FUNC GOTO RETURN
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
-    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND OR_EQUAL AND_EQUAL EQUAL_EQUAL
+    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
     RIGHT_SHIFT_EQUAL LEFT_SHIFT_EQUAL
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
@@ -146,8 +146,10 @@ use constant {
 
     AND => Compiler::Lexer::TokenType::T_And,
     OR  => Compiler::Lexer::TokenType::T_Or,
+    NOT => Compiler::Lexer::TokenType::T_Not,
     ALPHABET_AND => Compiler::Lexer::TokenType::T_AlphabetAnd,
     ALPHABET_OR  => Compiler::Lexer::TokenType::T_AlphabetOr,
+    ALPHABET_NOT => Compiler::Lexer::TokenType::T_AlphabetNot,
     ALPHABET_XOR => Compiler::Lexer::TokenType::T_AlphabetXOr,
     BIT_AND => Compiler::Lexer::TokenType::T_BitAnd,
     OR_EQUAL => Compiler::Lexer::TokenType::T_OrEqual,
