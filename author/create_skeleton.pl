@@ -17,7 +17,7 @@ if (!$category || !$polycy) {
 my $project_root = "$FindBin::Bin/..";
 
 {
-    my $category_dir = "$project_root/lib/Perl/Lint/Evaluator/$category";
+    my $category_dir = "$project_root/lib/Perl/Lint/Policy/$category";
     mkpath($category_dir);
 
     my $pm_file = "$category_dir/$polycy.pm";
@@ -28,11 +28,11 @@ my $project_root = "$FindBin::Bin/..";
     else {
         open my $fh, '>', $pm_file or die "Cannot open $pm_file: $!";
         print $fh <<"...";
-package Perl::Lint::Evaluator::$category\:\:$polycy;
+package Perl::Lint::Policy::$category\:\:$polycy;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;
-use parent "Perl::Lint::Evaluator";
+use parent "Perl::Lint::Policy";
 
 # TODO msg!
 use constant {
@@ -80,7 +80,7 @@ sub evaluate {
         print $fh <<"...";
 use strict;
 use warnings;
-use Perl::Lint::Evaluator::$category\:\:$polycy;
+use Perl::Lint::Policy::$category\:\:$polycy;
 use t::Evaluate::Util qw/fetch_violations/;
 use Test::Base::Less;
 
