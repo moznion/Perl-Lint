@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Special block name used as label',
+    EXPL => 'Use a label that cannot be confused with BEGIN, END, CHECK, INIT, or UNITCHECK blocks',
 };
 
 sub evaluate {
@@ -25,6 +24,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
             }
