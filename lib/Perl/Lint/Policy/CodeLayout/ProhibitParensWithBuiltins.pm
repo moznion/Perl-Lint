@@ -5,12 +5,10 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Constants::Kind;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Builtin function called with parentheses',
+    EXPL => [13],
 };
-
 
 my %named_unary_ops = (
     alarm          => 1,
@@ -66,7 +64,6 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @violations;
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         my $token_type = $token->{type};
 
@@ -85,6 +82,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                         next;
                     }
@@ -105,6 +103,7 @@ sub evaluate {
                                 line     => $token->{line},
                                 description => DESC,
                                 explanation => EXPL,
+                                policy => __PACKAGE__,
                             };
                             last;
                         }
@@ -151,6 +150,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
         }

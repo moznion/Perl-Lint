@@ -5,10 +5,9 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Constants::Kind;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'List declaration without trailing comma',
+    EXPL => [17],
 };
 
 sub evaluate {
@@ -53,6 +52,7 @@ sub evaluate {
                                         line     => $token->{line},
                                         description => DESC,
                                         explanation => EXPL,
+                                        policy => __PACKAGE__,
                                     };
                                 }
                             }

@@ -6,10 +6,9 @@ use parent "Perl::Lint::Policy";
 
 # TODO TODO TODO integrate duplicated functions between assign context and use context !!!!
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'List of quoted literal words',
+    EXPL => 'Use "qw()" instead',
 };
 
 sub evaluate {
@@ -50,6 +49,7 @@ sub evaluate {
                                         line     => $token->{line},
                                         description => DESC,
                                         explanation => EXPL,
+                                        policy => __PACKAGE__
                                     };
                                 }
                                 last;
@@ -94,6 +94,7 @@ sub evaluate {
                                         line     => $token->{line},
                                         description => DESC,
                                         explanation => EXPL,
+                                        policy => __PACKAGE__,
                                     };
                                 }
                                 last USE_STATEMENT;
