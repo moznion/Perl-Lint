@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Lvalue form of "substr" used',
+    EXPL => [165],
 };
 
 sub evaluate {
@@ -38,6 +37,7 @@ sub evaluate {
                                     line     => $token->{line},
                                     description => DESC,
                                     explanation => EXPL,
+                                    policy => __PACKAGE__,
                                 };
                             }
                             last;

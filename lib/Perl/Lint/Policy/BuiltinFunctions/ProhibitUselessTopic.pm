@@ -5,10 +5,11 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Constants::Kind;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Useless use of $_',
+    EXPL_FILETEST => '$_ should be omitted when using a filetest operator',
+    EXPL_FUNCTION => '$_ should be omitted when calling "%s"',
+    EXPL_FUNCTION_SPLIT => '$_ should be omitted when calling "split" with two arguments',
 };
 
 use constant {
@@ -98,13 +99,15 @@ sub evaluate {
                     filename => $file,
                     line     => $token->{line},
                     description => DESC,
-                    explanation => EXPL,
+                    explanation => EXPL_FILETEST,
+                    policy => __PACKAGE__,
                 };
             }
         }
         elsif ($token_type == BUILTIN_FUNC && TOPICAL_FUNCS->{$token_data}) {
             # Ignore when reverse() called in context of assigning into array
-            if ($token_data eq 'reverse') {
+            my $function_name = $token_data;
+            if ($function_name eq 'reverse') {
                 my $two_before_token_type = $tokens->[$i-2]->{type};
                 if (
                     $tokens->[$i-1]->{type} == ASSIGN &&
@@ -117,6 +120,9 @@ sub evaluate {
                     next;
                 }
             }
+
+            my $expl = $function_name eq 'split' ? EXPL_FUNCTION_SPLIT
+                                                 : sprintf EXPL_FUNCTION, $function_name;
 
             $token = $tokens->[++$i];
 
@@ -139,7 +145,8 @@ sub evaluate {
                                     filename => $file,
                                     line     => $token->{line},
                                     description => DESC,
-                                    explanation => EXPL,
+                                    explanation => $expl,
+                                    policy => __PACKAGE__,
                                 };
                             }
                         }
@@ -161,7 +168,8 @@ sub evaluate {
                                 filename => $file,
                                 line     => $token->{line},
                                 description => DESC,
-                                explanation => EXPL,
+                                explanation => $expl,
+                                policy => __PACKAGE__,
                             };
                         }
                         last;

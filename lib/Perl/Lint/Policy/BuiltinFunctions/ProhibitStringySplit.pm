@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'String delimiter used with "split"',
+    EXPL => 'Express it as a regex instead',
 };
 
 sub evaluate {
@@ -37,6 +36,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
             elsif ($token_type == REG_QUOTE || $token_type == REG_DOUBLE_QUOTE) {
@@ -47,6 +47,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
             }

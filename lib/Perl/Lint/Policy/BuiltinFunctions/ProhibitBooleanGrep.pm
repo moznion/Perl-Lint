@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => '"grep" used in boolean context',
+    EXPL => [71, 72],
 };
 
 sub evaluate {
@@ -49,6 +48,7 @@ sub evaluate {
                                     line     => $token->{line},
                                     description => DESC,
                                     explanation => EXPL,
+                                    policy => __PACKAGE__,
                                 };
                             }
                             last;
@@ -65,6 +65,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
 
@@ -95,6 +96,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
             $is_grep_called = 0;

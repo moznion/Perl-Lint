@@ -4,17 +4,15 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'UNIVERSAL::isa should not be used as a function',
+    EXPL => 'Use eval{$obj->isa($pkg)} instead',
 };
 
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @violations;
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         my $token_type = $token->{type};
         my $token_data = $token->{data};
@@ -27,6 +25,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
         }
@@ -40,6 +39,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
             }

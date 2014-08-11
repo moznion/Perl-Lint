@@ -6,10 +6,9 @@ use parent "Perl::Lint::Policy";
 
 # TODO REFACTOR!!!
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => '"map" used in void context',
+    EXPL => 'Use a "for" loop instead',
 };
 
 sub evaluate {
@@ -35,6 +34,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                 }
@@ -44,6 +44,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
 

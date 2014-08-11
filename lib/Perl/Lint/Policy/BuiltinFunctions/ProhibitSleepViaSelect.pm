@@ -5,10 +5,9 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Constants::Kind;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => '"select" used to emulate "sleep"',
+    EXPL => [168],
 };
 
 sub evaluate {
@@ -41,6 +40,7 @@ sub evaluate {
                                     line     => $token->{line},
                                     description => DESC,
                                     explanation => EXPL,
+                                    policy => __PACKAGE__,
                                 };
                             }
                             last;
@@ -69,6 +69,7 @@ sub evaluate {
                                     line     => $token->{line},
                                     description => DESC,
                                     explanation => EXPL,
+                                    policy => __PACKAGE__,
                                 };
                             }
                             last;
