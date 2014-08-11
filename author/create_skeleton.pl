@@ -67,7 +67,7 @@ sub evaluate {
 }
 
 {
-    my $test_category_dir = "$project_root/t/Evaluate/$category";
+    my $test_category_dir = "$project_root/t/Policy/$category";
     mkpath($test_category_dir);
 
     my $test_file = "$test_category_dir/" . decamelize($polycy) . '.t';
@@ -81,7 +81,7 @@ sub evaluate {
 use strict;
 use warnings;
 use Perl::Lint::Policy::$category\:\:$polycy;
-use t::Evaluate::Util qw/fetch_violations/;
+use t::Policy::Util qw/fetch_violations/;
 use Test::Base::Less;
 
 my \$class_name = '$category\:\:$polycy';
