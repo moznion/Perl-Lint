@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Tied variable used',
+    EXPL => [451],
 };
 
 sub evaluate {
@@ -15,14 +14,13 @@ sub evaluate {
 
     my @violations;
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
-        my $token_type = $token->{type};
-        my $token_data = $token->{data};
-        if ($token_type == BUILTIN_FUNC && $token_data eq 'tie') {
+        if ($token->{type} == BUILTIN_FUNC && $token->{data} eq 'tie') {
             push @violations, {
                 filename => $file,
                 line     => $token->{line},
                 description => DESC,
                 explanation => EXPL,
+                policy => __PACKAGE__,
             };
         }
     }
