@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'One-argument "bless" used',
+    EXPL => [365],
 };
 
 sub evaluate {
@@ -71,6 +70,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                     last;
