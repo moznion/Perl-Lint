@@ -3,18 +3,31 @@ use 5.008005;
 use strict;
 use warnings;
 use Compiler::Lexer;
+use Module::Pluggable;
 use parent "Exporter";
 our @EXPORT_OK = qw/lint/;
 
 our $VERSION = "0.01";
 
 sub lint {
-    my ($file) = @_;
+    my ($file, $args) = @_;
 
     my ($tokens, $src) = _tokenize($file);
 
-    my $violations = [];
-    return $violations;
+    # TODO to be more pluggable!
+    Module::Pluggable->import(
+        search_path => 'Perl::Lint::Policy',
+        require     => 1,
+        inner       => 0
+    );
+    my @site_policy_names = plugins(); # Exported by Module::Pluggable
+
+    my @violations;
+    for my $policy (@site_policy_names) {
+        push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
+    }
+
+    return \@violations;
 }
 
 sub _tokenize {

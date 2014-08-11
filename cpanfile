@@ -7,6 +7,7 @@ requires 'String::CamelCase';
 requires 'B::Keywords';
 requires 'Email::Address';
 requires 'Regexp::Parser';
+requires 'Module::Pluggable';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';
