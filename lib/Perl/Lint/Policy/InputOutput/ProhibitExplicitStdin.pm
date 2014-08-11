@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Use "<>" or "<ARGV>" or a prompting module instead of "<STDIN>"',
+    EXPL => [216, 220, 221],
 };
 
 sub evaluate {
@@ -26,6 +25,7 @@ sub evaluate {
                 line     => $token->{line},
                 description => DESC,
                 explanation => EXPL,
+                policy => __PACKAGE__,
             };
         }
         elsif ($token_type == BUILTIN_FUNC && $token_data eq 'close') {

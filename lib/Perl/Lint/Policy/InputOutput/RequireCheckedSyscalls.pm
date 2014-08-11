@@ -7,10 +7,9 @@ use Perl::Lint::Constants::Kind;
 use B::Keywords;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Return value of flagged function ignored',
+    EXPL => [208, 278],
 };
 
 sub evaluate {
@@ -217,6 +216,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
 

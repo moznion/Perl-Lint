@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Use "local $/ = undef" or File::Slurp instead of joined readline',
+    EXPL => [213],
 };
 
 sub evaluate {
@@ -27,6 +26,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
                 elsif ($token_type == HANDLE_DELIM) {
@@ -38,6 +38,7 @@ sub evaluate {
                                 line     => $token->{line},
                                 description => DESC,
                                 explanation => EXPL,
+                                policy => __PACKAGE__,
                             };
                             last;
                         }

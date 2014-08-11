@@ -5,10 +5,9 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Constants::Kind;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Return value of "close" ignored',
+    EXPL => 'Check the return value of "close" for success',
 };
 
 sub evaluate {
@@ -174,6 +173,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
 

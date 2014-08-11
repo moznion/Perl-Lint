@@ -5,10 +5,11 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Constants::Kind;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Backtick operator used',
+    EXPL => 'Use IPC::Open3 instead',
+    VOID_DESC => 'Backtick operator used in void context',
+    VOID_EXPL => 'Assign result to a variable or use system() instead',
 };
 
 sub evaluate {
@@ -65,14 +66,21 @@ sub evaluate {
         if ($token_type == EXEC_STRING || $token_type == REG_EXEC) {
             next if ($only_in_void_context && $is_in_assign_context);
 
+            my $desc = VOID_DESC;
+            my $expl = VOID_EXPL;
+            if ($is_in_assign_context) {
+                $desc = DESC;
+                $expl = EXPL;
+            }
+
             push @violations, {
                 filename => $file,
                 line     => $token->{line},
-                description => DESC,
-                explanation => EXPL,
+                description => $desc,
+                explanation => $expl,
+                policy => __PACKAGE__,
             };
         }
-
     }
 
     return \@violations;

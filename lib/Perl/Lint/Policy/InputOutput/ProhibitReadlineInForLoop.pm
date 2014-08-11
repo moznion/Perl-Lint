@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Readline inside "for" loop',
+    EXPL => [211],
 };
 
 sub evaluate {
@@ -28,6 +27,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
                 next;
             }
@@ -51,6 +51,7 @@ sub evaluate {
                                 line     => $token->{line},
                                 description => DESC,
                                 explanation => EXPL,
+                                policy => __PACKAGE__,
                             };
                         }
                         elsif ($token_type == HANDLE_DELIM) {
@@ -62,6 +63,7 @@ sub evaluate {
                                         line     => $token->{line},
                                         description => DESC,
                                         explanation => EXPL,
+                                        policy => __PACKAGE__,
                                     };
                                     last;
                                 }
@@ -72,7 +74,6 @@ sub evaluate {
                 }
             }
         }
-
     }
 
     return \@violations;

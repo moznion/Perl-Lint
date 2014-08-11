@@ -5,10 +5,9 @@ use Perl::Lint::Constants::Kind;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'I/O layer ":utf8" used',
+    EXPL => 'Use ":encoding(UTF-8)" to get strict validation',
 };
 
 sub evaluate {
@@ -45,6 +44,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
         }
