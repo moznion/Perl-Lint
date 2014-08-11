@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => q{Don't complain about die or warn if the message ends in a newline.},
-    EXPL => '',
+    DESC => q{Don't complain about die or warn if the message ends in a newline},
+    EXPL => [283],
 };
 
 sub evaluate {
@@ -86,6 +85,7 @@ sub evaluate {
                                 line     => $token->{line},
                                 description => DESC,
                                 explanation => EXPL,
+                                policy => __PACKAGE__,
                             };
                         }
                     }

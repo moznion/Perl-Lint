@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Return value of eval not tested.',
+    EXPL => q{You can't depend upon the value of $@/$EVAL_ERROR to tell whether an eval failed.},
 };
 
 sub evaluate {
@@ -108,6 +107,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
         }
@@ -155,6 +155,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                     $left_paren_num--;
@@ -232,6 +233,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
 
