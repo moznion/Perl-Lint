@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Package declaration must match filename',
+    EXPL => 'Correct the filename or package statement',
 };
 
 sub evaluate {
@@ -29,8 +28,9 @@ sub evaluate {
                 return [{
                     filename => $realfile,
                     line     => $row,
-                    description => DESC, # TODO ?
-                    explanation => EXPL, # TODO ?
+                    description => DESC,
+                    explanation => EXPL,
+                    policy => __PACKAGE__,
                 }];
             }
             ($file = $1) =~ s/['"]//g;
@@ -40,12 +40,11 @@ sub evaluate {
     $file ||= $realfile;
 
     my @violations;
-    my $next_token;
     my @paths;
-    for (my $i = 0; my $token = $next_token || $tokens->[$i]; $i++) {
+    for (my $i = 0, my $next_token, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $next_token = $tokens->[$i+1];
-        my $token_type = $token->{type};
-        my $token_data = $token->{data};
+        $token_type = $token->{type};
+        $token_data = $token->{data};
         if ($token_type == PACKAGE) {
             if ($next_token->{type} == CLASS) {
                 push @paths, {
@@ -117,6 +116,7 @@ sub evaluate {
                 line     => $package_declared_line,
                 description => DESC,
                 explanation => EXPL,
+                policy => __PACKAGE__,
             };
         }
     }

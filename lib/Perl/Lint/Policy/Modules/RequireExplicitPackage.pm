@@ -5,10 +5,9 @@ use List::Util qw/any/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Code not contained in explicit package',
+    EXPL => 'Violates encapsulation',
 };
 
 sub evaluate {
@@ -17,11 +16,6 @@ sub evaluate {
     my @violations;
     my $exempt_scripts = $args->{require_explicit_package}->{exempt_scripts};
     my $allow_import_of = $args->{require_explicit_package}->{allow_import_of};
-    # for (my $i = 0; my $token = $next_token || $tokens->[$i]; $i++) {
-    #     $next_token = $tokens->[$i+1];
-    #     my $token_type = $token->{type};
-    #     my $token_data = $token->{data};
-    # }
     my $token = $tokens->[0];
     if (($exempt_scripts || !$token || $token->{type} == PACKAGE) && !$allow_import_of) {
         return [];
@@ -53,6 +47,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                     last;
                 }
@@ -66,6 +61,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
                 last;
             }

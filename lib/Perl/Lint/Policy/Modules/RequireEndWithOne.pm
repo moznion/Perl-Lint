@@ -5,10 +5,9 @@ use utf8;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Module does not end with "1;"',
+    EXPL => 'Must end with a recognizable true value',
 };
 
 sub evaluate {
@@ -48,6 +47,7 @@ sub evaluate {
             line     => $last_token->{line},
             description => DESC,
             explanation => EXPL,
+            policy => __PACKAGE__,
         };
     }
 

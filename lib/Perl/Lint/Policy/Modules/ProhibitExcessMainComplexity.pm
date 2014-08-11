@@ -6,10 +6,9 @@ use parent "Perl::Lint::Policy";
 
 use constant DEFAULT_MAX_MCCABE => 20;
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'The maximum complexity score allowed',
+    EXPL => 'Consider refactoring',
 };
 
 sub evaluate {
@@ -19,12 +18,8 @@ sub evaluate {
 
     my @violations;
     my $mccabe = 0;
-    my $next_token;
-    for (my $i = 0; my $token = $next_token || $tokens->[$i]; $i++) {
-        $next_token = $tokens->[$i+1];
+    for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         my $token_type = $token->{type};
-        my $_next_token = $next_token;
-        my $next_token_type = $_next_token->{type};
 
         my $left_brace_num = 0;
         if ($token_type == FUNCTION_DECL) {
@@ -70,6 +65,7 @@ sub evaluate {
             line     => 1,
             description => DESC,
             explanation => EXPL,
+            policy => __PACKAGE__,
         };
     }
 

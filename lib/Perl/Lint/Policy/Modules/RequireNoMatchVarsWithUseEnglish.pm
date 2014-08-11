@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => '"use English" without "-no_match_vars" argument',
+    EXPL => '"use English" without the "-no_match_vars" argument degrades performance',
 };
 
 sub evaluate {
@@ -27,9 +26,7 @@ sub evaluate {
                     $token_type == REG_EXP
                 ) {
                     for my $data (split / /, $token_data) {
-                        last SCANNING if $data =~ /\Aq?[qw]?-no_match_vars\Z/;
-                                                   # ~~~~~~~ XXX
-                                                   # ref: https://github.com/goccy/p5-Compiler-Lexer/issues/32
+                        last SCANNING if $data =~ /\A-no_match_vars\Z/;
                     }
                 }
 
@@ -39,6 +36,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                     last;
                 }

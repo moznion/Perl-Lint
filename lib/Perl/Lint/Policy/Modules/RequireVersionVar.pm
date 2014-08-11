@@ -4,22 +4,20 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'No package-scoped "$VERSION" variable found',
+    EXPL => [404],
 };
 
 sub evaluate {
     my ($class, $file, $tokens, $args) = @_;
 
     my @violations;
-    my $next_token;
     my $does_exist_version_ver = 0;
-    TOP: for (my $i = 0; my $token = $next_token || $tokens->[$i]; $i++) {
+    TOP: for (my $i = 0, my $next_token, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $next_token = $tokens->[$i+1];
-        my $token_type = $token->{type};
-        my $token_data = $token->{data};
+        $token_type = $token->{type};
+        $token_data = $token->{data};
 
         if ($token_type == USED_NAME && $token_data eq 'vars') {
             if (
@@ -62,6 +60,7 @@ sub evaluate {
             line     => 0, # TODO
             description => DESC,
             explanation => EXPL,
+            policy => __PACKAGE__,
         };
     }
 

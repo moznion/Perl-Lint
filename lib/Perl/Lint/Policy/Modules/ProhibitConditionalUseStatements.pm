@@ -5,10 +5,9 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Keywords;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Conditional "use" statement',
+    EXPL => 'Use "require" to conditionally include a module',
 };
 
 sub evaluate {
@@ -21,13 +20,11 @@ sub evaluate {
     my $is_in_BEGIN = 0;
     my $left_brace_num = 0;
     my $is_in_illegal_do = 0;
-    my $next_token;
     my $previous_violation;
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
-    for (my $i = 0; my $token = $next_token || $tokens->[$i]; $i++) {
-        my $next_token = $tokens->[$i+1];
-        my $token_type = $token->{type};
-        my $token_data = $token->{data};
+    for (my $i = 0, my $next_token, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
+        $next_token = $tokens->[$i+1];
+        $token_type = $token->{type};
+        $token_data = $token->{data};
 
         if (
             $token_type == UNLESS_STATEMENT  ||
@@ -98,6 +95,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                     if (!$is_in_do) {
                         push @violations, $previous_violation;

@@ -5,10 +5,9 @@ use List::Util qw/any/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'The names of or patterns for modules to forbid',
+    EXPL => 'Find an alternative module',
 };
 
 # TODO Should use Module::Adviser?
@@ -61,6 +60,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
         }
