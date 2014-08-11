@@ -2,6 +2,7 @@ package Perl::Lint;
 use 5.008005;
 use strict;
 use warnings;
+use Carp ();
 use Compiler::Lexer;
 use Module::Pluggable;
 use parent "Exporter";
@@ -10,9 +11,15 @@ our @EXPORT_OK = qw/lint/;
 our $VERSION = "0.01";
 
 sub lint {
-    my ($file, $args) = @_;
+    my ($files, $args) = @_;
 
-    my ($tokens, $src) = _tokenize($file);
+    my @files = ($files); # when scalar value
+    if (my $ref = ref $files) {
+        if ($ref ne 'ARRAY') {
+            Carp::croak("Argument of files expects scalar value or array reference");
+        }
+        @files = @$files;
+    }
 
     # TODO to be more pluggable!
     Module::Pluggable->import(
@@ -23,8 +30,12 @@ sub lint {
     my @site_policy_names = plugins(); # Exported by Module::Pluggable
 
     my @violations;
-    for my $policy (@site_policy_names) {
-        push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
+    for my $file (@files) {
+        my ($tokens, $src) = _tokenize($file);
+
+        for my $policy (@site_policy_names) {
+            push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
+        }
     }
 
     return \@violations;

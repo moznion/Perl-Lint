@@ -1,4 +1,5 @@
 requires 'perl', '5.008005';
+requires 'Carp';
 requires 'Compiler::Lexer', '0.19';
 requires 'feature';
 requires 'parent';
