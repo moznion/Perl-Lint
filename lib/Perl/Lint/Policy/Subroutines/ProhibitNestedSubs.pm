@@ -6,8 +6,9 @@ use parent "Perl::Lint::Policy";
 
 # TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Nested named subroutine',
+    EXPL => 'Declaring a named sub inside another named sub does not prevent the '
+            . 'inner sub from being global',
 };
 
 sub evaluate {
@@ -28,6 +29,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                 }

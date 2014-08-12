@@ -5,10 +5,9 @@ use Compiler::Lexer;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Private subroutine/method "%s" declared but not used',
+    EXPL => 'Eliminate dead code',
 };
 
 sub evaluate {
@@ -134,8 +133,9 @@ sub evaluate {
             push @violations, {
                 filename => $file,
                 line     => 0, # TODO $token->{line},
-                description => DESC,
+                description => sprintf(DESC, $private_function),
                 explanation => EXPL,
+                policy => __PACKAGE__,
             };
         }
     }

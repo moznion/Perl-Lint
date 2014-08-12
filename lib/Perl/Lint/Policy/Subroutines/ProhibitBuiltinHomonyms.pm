@@ -6,10 +6,9 @@ use Perl::Lint::Keywords;
 use List::Util qw/any/;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Subroutine name is a homonym for builtin %s %s',
+    EXPL => [177],
 };
 
 sub evaluate {
@@ -24,14 +23,24 @@ sub evaluate {
             if ($token->{type} == FUNCTION) {
                 next if $token_data eq 'import' || $token_data eq 'AUTOLOAD' || $token_data eq 'DESTROY';
 
-                if (is_perl_builtin($token_data) || is_perl_bareword($token_data)) {
-                    push @violations, {
-                        filename => $file,
-                        line     => $token->{line},
-                        description => DESC,
-                        explanation => EXPL,
-                    };
+                my $homonym_type;
+                if (is_perl_builtin($token_data)) {
+                    $homonym_type = 'function';
                 }
+                elsif (is_perl_bareword($token_data)) {
+                    $homonym_type = 'keyword';
+                }
+                else {
+                    next;
+                }
+
+                push @violations, {
+                    filename => $file,
+                    line     => $token->{line},
+                    description => sprintf(DESC, $homonym_type, $token_data),
+                    explanation => EXPL,
+                    policy => __PACKAGE__,
+                };
             }
         }
     }

@@ -6,10 +6,9 @@ use Perl::Lint::Constants::Kind;
 use List::Util qw/any/;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'The additional subroutines to treat as terminal',
+    EXPL => [197],
 };
 
 sub evaluate {
@@ -50,6 +49,7 @@ sub evaluate {
                                         line     => $token->{line},
                                         description => DESC,
                                         explanation => EXPL,
+                                        policy => __PACKAGE__,
                                     };
                                 }
                                 last;

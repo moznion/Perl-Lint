@@ -5,10 +5,9 @@ use List::Util qw/any/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Always unpack @_ first',
+    EXPL => [178],
 };
 
 sub evaluate {
@@ -60,6 +59,7 @@ sub evaluate {
                                             line     => $token->{line}, # TODO
                                             description => DESC,
                                             explanation => EXPL,
+                                            policy => __PACKAGE__,
                                         };
                                     }
                                 }

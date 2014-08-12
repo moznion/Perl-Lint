@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Too many arguments',
+    EXPL => [182],
 };
 
 sub evaluate {
@@ -40,6 +39,7 @@ sub evaluate {
                                         line     => $token->{line}, # TODO
                                         description => DESC,
                                         explanation => EXPL,
+                                        policy => __PACKAGE__,
                                     };
                                 }
                                 last;
@@ -86,6 +86,7 @@ sub evaluate {
                             line     => $token->{line}, # TODO
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                         last;
                     }
