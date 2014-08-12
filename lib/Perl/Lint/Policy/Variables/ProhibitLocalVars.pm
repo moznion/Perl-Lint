@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'The names of or patterns for variables to forbid',
+    EXPL => 'Find an alternative variable',
 };
 
 sub evaluate {
@@ -47,6 +46,7 @@ sub evaluate {
                                     line     => $token->{line},
                                     description => DESC,
                                     explanation => EXPL,
+                                    policy => __PACKAGE__,
                                 };
                             }
                         }
@@ -62,6 +62,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                 }

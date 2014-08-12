@@ -43,6 +43,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => sprintf(DESC, $token->{data}),
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                         last;
                     }

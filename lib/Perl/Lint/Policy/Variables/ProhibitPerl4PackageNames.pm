@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Using the obsolete single quote as package separator',
+    EXPL => q{Use double colon (::) to separate package name components instead of single quotes (')},
 };
 
 sub evaluate {
@@ -51,6 +50,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
 
