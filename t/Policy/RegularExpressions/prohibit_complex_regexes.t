@@ -1,10 +1,10 @@
 use strict;
 use warnings;
-use Perl::Lint::Policy::Regex::ProhibitComplexRegexes;
+use Perl::Lint::Policy::RegularExpressions::ProhibitComplexRegexes;
 use t::Policy::Util qw/fetch_violations/;
 use Test::Base::Less;
 
-my $class_name = 'Regex::ProhibitComplexRegexes';
+my $class_name = 'RegularExpressions::ProhibitComplexRegexes';
 
 filters {
     params => [qw/eval/], # TODO wrong!

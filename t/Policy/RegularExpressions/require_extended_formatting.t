@@ -1,10 +1,10 @@
 use strict;
 use warnings;
-use Perl::Lint::Policy::Regex::RequireExtendedFormatting;
+use Perl::Lint::Policy::RegularExpressions::RequireExtendedFormatting;
 use t::Policy::Util qw/fetch_violations/;
 use Test::Base::Less;
 
-my $class_name = 'Regex::RequireExtendedFormatting';
+my $class_name = 'RegularExpressions::RequireExtendedFormatting';
 
 filters {
     params => [qw/eval/],

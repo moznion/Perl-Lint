@@ -1,4 +1,4 @@
-package Perl::Lint::Policy::Regex::RequireLineBoundaryMatching;
+package Perl::Lint::Policy::RegularExpressions::RequireLineBoundaryMatching;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;

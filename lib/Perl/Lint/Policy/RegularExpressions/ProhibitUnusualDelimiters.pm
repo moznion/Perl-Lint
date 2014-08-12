@@ -1,4 +1,4 @@
-package Perl::Lint::Policy::Regex::ProhibitUnusualDelimiters;
+package Perl::Lint::Policy::RegularExpressions::ProhibitUnusualDelimiters;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;

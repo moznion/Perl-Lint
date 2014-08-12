@@ -1,10 +1,10 @@
 use strict;
 use warnings;
-use Perl::Lint::Policy::Regex::ProhibitFixedStringMatches;
+use Perl::Lint::Policy::RegularExpressions::ProhibitFixedStringMatches;
 use t::Policy::Util qw/fetch_violations/;
 use Test::Base::Less;
 
-my $class_name = 'Regex::ProhibitFixedStringMatches';
+my $class_name = 'RegularExpressions::ProhibitFixedStringMatches';
 
 filters {
     params => [qw/eval/], # TODO wrong!

@@ -1,4 +1,4 @@
-package Perl::Lint::Policy::Regex::ProhibitComplexRegexes;
+package Perl::Lint::Policy::RegularExpressions::ProhibitComplexRegexes;
 use strict;
 use warnings;
 use Regexp::Parser;

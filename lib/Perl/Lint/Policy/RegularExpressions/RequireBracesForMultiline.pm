@@ -1,4 +1,4 @@
-package Perl::Lint::Policy::Regex::RequireBracesForMultiline;
+package Perl::Lint::Policy::RegularExpressions::RequireBracesForMultiline;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;

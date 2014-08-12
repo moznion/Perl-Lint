@@ -1,4 +1,4 @@
-package Perl::Lint::Policy::Regex::ProhibitFixedStringMatches;
+package Perl::Lint::Policy::RegularExpressions::ProhibitFixedStringMatches;
 use strict;
 use warnings;
 use Regexp::Parser;

@@ -1,10 +1,10 @@
 use strict;
 use warnings;
-use Perl::Lint::Policy::Regex::RequireBracesForMultiline;
+use Perl::Lint::Policy::RegularExpressions::RequireBracesForMultiline;
 use t::Policy::Util qw/fetch_violations/;
 use Test::Base::Less;
 
-my $class_name = 'Regex::RequireBracesForMultiline';
+my $class_name = 'RegularExpressions::RequireBracesForMultiline';
 
 filters {
     params => [qw/eval/], # TODO wrong!

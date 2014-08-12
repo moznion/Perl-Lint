@@ -1,4 +1,4 @@
-package Perl::Lint::Policy::Regex::RequireExtendedFormatting;
+package Perl::Lint::Policy::RegularExpressions::RequireDotMatchAnything;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;
@@ -13,20 +13,16 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $require_extended_formatting_arg = $args->{require_extended_formatting};
-    my $minimum_regex_length_to_complain_about = $require_extended_formatting_arg->{minimum_regex_length_to_complain_about} || 0;
-    my $strict = $require_extended_formatting_arg->{strict} || 0;
-
     my @violations;
 
     my $depth = 0;
     my $is_non_target_reg = 0;
 
-    my $enabled_re_x_depth = -1; # use negative value as default
-    my @enabled_re_x_depths;
+    my $enabled_re_m_depth = -1; # use negative value as default
+    my @enabled_re_m_depths;
 
-    my $disabled_re_x_depth = -1; # use negative value as default
-    my @disabled_re_x_depths;
+    my $disable_re_m_depth = -1; # use negative value as default
+    my @disable_re_m_depths;
 
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         my $token_type = $token->{type};
@@ -39,11 +35,11 @@ sub evaluate {
         if (!$is_non_target_reg && $token_type == REG_DELIM) {
             if (
                 $next_token_type == SEMI_COLON ||                        # when any regex options don't exist
-                ($next_token_type == REG_OPT && $next_token_data !~ /x/) # when the `x` regex option doesn't exist
+                ($next_token_type == REG_OPT && $next_token_data !~ /s/) # when the `m` regex option doesn't exist
             ) {
                 if (
-                    !($enabled_re_x_depth >= 0 && $depth >= $enabled_re_x_depth) ||
-                    ($disabled_re_x_depth >= 0 && $disabled_re_x_depth > $enabled_re_x_depth)
+                    !($enabled_re_m_depth >= 0 && $depth >= $enabled_re_m_depth) ||
+                    ($disable_re_m_depth >= 0 && $disable_re_m_depth > $enabled_re_m_depth)
                 ) {
                     push @violations, {
                         filename => $file,
@@ -74,34 +70,27 @@ sub evaluate {
             next;
         }
 
-        if ($token_type == REG_EXP || $token_type == REG_REPLACE_FROM) {
-            if (length $token_data <= $minimum_regex_length_to_complain_about) {
-                $is_non_target_reg = 1;
-            }
-            next;
-        }
-
         # Represent block scope hierarchy
         if ($token_type == LEFT_BRACE) {
             $depth++;
             next;
         }
         if ($token_type == RIGHT_BRACE) {
-            if ($enabled_re_x_depth == $depth) {
-                pop @enabled_re_x_depths;
-                $enabled_re_x_depth = $enabled_re_x_depths[-1] // -1;
+            if ($enabled_re_m_depth == $depth) {
+                pop @enabled_re_m_depths;
+                $enabled_re_m_depth = $enabled_re_m_depths[-1] // -1;
             }
-            if ($disabled_re_x_depth == $depth) {
-                pop @disabled_re_x_depths;
-                $disabled_re_x_depth = $disabled_re_x_depths[-1] // -1;
+            if ($disable_re_m_depth == $depth) {
+                pop @disable_re_m_depths;
+                $disable_re_m_depth = $disable_re_m_depths[-1] // -1;
             }
             $depth--;
             next;
         }
 
         # for
-        #   `use re qw{/x}`
-        #   `use re '/x'`
+        #   `use re qw{/s}`
+        #   `use re '/s'`
         if ($token_type == USED_NAME && $token_data eq 're') {
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};
@@ -111,10 +100,10 @@ sub evaluate {
                 }
                 if (
                     ($token_type == RAW_STRING || $token_type == STRING || $token_type == REG_EXP) &&
-                    $token_data =~ /x/
+                    $token_data =~ /s/
                 ) {
-                    push @enabled_re_x_depths, $depth;
-                    $enabled_re_x_depth = $depth;
+                    push @enabled_re_m_depths, $depth;
+                    $enabled_re_m_depth = $depth;
                 }
             }
 
@@ -122,8 +111,8 @@ sub evaluate {
         }
 
         # for
-        #   `no re qw{/x}`
-        #   `no re '/x'`
+        #   `no re qw{/s}`
+        #   `no re '/s'`
         if (
             $token_type == BUILTIN_FUNC &&
             $token_data eq 'no' &&
@@ -138,10 +127,10 @@ sub evaluate {
                 }
                 if (
                     ($token_type == RAW_STRING || $token_type == STRING || $token_type == REG_EXP) &&
-                    $token_data =~ /x/
+                    $token_data =~ /s/
                 ) {
-                    push @disabled_re_x_depths, $depth;
-                    $disabled_re_x_depth = $depth;
+                    push @disable_re_m_depths, $depth;
+                    $disable_re_m_depth = $depth;
                 }
             }
 

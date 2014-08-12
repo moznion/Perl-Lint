@@ -1,10 +1,10 @@
 use strict;
 use warnings;
-use Perl::Lint::Policy::Regex::ProhibitEscapedMetacharacters;
+use Perl::Lint::Policy::RegularExpressions::ProhibitEscapedMetacharacters;
 use t::Policy::Util qw/fetch_violations/;
 use Test::Base::Less;
 
-my $class_name = 'Regex::ProhibitEscapedMetacharacters';
+my $class_name = 'RegularExpressions::ProhibitEscapedMetacharacters';
 
 filters {
     params => [qw/eval/], # TODO wrong!

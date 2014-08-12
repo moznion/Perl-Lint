@@ -1,4 +1,4 @@
-package Perl::Lint::Policy::Regex::ProhibitEscapedMetacharacters;
+package Perl::Lint::Policy::RegularExpressions::ProhibitEscapedMetacharacters;
 use strict;
 use warnings;
 use Perl::Lint::Constants::Type;

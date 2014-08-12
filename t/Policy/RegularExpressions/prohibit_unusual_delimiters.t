@@ -2,11 +2,11 @@
 
 use strict;
 use warnings;
-use Perl::Lint::Policy::Regex::ProhibitUnusualDelimiters;
+use Perl::Lint::Policy::RegularExpressions::ProhibitUnusualDelimiters;
 use t::Policy::Util qw/fetch_violations/;
 use Test::Base::Less;
 
-my $class_name = 'Regex::ProhibitUnusualDelimiters';
+my $class_name = 'RegularExpressions::ProhibitUnusualDelimiters';
 
 filters {
     params => [qw/eval/],
