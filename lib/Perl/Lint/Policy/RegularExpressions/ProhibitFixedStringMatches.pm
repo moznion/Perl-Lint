@@ -5,10 +5,9 @@ use Regexp::Parser;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Use "eq" or hash instead of fixed-pattern regexps',
+    EXPL => [271, 272],
 };
 
 my %fixed_regexp_families = (
@@ -86,6 +85,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
             }

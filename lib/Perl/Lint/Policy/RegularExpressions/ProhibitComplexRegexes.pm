@@ -5,10 +5,9 @@ use Regexp::Parser;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Split long regexps into smaller qr// chunks',
+    EXPL => [261],
 };
 
 sub evaluate {
@@ -78,6 +77,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
         }
