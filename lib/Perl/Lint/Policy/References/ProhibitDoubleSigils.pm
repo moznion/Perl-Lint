@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Double-sigil dereference',
+    EXPL => [228],
 };
 
 sub evaluate {
@@ -29,6 +28,7 @@ sub evaluate {
                 line     => $token->{line},
                 description => DESC,
                 explanation => EXPL,
+                policy => __PACKAGE__,
             };
         }
     }
