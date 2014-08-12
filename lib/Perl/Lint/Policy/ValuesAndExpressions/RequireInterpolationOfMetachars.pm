@@ -6,10 +6,9 @@ use List::Util qw/any/;
 use Email::Address;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'String *may* require interpolation',
+    EXPL => [51],
 };
 
 sub evaluate {
@@ -82,6 +81,7 @@ sub evaluate {
                                 line     => $token->{line},
                                 description => DESC,
                                 explanation => EXPL,
+                                policy => __PACKAGE__,
                             };
                             $is_violated = 0;
                             last;

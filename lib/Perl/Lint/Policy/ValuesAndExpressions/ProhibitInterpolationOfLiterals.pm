@@ -5,10 +5,9 @@ use List::Util qw/any/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Useless interpolation of literal string',
+    EXPL => [51],
 };
 
 # TODO integrate duplicated functions
@@ -52,6 +51,7 @@ sub evaluate {
                 line     => $token->{line},
                 description => DESC,
                 explanation => EXPL,
+                policy => __PACKAGE__,
             };
         }
         elsif ($token_type == REG_DOUBLE_QUOTE) {
@@ -82,6 +82,7 @@ sub evaluate {
                 line     => $token->{line},
                 description => DESC,
                 explanation => EXPL,
+                policy => __PACKAGE__,
             };
         }
     }

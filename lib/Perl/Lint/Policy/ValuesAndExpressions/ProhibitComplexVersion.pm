@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => '$VERSION value should not come from outside module',
+    EXPL => 'If the version comes from outside the module, you can get everything from unexpected version changes to denial-of-service attacks.',
 };
 
 sub evaluate {
@@ -74,6 +73,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                 }
@@ -84,6 +84,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                 }
@@ -96,6 +97,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                 }
@@ -107,6 +109,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                 }
@@ -128,6 +131,7 @@ sub evaluate {
                                 line     => $token->{line},
                                 description => DESC,
                                 explanation => EXPL,
+                                policy => __PACKAGE__,
                             };
                         }
                     }
@@ -152,6 +156,7 @@ sub evaluate {
                                     line     => $token->{line},
                                     description => DESC,
                                     explanation => EXPL,
+                                    policy => __PACKAGE__,
                                 };
                             }
                         }
@@ -166,6 +171,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
         }

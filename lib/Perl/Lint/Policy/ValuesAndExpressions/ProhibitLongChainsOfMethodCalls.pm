@@ -5,10 +5,9 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Constants::Kind;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'The number of chained calls to allow',
+    EXPL => 'Long chains of method calls indicate code that is too tightly coupled',
 };
 
 sub evaluate {
@@ -37,6 +36,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
             }
             $num_of_chain = 0;

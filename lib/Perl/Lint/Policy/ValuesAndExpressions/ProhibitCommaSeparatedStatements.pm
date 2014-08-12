@@ -5,10 +5,9 @@ use Perl::Lint::Constants::Type;
 use Perl::Lint::Keywords;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Comma used to separate statements',
+    EXPL => [68, 71],
 };
 
 sub evaluate {
@@ -18,7 +17,6 @@ sub evaluate {
         $args->{prohibit_comma_separated_statements}->{allow_last_statement_to_be_comma_separated_in_map_and_grep} || 0;
 
     my @violations;
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         my $token_type = $token->{type};
 
@@ -119,6 +117,7 @@ sub evaluate {
                         line     => $token->{line}, # TODO
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
             }
@@ -155,6 +154,7 @@ sub evaluate {
                             line     => $token->{line}, # TODO
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
 
@@ -170,6 +170,7 @@ sub evaluate {
                             line     => $token->{line}, # TODO
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                     }
                     $is_semi_colon_in_paren = 1;

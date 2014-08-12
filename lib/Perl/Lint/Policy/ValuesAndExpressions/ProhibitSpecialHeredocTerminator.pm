@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Heredoc terminator must not be a special literal',
+    EXPL => 'Used "%s" as heredoc terminator',
 };
 
 sub evaluate {
@@ -29,7 +28,8 @@ sub evaluate {
                     filename => $file,
                     line     => $token->{line},
                     description => DESC,
-                    explanation => EXPL,
+                    explanation => sprintf(EXPL, $token_data),
+                    policy => __PACKAGE__,
                 };
             }
         }
