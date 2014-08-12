@@ -8,7 +8,7 @@ use parent "Perl::Lint::Policy";
 # TODO msg!
 use constant {
     DESC => '',
-    EXPL => '',
+    EXPL => [45, 46],
 };
 
 sub evaluate {
@@ -16,7 +16,6 @@ sub evaluate {
 
     my @violations;
     my $token_num = scalar @$tokens;
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     my $declared = 0;
     my $next_token;
     for (my $i = 0; $i < $token_num; $i++) {
@@ -32,7 +31,6 @@ sub evaluate {
         my $must_be_all_caps_fullname = '';
 
         # for `const my $CONST`
-        # use Data::Dumper::Concise; warn Dumper($token); # TODO remove
         if ($token_type == KEY && $token->{data} eq 'const') {
             $i++;
             my $next_token_type = $next_token->{type};
@@ -69,6 +67,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                     last;
                 }
@@ -113,6 +112,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                     last;
                 }
@@ -128,6 +128,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                     last;
                 }

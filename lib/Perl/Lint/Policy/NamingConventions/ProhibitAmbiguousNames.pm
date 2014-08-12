@@ -7,10 +7,9 @@ use parent "Perl::Lint::Policy";
 
 use constant DEFAULT_FORBIDDEN_WORDS => [qw/abstract bases close contract last left no record right second set/];
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'The variable names that are not to be allowed',
+    EXPL => [48],
 };
 
 sub evaluate {
@@ -89,6 +88,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                     last;
                 }
