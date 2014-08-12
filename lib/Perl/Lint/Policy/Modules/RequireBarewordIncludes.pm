@@ -37,7 +37,7 @@ sub evaluate {
             push @violations, {
                 filename => $file,
                 line     => $token->{line},
-                description => sprintf DESC, $token_data,
+                description => sprintf(DESC, $token_data),
                 explanation => EXPL,
                 policy => __PACKAGE__,
             };
