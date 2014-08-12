@@ -7,10 +7,9 @@ use parent "Perl::Lint::Policy";
 
 use constant DEFAULT_ALLOW_STATEMENTS_NUM => 3;
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => q{Don't turn off strict for large blocks of code},
+    EXPL => [433],
 };
 
 sub evaluate {
@@ -53,6 +52,7 @@ sub evaluate {
                             line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
+                            policy => __PACKAGE__,
                         };
                         next TOP;
                     }
@@ -86,6 +86,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => DESC,
                     explanation => EXPL,
+                    policy => __PACKAGE__,
                 };
                 last;
             }

@@ -5,16 +5,14 @@ use List::Util qw/any/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Test without a label',
+    EXPL => 'Add a label argument to all Test::More functions',
 };
 
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     my @target_test_module = ('Test::More');
     if (my $required_modules = $args->{require_test_labels}->{modules}) {
         push @target_test_module, split / /, $required_modules;
@@ -63,6 +61,7 @@ sub evaluate {
                         line     => $token->{line},
                         description => DESC,
                         explanation => EXPL,
+                        policy => __PACKAGE__,
                     };
                 }
                 next;
@@ -136,6 +135,7 @@ sub evaluate {
                                 line     => $token->{line},
                                 description => DESC,
                                 explanation => EXPL,
+                                policy => __PACKAGE__,
                             };
                         }
                         last;

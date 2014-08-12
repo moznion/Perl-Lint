@@ -7,10 +7,9 @@ use parent "Perl::Lint::Policy";
 
 use constant EQUIVALENT_PERL_VERSION => 5.005;
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Code before warnings are enabled',
+    EXPL => [431],
 };
 
 sub evaluate {
@@ -72,6 +71,7 @@ sub evaluate {
             line     => $token->{line},
             description => DESC,
             explanation => EXPL,
+            policy => __PACKAGE__,
         };
         last;
     }
