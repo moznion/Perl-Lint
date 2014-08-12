@@ -55,7 +55,7 @@
             "String::CamelCase" : "0",
             "feature" : "0",
             "parent" : "0",
-            "perl" : "5.008005"
+            "perl" : "5.010001"
          }
       },
       "test" : {
@@ -78,6 +78,6 @@
          "web" : "https://github.com/moznion/Perl-Lint"
       }
    },
-   "version" : "0.01",
+   "version" : "0.01_01",
    "x_authority" : "cpan:MOZNION"
 }

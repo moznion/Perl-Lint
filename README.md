@@ -31,6 +31,10 @@ Please see also [http://news.perlfoundation.org/2014/03/grant-proposal-perllint-
     `lint` checks the violations of target files. It can export.
     On default, this function checks the all of policies that are in `Perl::Lint::Policy::*`.
 
+# SEE ALSO
+
+[Perl::Critic](https://metacpan.org/pod/Perl::Critic)
+
 # LICENSE
 
 Copyright (C) moznion.

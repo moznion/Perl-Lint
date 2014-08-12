@@ -8,7 +8,7 @@ use Module::Pluggable;
 use parent "Exporter";
 our @EXPORT_OK = qw/lint/;
 
-our $VERSION = "0.01";
+our $VERSION = "0.01_01";
 
 sub lint {
     my ($files, $args) = @_;
@@ -92,6 +92,10 @@ C<lint> checks the violations of target files. It can export.
 On default, this function checks the all of policies that are in C<Perl::Lint::Policy::*>.
 
 =back
+
+=head1 SEE ALSO
+
+L<Perl::Critic>
 
 =head1 LICENSE
 
