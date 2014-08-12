@@ -7,7 +7,7 @@ use parent "Perl::Lint::Policy";
 
 use constant {
     DESC => 'Subroutine "%s" called using indirect syntax',
-    EXPL => '"$s" should be method',
+    EXPL => [349],
 };
 
 sub evaluate {
@@ -36,6 +36,7 @@ sub evaluate {
                     line     => $token->{line},
                     description => sprintf(DESC, $token_data),
                     explanation => sprintf(EXPL, $token_data),
+                    policy => __PACKAGE__,
                 };
             }
         }
