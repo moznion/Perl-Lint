@@ -36,12 +36,20 @@ use constant DEREFERENCE_TOKENS => {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my @evil_variables = split /\s/, $args->{prohibit_evil_variables}->{variables};
+    my $evil_variables = $args->{prohibit_evil_variables}->{variables};
+    my @evil_variables = ($evil_variables); # when scalar value
+    my $ref = ref $evil_variables;
+    if ($ref) {
+        if ($ref ne 'ARRAY') {
+            Carp::croak 'Argument of evil variables must be scalar or array reference';
+        }
+        @evil_variables = @$evil_variables;
+    }
+
     if (! @evil_variables) {
         return [];
     }
 
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     my %used_var_with_line_num;
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
@@ -110,15 +118,16 @@ sub evaluate {
             if (substr($evil_var, -1, 1) eq '/') { # the last char
                 $regex = substr($evil_var, 1, -1);
                 if (! $regexp_parser->parse($regex)) {
-                    die "invalid regular expression: /$regex/";
+                    Carp::croak "invalid regular expression: /$regex/";
                 }
+                $regex = qr/$regex/;
             }
         }
 
         my $line;
         if ($regex) {
             for my $used_var (keys %used_var_with_line_num) {
-                if ($used_var =~ /$regex/) {
+                if ($used_var =~ $regex) {
                     push @violations, {
                         filename => $file,
                         line     => $used_var_with_line_num{$used_var},
