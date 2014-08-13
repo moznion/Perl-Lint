@@ -15,6 +15,18 @@ for my $block (blocks) {
     is scalar @$violations, $block->failures, $block->dscr;
 }
 
+subtest 'error handling for regex that has invalid syntax' => sub {
+    eval {
+        fetch_violations($class_name, <<'...', {prohibit_evil_variables => {variables => '/(/'}});
+print 'Hello World';
+...
+    };
+
+    my $e = $@;
+    ok $e;
+    like $e, qr/invalid regular expression/;
+};
+
 done_testing;
 
 __DATA__
@@ -104,15 +116,6 @@ my $foo;
 my $bar;
 my $baz;
 my $foonly;
-
-# ===
-# --- dscr: Pattern matching exceptions
-# --- failures: 0
-# --- params: {prohibit_evil_variables => {variables => '/(/'}}
-# --- input
-# ## error /invalid regular expression/
-#
-# print 'Hello World';
 
 ===
 --- dscr: Providing the description for variables, no regular expressions.
