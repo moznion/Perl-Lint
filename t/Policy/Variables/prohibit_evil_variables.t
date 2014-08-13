@@ -97,15 +97,15 @@ local $SIG{__WARN__} = sub {print {STDERR} "Danger, Will Robinson!\n";
 # local $SIG{__DIE__} = sub {warn "I cannot die!"};
 # print '$INC[0] is ', $INC[0], "\n";
 
-# ===
-# --- dscr: Regexes with modifiers
-# --- failures: 4
-# --- params: {prohibit_evil_variables => {variables => ' /(?x: \b SIG \b )/ /(?i:\binc\b)/ /(?ix: acme )/ '}}
-# --- input
-# local $SIG{__DIE__} = sub {warn "I cannot die!"};
-# print '$INC[0] is ', $INC[0], "\n";
-# print '$inc[0] is ', $inc[0], "\n";
-# my $Acme = 'For the discerning coyote';
+===
+--- dscr: Regexes with modifiers
+--- failures: 4
+--- params: {prohibit_evil_variables => {variables => ['/(?x: \b SIG \b )/', '/(?i:\binc\b)/', '/(?ix: acme )/']}}
+--- input
+local $SIG{__DIE__} = sub {warn "I cannot die!"};
+print '$INC[0] is ', $INC[0], "\n";
+print '$inc[0] is ', $inc[0], "\n";
+my $Acme = 'For the discerning coyote';
 
 ===
 --- dscr: More evil variables, with more pattern matching
@@ -119,7 +119,15 @@ my $foonly;
 
 ===
 --- dscr: Providing the description for variables, no regular expressions.
---- params: {prohibit_evil_variables => {variables => [qw($[ {Found use of $[. Code for first index = 0 instead} $SIG{__DIE__} <Found use of $SIG{__DIE__}. Use END{} or override CORE::GLOBAL::die instead>)]}}
+--- params
+{
+    prohibit_evil_variables => {
+        variables => [
+            '$[' => 'Found use of $[. Code for first index = 0 instead',
+            '$SIG{__DIE__}' => 'Found use of $SIG{__DIE__}. Use END{} or override CORE::GLOBAL::die instead'
+        ]
+    }
+}
 --- failures: 2
 --- input
 print 'First subscript is ', $[, "\n";
@@ -128,19 +136,35 @@ local $SIG{__DIE__} = sub {warn "I cannot die!"};
 ===
 --- dscr: Providing the description for variables, regular expressions.
 --- failures: 2
---- params: {prohibit_evil_variables => {variables => [qw(/\bSIG\b/ {Found use of SIG. Do not use signals} /\bINC\b/ {Found use of INC. Do not manipulate @INC directly})]}}
+--- params
+{
+    prohibit_evil_variables => {
+        variables => [
+            '/\bSIG\b/' => 'Found use of SIG. Do not use signals',
+            '/\bINC\b/' => 'Found use of INC. Do not manipulate @INC directly'
+        ]
+    }
+}
 --- input
 local $SIG{__DIE__} = sub {warn "I cannot die!"};
 print '$INC[0] is ', $INC[0], "\n";
 
-# ===
-# --- dscr: Providing the description for variables, regular expressions with modifiers.
-# --- failures: 3
-# --- params: {prohibit_evil_variables => {variables => ' /(?x: \b SIG \b )/{We do not like signals.} /(?i:\binc\b)/[Do not fiddle with INC, no mater how it is capitalized] '}}
-# --- input
-# local $SIG{__DIE__} = sub {warn "I cannot die!"};
-# print '$INC[0] is ', $INC[0], "\n";
-# print '$inc[0] is ', $inc[0], "\n";
+===
+--- dscr: Providing the description for variables, regular expressions with modifiers.
+--- failures: 3
+--- params
+{
+    prohibit_evil_variables => {
+        variables => [
+            '/(?x: \b SIG \b )/' => 'We do not like signals.',
+            '/(?i:\binc\b)/' => 'Do not fiddle with INC, no mater how it is capitalized'
+        ]
+    }
+}
+--- input
+local $SIG{__DIE__} = sub {warn "I cannot die!"};
+print '$INC[0] is ', $INC[0], "\n";
+print '$inc[0] is ', $inc[0], "\n";
 
 # ## name Providing the description for variables from file, no regular expressions.
 # ## parms { variables_file => 't/Variables/ProhibitEvilVariables.d/variables-no-regular-expressions.txt' }
@@ -159,4 +183,4 @@ print '$INC[0] is ', $INC[0], "\n";
 # print 'First subscript is ', $[, "\n";
 # local $SIG{__DIE__} = sub {warn "I cannot die!"};
 # print $^S ? 'Executing eval' : defined $^S ? 'Otherwise' : 'Parsing';
-#
+

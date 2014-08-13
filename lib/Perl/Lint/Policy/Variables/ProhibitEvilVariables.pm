@@ -120,14 +120,13 @@ sub evaluate {
                 if (! $regexp_parser->parse($regex)) {
                     Carp::croak "invalid regular expression: /$regex/";
                 }
-                $regex = qr/$regex/;
             }
         }
 
         my $line;
         if ($regex) {
             for my $used_var (keys %used_var_with_line_num) {
-                if ($used_var =~ $regex) {
+                if ($used_var =~ /$regex/) {
                     push @violations, {
                         filename => $file,
                         line     => $used_var_with_line_num{$used_var},
