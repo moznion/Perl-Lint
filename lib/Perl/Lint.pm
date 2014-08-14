@@ -1,5 +1,5 @@
 package Perl::Lint;
-use 5.008005;
+use 5.010001;
 use strict;
 use warnings;
 use Carp ();
@@ -36,33 +36,41 @@ sub lint {
         @files = @$files;
     }
 
-    my $args = $self->{args};
-    my @site_policies = @{$self->{site_policies}};
-
     my @violations;
     for my $file (@files) {
-        my ($tokens, $src) = $self->_tokenize($file);
+        open my $fh, '<', $file or die "Cannnot open $file: $!";
+        my $src = do { local $/; <$fh> };
 
-        for my $policy (@site_policies) {
-            push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
-        }
+        push @violations, @{$self->_lint($src, $file)};
     }
 
     return \@violations;
 }
 
-sub _tokenize {
-    my ($self, $file) = @_;
-    open my $fh, '<', $file or die "Cannnot open $file: $!";
-    my $src = do { local $/; <$fh> };
+sub lint_string {
+    my ($self, $src) = @_;
+    return $self->_lint($src);
+}
+
+sub _lint {
+    my ($self, $src, $file) = @_;
+
+    state $args ||= $self->{args};
+    state $site_policies ||= $self->{site_policies};
 
     my $lexer = Compiler::Lexer->new($file);
     my $tokens = $lexer->tokenize($src);
 
-    return ($tokens, $src);
+    my @violations;
+    for my $policy (@$site_policies) {
+        push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
+    }
+
+    return \@violations;
 }
 
 1;
+
 __END__
 
 =encoding utf-8
