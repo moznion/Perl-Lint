@@ -2,7 +2,7 @@ package Perl::Lint::Policy::Variables::ProhibitEvilVariables;
 use strict;
 use warnings;
 use Carp ();
-use Regexp::Parser;
+use Perl::Lint::RegexpParser;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
@@ -198,7 +198,7 @@ sub evaluate {
         }
     }
 
-    my $regexp_parser = Regexp::Parser->new;
+    my $regexp_parser = Perl::Lint::RegexpParser->new;
     for my $regex (@evil_variables_regex) {
         if (! $regexp_parser->parse($regex)) {
             Carp::croak "invalid regular expression: /$regex/";

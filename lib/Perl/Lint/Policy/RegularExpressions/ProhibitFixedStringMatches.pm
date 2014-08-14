@@ -1,7 +1,7 @@
 package Perl::Lint::Policy::RegularExpressions::ProhibitFixedStringMatches;
 use strict;
 use warnings;
-use Regexp::Parser;
+use Perl::Lint::RegexpParser;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
@@ -21,7 +21,7 @@ my %fixed_regexp_families = (
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $regexp_parser = Regexp::Parser->new;
+    my $regexp_parser = Perl::Lint::RegexpParser->new;
 
     my @violations;
     my $is_reg_quoted = 0;
