@@ -55,14 +55,13 @@ sub lint_string {
 sub _lint {
     my ($self, $src, $file) = @_;
 
-    state $args ||= $self->{args};
-    state $site_policies ||= $self->{site_policies};
+    my $args = $self->{args};
 
     my $lexer = Compiler::Lexer->new($file);
     my $tokens = $lexer->tokenize($src);
 
     my @violations;
-    for my $policy (@$site_policies) {
+    for my $policy (@{$self->{site_policies}}) {
         push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
     }
 
