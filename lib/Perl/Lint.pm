@@ -1,17 +1,32 @@
 package Perl::Lint;
-use 5.008005;
+use 5.010001;
 use strict;
 use warnings;
 use Carp ();
 use Compiler::Lexer;
 use Module::Pluggable;
-use parent "Exporter";
-our @EXPORT_OK = qw/lint/;
 
 our $VERSION = "0.01_01";
 
+sub new {
+    my ($class, $args) = @_;
+
+    # TODO to be more pluggable!
+    Module::Pluggable->import(
+        search_path => 'Perl::Lint::Policy',
+        require     => 1,
+        inner       => 0,
+    );
+    my @site_policies = plugins(); # Exported by Module::Pluggable
+
+    bless {
+        args => $args,
+        site_policies => \@site_policies,
+    }, $class;
+}
+
 sub lint {
-    my ($files, $args) = @_;
+    my ($self, $files) = @_;
 
     my @files = ($files); # when scalar value
     if (my $ref = ref $files) {
@@ -21,38 +36,40 @@ sub lint {
         @files = @$files;
     }
 
-    # TODO to be more pluggable!
-    Module::Pluggable->import(
-        search_path => 'Perl::Lint::Policy',
-        require     => 1,
-        inner       => 0
-    );
-    my @site_policy_names = plugins(); # Exported by Module::Pluggable
-
     my @violations;
     for my $file (@files) {
-        my ($tokens, $src) = _tokenize($file);
+        open my $fh, '<', $file or die "Cannnot open $file: $!";
+        my $src = do { local $/; <$fh> };
 
-        for my $policy (@site_policy_names) {
-            push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
-        }
+        push @violations, @{$self->_lint($src, $file)};
     }
 
     return \@violations;
 }
 
-sub _tokenize {
-    my ($file) = @_;
-    open my $fh, '<', $file or die "Cannnot open $file: $!";
-    my $src = do { local $/; <$fh> };
+sub lint_string {
+    my ($self, $src) = @_;
+    return $self->_lint($src);
+}
+
+sub _lint {
+    my ($self, $src, $file) = @_;
+
+    my $args = $self->{args};
 
     my $lexer = Compiler::Lexer->new($file);
     my $tokens = $lexer->tokenize($src);
 
-    return ($tokens, $src);
+    my @violations;
+    for my $policy (@{$self->{site_policies}}) {
+        push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
+    }
+
+    return \@violations;
 }
 
 1;
+
 __END__
 
 =encoding utf-8

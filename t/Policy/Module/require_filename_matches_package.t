@@ -1,13 +1,19 @@
 use strict;
 use warnings;
+use Compiler::Lexer;
 use Perl::Lint::Policy::Modules::RequireFilenameMatchesPackage;
-use t::Policy::Util qw/fetch_violations/;
 use Test::Base::Less;
 
 my $class_name = 'Modules::RequireFilenameMatchesPackage';
 
 for my $block (blocks) {
-    my $violations = fetch_violations($class_name, $block->input, {}, $block->filename);
+    my $src = $block->input;
+    my $filename = $block->filename;
+
+    my $lexer  = Compiler::Lexer->new($filename);
+    my $tokens = $lexer->tokenize($src);
+
+    my $violations = Perl::Lint::Policy::Modules::RequireFilenameMatchesPackage->evaluate($filename, $tokens, $src);
     is scalar @$violations, $block->failures, $block->dscr;
 }
 

@@ -27,3 +27,5 @@ cover_db/
 MYMETA.*
 
 /Perl-Lint-*
+
+perltidy.LOG

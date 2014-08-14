@@ -10,13 +10,14 @@ use Perl::Critic;
 use Perl::Lint qw/lint/;
 
 my $pc = Perl::Critic->new(-severity => 'brutal');
+my $pl = Perl::Lint->new();
 
 my $critic = sub {
     $pc->critique($0);
 };
 
 my $lint = sub {
-    lint($0);
+    $pl->lint($0);
 };
 
 cmpthese(
