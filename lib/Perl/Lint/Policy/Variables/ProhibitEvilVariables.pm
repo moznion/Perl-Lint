@@ -8,7 +8,7 @@ use parent "Perl::Lint::Policy";
 
 use constant {
     DESC => 'The names of or patterns for variables to forbid.',
-    EXPL => 'Find an alternative variable',
+    EXPL => 'Find an alternative variable (used: "%s")',
 };
 
 use constant VAR_TOKENS => {
@@ -172,12 +172,15 @@ sub evaluate {
         (my $alt_evil_var = $evil_var) =~ s/\A[\%\@]/\$/;
 
         my $line = $used_var_with_line_num{$evil_var};
-        if ($alt_evil_var) {
-            $line //= $used_var_with_line_num{$alt_evil_var};
+        my $used_var = $evil_var;
+        if (! $line && $alt_evil_var) {
+            $line = $used_var_with_line_num{$alt_evil_var};
+            $used_var = $alt_evil_var;
 
             if (! $line) {
-                for my $used_var (keys %used_var_with_line_num) {
-                    if ($line = $used_var =~ /\A\Q$alt_evil_var\E [\[\{]/x) {
+                for my $_used_var (keys %used_var_with_line_num) {
+                    if ($line = $_used_var =~ /\A\Q$alt_evil_var\E [\[\{]/x) {
+                        $used_var = $_used_var;
                         last;
                     }
                 }
@@ -189,7 +192,7 @@ sub evaluate {
                 filename => $file,
                 line     => $line,
                 description => DESC,
-                explanation => EXPL,
+                explanation => sprintf(EXPL, $used_var),
                 policy => __PACKAGE__,
             };
         }
@@ -207,7 +210,7 @@ sub evaluate {
                     filename => $file,
                     line     => $used_var_with_line_num{$used_var},
                     description => DESC,
-                    explanation => EXPL,
+                    explanation => sprintf(EXPL, $used_var),
                     policy => __PACKAGE__,
                 };
             }
