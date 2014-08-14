@@ -1,4 +1,4 @@
 before_install:
   - "cpanm -L $HOME/.ukigumo/perl-lint/extlib --installdeps -n ."
 install: "ln -s $HOME/.ukigumo/perl-lint/extlib ./extlib"
-script: prove -lrv -Iextlib/lib/perl5 t
+script: prove -lrv -j3 -Iextlib/lib/perl5 t
