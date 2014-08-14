@@ -89,13 +89,13 @@ local $SIG{__DIE__} = sub {warn "I cannot die!"};
 print $^S ? 'Executing eval' : defined $^S ? 'Otherwise' : 'Parsing';
 local $SIG{__WARN__} = sub {print {STDERR} "Danger, Will Robinson!\n";
 
-# ===
-# --- dscr: Recognize use of elements of evil arrays and hashes
-# --- failures: 2
-# --- params: {prohibit_evil_variables => {variables => '%SIG @INC'}}
-# --- input
-# local $SIG{__DIE__} = sub {warn "I cannot die!"};
-# print '$INC[0] is ', $INC[0], "\n";
+===
+--- dscr: Recognize use of elements of evil arrays and hashes
+--- failures: 2
+--- params: {prohibit_evil_variables => {variables => '%SIG @INC'}}
+--- input
+local $SIG{__DIE__} = sub {warn "I cannot die!"};
+print '$INC[0] is ', $INC[0], "\n";
 
 ===
 --- dscr: Regexes with modifiers

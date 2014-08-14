@@ -173,11 +173,20 @@ sub evaluate {
     for my $evil_var (@evil_variables) {
         (my $alt_evil_var = $evil_var) =~ s/\A[\%\@]/\$/;
 
-        my $line;
-        if (
-            $line = $used_var_with_line_num{$evil_var} or
-            ($alt_evil_var and $line = $used_var_with_line_num{$alt_evil_var})
-        ) {
+        my $line = $used_var_with_line_num{$evil_var};
+        if ($alt_evil_var) {
+            $line //= $used_var_with_line_num{$alt_evil_var};
+
+            if (! $line) {
+                for my $used_var (keys %used_var_with_line_num) {
+                    if ($line = $used_var =~ /\A\Q$alt_evil_var\E [\[\{]/x) {
+                        last;
+                    }
+                }
+            }
+        }
+
+        if ($line) {
             push @violations, {
                 filename => $file,
                 line     => $line,
