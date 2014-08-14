@@ -1,8 +1,4 @@
 name = "Perl-Lint"
 badges = ["travis", "coveralls"]
 authority="cpan:MOZNION"
-
 module_maker="ModuleBuildTiny"
-
-[tap_harness_args]
-jobs=3
