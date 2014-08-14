@@ -7,7 +7,8 @@ use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Perl::Lint qw/lint/;
 
-my $violations = lint($0);
+my $linter = Perl::Lint->new();
+my $violations = $linter->lint($0);
 eval "";
 
 use Data::Dumper; warn Dumper($violations);
