@@ -37,6 +37,7 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my $variable_specifications = $args->{prohibit_evil_variables}->{variables};
+    my $variable_specification_files = $args->{prohibit_evil_variables}->{variables_file};
 
     my $VARIABLE_NAME_REGEX = qr< [\$\@%] \S+ >xms;
     my $REGULAR_EXPRESSION_REGEX = qr< [/] ( [^/]+ ) [/] >xms;
@@ -47,27 +48,66 @@ sub evaluate {
         qr{ [(] ( [^)]+ ) [)] }xms,
     );
     my $DESCRIPTION_REGEX = qr< @{[join '|', @DESCRIPTION_REGEXES]} >xms;
-    my $VARIABLES_REGEX = qr<
-        \A
-        \s*
-        (?:
-                ( $VARIABLE_NAME_REGEX )
-            |   $REGULAR_EXPRESSION_REGEX
-        )
-        (?: \s* $DESCRIPTION_REGEX )?
-        \s*
-    >xms;
 
     my @evil_variables;
     my @evil_variables_regex;
-    while (my ($variable, $regex_string, @descrs) = $variable_specifications =~ m/ $VARIABLES_REGEX /xms) {
-        substr $variable_specifications, 0, $+[0], '';
 
-        if ($variable) {
-            push @evil_variables, $variable;
+    if ($variable_specifications) {
+        my $VARIABLES_REGEX = qr<
+            \A
+            \s*
+            (?:
+                    ( $VARIABLE_NAME_REGEX )
+                |   $REGULAR_EXPRESSION_REGEX
+            )
+            (?: \s* $DESCRIPTION_REGEX )?
+            \s*
+        >xms;
+
+        while (my ($variable, $regex_string, @descrs) = $variable_specifications =~ m/ $VARIABLES_REGEX /xms) {
+            substr $variable_specifications, 0, $+[0], '';
+
+            if ($variable) {
+                push @evil_variables, $variable;
+            }
+            else {
+                push @evil_variables_regex, $regex_string;
+            }
         }
-        else {
-            push @evil_variables_regex, $regex_string;
+    }
+
+    if ($variable_specification_files) {
+        my $VARIABLES_FILE_LINE_REGEX = qr<
+            \A
+            \s*
+            (?:
+                    ( $VARIABLE_NAME_REGEX )
+                |   $REGULAR_EXPRESSION_REGEX
+            )
+            \s*
+            ( \S (?: .* \S )? )?
+            \s*
+            \z
+        >xms;
+
+        open my $fh, '<', $variable_specification_files or die "Cannot open file: $!";
+        while (my $line = <$fh>) {
+            $line =~ s< [#] .* \z ><>xms;
+            $line =~ s< \s+ \z ><>xms;
+            $line =~ s< \A \s+ ><>xms;
+
+            next if not $line;
+
+            if (my ($variable, $regex_string, $description) =
+                $line =~ m< $VARIABLES_FILE_LINE_REGEX >xms) {
+
+                if ($variable) {
+                    push @evil_variables, $variable;
+                }
+                else {
+                    push @evil_variables_regex, $regex_string;
+                }
+            }
         }
     }
 

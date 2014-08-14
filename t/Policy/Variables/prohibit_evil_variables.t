@@ -142,21 +142,23 @@ local $SIG{__DIE__} = sub {warn "I cannot die!"};
 print '$INC[0] is ', $INC[0], "\n";
 print '$inc[0] is ', $inc[0], "\n";
 
-# ## name Providing the description for variables from file, no regular expressions.
-# ## parms { variables_file => 't/Variables/ProhibitEvilVariables.d/variables-no-regular-expressions.txt' }
-# ## failures 4
-# ## cut
-#
-# print 'First subscript is ', $[, "\n";
-# local $SIG{__DIE__} = sub {warn "I cannot die!"};
-# print $^S ? 'Executing eval' : defined $^S ? 'Otherwise' : 'Parsing';
+===
+--- dscr: Providing the description for variables from file, no regular expressions.
+--- failures: 3
+--- params: {prohibit_evil_variables => {variables_file => 't/Policy/Variables/resources/variables-no-regular-expressions.txt'}}
+--- input
+# TODO truth: --- failures: 3
+print 'First subscript is ', $[, "\n";
+local $SIG{__DIE__} = sub {warn "I cannot die!"};
+print $^S ? 'Executing eval' : defined $^S ? 'Otherwise' : 'Parsing';
 
-# ## name Providing the description for variables from file, regular expressions.
-# ## parms { variables_file => 't/Variables/ProhibitEvilVariables.d/variables-regular-expressions.txt' }
-# ## failures 4
-# ## cut
-#
-# print 'First subscript is ', $[, "\n";
-# local $SIG{__DIE__} = sub {warn "I cannot die!"};
-# print $^S ? 'Executing eval' : defined $^S ? 'Otherwise' : 'Parsing';
+===
+--- dscr: Providing the description for variables from file, regular expressions.
+--- failures: 3
+--- params: {prohibit_evil_variables => {variables_file => 't/Policy/Variables/resources/variables-regular-expressions.txt'}}
+--- input
+# TODO truth: --- failures: 3
+print 'First subscript is ', $[, "\n";
+local $SIG{__DIE__} = sub {warn "I cannot die!"};
+print $^S ? 'Executing eval' : defined $^S ? 'Otherwise' : 'Parsing';
 
