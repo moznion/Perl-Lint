@@ -34,7 +34,7 @@ __DATA__
 ===
 --- dscr: 2 evil variables
 --- failures: 2
---- params: {prohibit_evil_variables => {variables => [qw/$[ $SIG{__DIE__}/]}}
+--- params: {prohibit_evil_variables => {variables => '$[ $SIG{__DIE__}'}}
 --- input
 print 'First subscript is ', $[, "\n";
 local $SIG{__DIE__} = sub {warn "I cannot die!"};
@@ -42,7 +42,7 @@ local $SIG{__DIE__} = sub {warn "I cannot die!"};
 ===
 --- dscr: plain evil variables
 --- failures: 2
---- params: {prohibit_evil_variables => {variables => [qw/$foo $bar/]}}
+--- params: {prohibit_evil_variables => {variables => '$foo $bar'}}
 --- input
 my $foo = "I'm evil";
 print $bar;
@@ -50,7 +50,7 @@ print $bar;
 ===
 --- dscr: evil variables with brackets
 --- failures: 2
---- params: {prohibit_evil_variables => {variables => [qw/${^WIN32_SLOPPY_STAT} %{^_Fubar}/]}}
+--- params: {prohibit_evil_variables => {variables => '${^WIN32_SLOPPY_STAT} %{^_Fubar}'}}
 --- input
 ${^WIN32_SLOPPY_STAT} and print "We are being sloppy\n";
 our %{^_Fubar};
@@ -65,7 +65,7 @@ print "The value of \${^_Fubar}{baz} is ", ${^_Fubar}{baz}, "\n";
 ===
 --- dscr: No evil variables
 --- failures: 0
---- params: {prohibit_evil_variables => {variables => [qw/$[ $SIG{__DIE__}/]}}
+--- params: {prohibit_evil_variables => {variables => '$[ $SIG{__DIE__}'}}
 --- input
 print 'Perl version is ', $], "\n";
 local $SIG{__WARN__} = sub {print {STDERR} "Danger Will Robinson!\n"};
@@ -73,7 +73,7 @@ local $SIG{__WARN__} = sub {print {STDERR} "Danger Will Robinson!\n"};
 ===
 --- dscr: 2 evil variables, with pattern matching
 --- failures: 2
---- params: {prohibit_evil_variables => {variables => [qw(/\[/ /\bSIG\b/)]}}
+--- params: {prohibit_evil_variables => {variables => '/\[/ /\bSIG\b/'}}
 --- input
 print 'First subscript is ', $[, "\n";
 local $SIG{__DIE__} = sub {warn "I cannot die!"};
@@ -81,7 +81,7 @@ local $SIG{__DIE__} = sub {warn "I cannot die!"};
 ===
 --- dscr: More evil variables, with mixed config
 --- failures: 4
---- params: {prohibit_evil_variables => {variables => [qw($[ /\bSIG\b/ $^S)]}}
+--- params: {prohibit_evil_variables => {variables => '$[ /\bSIG\b/ $^S'}}
 --- input
 ## TODO failures: 5 is truth
 print 'First subscript is ', $[, "\n";
@@ -100,7 +100,7 @@ local $SIG{__WARN__} = sub {print {STDERR} "Danger, Will Robinson!\n";
 ===
 --- dscr: Regexes with modifiers
 --- failures: 4
---- params: {prohibit_evil_variables => {variables => ['/(?x: \b SIG \b )/', '/(?i:\binc\b)/', '/(?ix: acme )/']}}
+--- params: {prohibit_evil_variables => {variables => '/(?x: \b SIG \b )/ /(?i:\binc\b)/ /(?ix: acme )/'}}
 --- input
 local $SIG{__DIE__} = sub {warn "I cannot die!"};
 print '$INC[0] is ', $INC[0], "\n";
@@ -119,15 +119,7 @@ my $foonly;
 
 ===
 --- dscr: Providing the description for variables, no regular expressions.
---- params
-{
-    prohibit_evil_variables => {
-        variables => [
-            '$[' => 'Found use of $[. Code for first index = 0 instead',
-            '$SIG{__DIE__}' => 'Found use of $SIG{__DIE__}. Use END{} or override CORE::GLOBAL::die instead'
-        ]
-    }
-}
+--- params: {prohibit_evil_variables => {variables => q'$[ {Found use of $[. Code for first index = 0 instead} $SIG{__DIE__} <Found use of $SIG{__DIE__}. Use END{} or override CORE::GLOBAL::die instead>'}}
 --- failures: 2
 --- input
 print 'First subscript is ', $[, "\n";
@@ -136,15 +128,7 @@ local $SIG{__DIE__} = sub {warn "I cannot die!"};
 ===
 --- dscr: Providing the description for variables, regular expressions.
 --- failures: 2
---- params
-{
-    prohibit_evil_variables => {
-        variables => [
-            '/\bSIG\b/' => 'Found use of SIG. Do not use signals',
-            '/\bINC\b/' => 'Found use of INC. Do not manipulate @INC directly'
-        ]
-    }
-}
+--- params: {prohibit_evil_variables => {variables => q' /\bSIG\b/ {Found use of SIG. Do not use signals} /\bINC\b/ {Found use of INC. Do not manipulate @INC directly} '}}
 --- input
 local $SIG{__DIE__} = sub {warn "I cannot die!"};
 print '$INC[0] is ', $INC[0], "\n";
@@ -152,15 +136,7 @@ print '$INC[0] is ', $INC[0], "\n";
 ===
 --- dscr: Providing the description for variables, regular expressions with modifiers.
 --- failures: 3
---- params
-{
-    prohibit_evil_variables => {
-        variables => [
-            '/(?x: \b SIG \b )/' => 'We do not like signals.',
-            '/(?i:\binc\b)/' => 'Do not fiddle with INC, no mater how it is capitalized'
-        ]
-    }
-}
+--- params: {prohibit_evil_variables => {variables => ' /(?x: \b SIG \b )/{We do not like signals.} /(?i:\binc\b)/[Do not fiddle with INC, no mater how it is capitalized] '}}
 --- input
 local $SIG{__DIE__} = sub {warn "I cannot die!"};
 print '$INC[0] is ', $INC[0], "\n";

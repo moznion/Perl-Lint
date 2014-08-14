@@ -36,18 +36,39 @@ use constant DEREFERENCE_TOKENS => {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $evil_variables = $args->{prohibit_evil_variables}->{variables};
-    my @evil_variables = ($evil_variables); # when scalar value
-    my $ref = ref $evil_variables;
-    if ($ref) {
-        if ($ref ne 'ARRAY') {
-            Carp::croak 'Argument of evil variables must be scalar or array reference';
-        }
-        @evil_variables = @$evil_variables;
-    }
+    my $variable_specifications = $args->{prohibit_evil_variables}->{variables};
 
-    if (! @evil_variables) {
-        return [];
+    my $VARIABLE_NAME_REGEX = qr< [\$\@%] \S+ >xms;
+    my $REGULAR_EXPRESSION_REGEX = qr< [/] ( [^/]+ ) [/] >xms;
+    my @DESCRIPTION_REGEXES = (
+        qr< [{] ( [^}]+ ) [}] >xms,
+        qr{  <  ( [^>]+ )  >  }xms,
+        qr{ [[] ( [^]]+ ) []] }xms,
+        qr{ [(] ( [^)]+ ) [)] }xms,
+    );
+    my $DESCRIPTION_REGEX = qr< @{[join '|', @DESCRIPTION_REGEXES]} >xms;
+    my $VARIABLES_REGEX = qr<
+        \A
+        \s*
+        (?:
+                ( $VARIABLE_NAME_REGEX )
+            |   $REGULAR_EXPRESSION_REGEX
+        )
+        (?: \s* $DESCRIPTION_REGEX )?
+        \s*
+    >xms;
+
+    my @evil_variables;
+    my @evil_variables_regex;
+    while (my ($variable, $regex_string, @descrs) = $variable_specifications =~ m/ $VARIABLES_REGEX /xms) {
+        substr $variable_specifications, 0, $+[0], '';
+
+        if ($variable) {
+            push @evil_variables, $variable;
+        }
+        else {
+            push @evil_variables_regex, $regex_string;
+        }
     }
 
     my %used_var_with_line_num;
@@ -108,38 +129,11 @@ sub evaluate {
         }
     }
 
-    my $regexp_parser = Regexp::Parser->new;
     my @violations;
     for my $evil_var (@evil_variables) {
-        my $regex;
-        my $the_first_char = substr($evil_var, 0, 1);
         (my $alt_evil_var = $evil_var) =~ s/\A[\%\@]/\$/;
-        if ($the_first_char eq '/') {
-            if (substr($evil_var, -1, 1) eq '/') { # the last char
-                $regex = substr($evil_var, 1, -1);
-                if (! $regexp_parser->parse($regex)) {
-                    Carp::croak "invalid regular expression: /$regex/";
-                }
-            }
-        }
 
         my $line;
-        if ($regex) {
-            for my $used_var (keys %used_var_with_line_num) {
-                if ($used_var =~ /$regex/) {
-                    push @violations, {
-                        filename => $file,
-                        line     => $used_var_with_line_num{$used_var},
-                        description => DESC,
-                        explanation => EXPL,
-                        policy => __PACKAGE__,
-                    };
-                }
-            }
-
-            next;
-        }
-
         if (
             $line = $used_var_with_line_num{$evil_var} or
             ($alt_evil_var and $line = $used_var_with_line_num{$alt_evil_var})
@@ -153,6 +147,26 @@ sub evaluate {
             };
         }
     }
+
+    my $regexp_parser = Regexp::Parser->new;
+    for my $regex (@evil_variables_regex) {
+        if (! $regexp_parser->parse($regex)) {
+            Carp::croak "invalid regular expression: /$regex/";
+        }
+
+        for my $used_var (keys %used_var_with_line_num) {
+            if ($used_var =~ /$regex/) {
+                push @violations, {
+                    filename => $file,
+                    line     => $used_var_with_line_num{$used_var},
+                    description => DESC,
+                    explanation => EXPL,
+                    policy => __PACKAGE__,
+                };
+            }
+        }
+    }
+
     return \@violations;
 }
 
