@@ -46,6 +46,7 @@ our @EXPORT = qw(
     SPECIFIC_VALUE SPECIFIC_KEYWORD
     DEFAULT
     PROTOTYPE
+    SCALAR_DEREFERENCE HASH_DEREFERENCE
 );
 
 use constant {
@@ -201,6 +202,9 @@ use constant {
     DEFAULT => Compiler::Lexer::TokenType::T_Default,
 
     PROTOTYPE => Compiler::Lexer::TokenType::T_Prototype,
+
+    SCALAR_DEREFERENCE => Compiler::Lexer::TokenType::T_ScalarDereference,
+    HASH_DEREFERENCE   => Compiler::Lexer::TokenType::T_HashDereference,
 };
 
 1;
