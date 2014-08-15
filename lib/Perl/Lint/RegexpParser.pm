@@ -22,5 +22,16 @@ sub new {
     return $parser;
 }
 
+sub parse {
+    my ($self, $regex) = @_;
+
+    # XXX workaround
+    if (! $regex) {
+        return 1;
+    }
+
+    return $self->SUPER::parse($regex);
+}
+
 1;
 
