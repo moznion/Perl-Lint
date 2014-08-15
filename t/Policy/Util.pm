@@ -1,6 +1,7 @@
 package t::Policy::Util;
 use strict;
 use warnings;
+use feature qw/state/;
 use Perl::Lint;
 use File::Temp qw/tempfile/;
 use parent qw/Exporter/;
@@ -13,7 +14,17 @@ sub fetch_violations {
     print $fh $input;
     close $fh;
 
-    my $linter = Perl::Lint->new($args);
+    state $linter;
+
+    # to reuse instance
+    if (
+        !$linter || # init
+        ($args && %$args) || # args are exists
+        ($linter->{args} && %{$linter->{args}}) # previous instance has args
+    ) {
+        $linter = Perl::Lint->new($args);
+    }
+
     $linter->{site_policies} = ["Perl::Lint::Policy::$class"];
     return $linter->lint($filename);
 }
