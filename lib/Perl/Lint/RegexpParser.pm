@@ -22,15 +22,15 @@ sub new {
     return $parser;
 }
 
-sub parse {
-    my ($self, $regex) = @_;
+sub walker {
+    my $self = shift;
 
     # XXX workaround
-    if (! $regex) {
-        return 1;
+    if (! $self->{tree} && ${$self->{regex}} eq '') {
+        return sub {};
     }
 
-    return $self->SUPER::parse($regex);
+    return $self->SUPER::walker(@_);
 }
 
 1;

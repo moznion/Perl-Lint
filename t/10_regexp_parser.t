@@ -11,5 +11,14 @@ subtest 'workaround for unsupported' => sub {
     ok !$err;
 };
 
+subtest 'workaround for empty regex' => sub {
+    my $parser = Perl::Lint::RegexpParser->new;
+    $parser->parse('');
+    eval {
+        $parser->walker;
+    };
+    ok !$@;
+};
+
 done_testing;
 
