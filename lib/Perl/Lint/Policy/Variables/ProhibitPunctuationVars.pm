@@ -182,61 +182,94 @@ sub evaluate {
         if (
             $token_type == STRING ||
             $token_type == EXEC_STRING
-            # $token_type == EXEC_STRING ||
-            # ($token_type == HERE_DOCUMENT && !$is_raw_heredoc_tag)
+            # ($token_type == HERE_DOCUMENT && $is_raw_heredoc_tag)
         ) {
             if ($string_mode eq 'disable') {
                 next;
             }
 
-            my @captures = $token_data =~ /
-                ( \\* )( %-\d+ | [\$\%\@](?: ^[A-Z] | [\$'#_]\S* | [^a-zA-Z] (?: :[|]? )? ) )
-            /gx;
+            my $parts = $lexer_for_str->tokenize($token_data);
+            my $ref_count = 0;
+            for (my $j = 0, my $part_type, my $used_var; my $part = $parts->[$j]; $j++) {
+                $part_type = $part->{type};
+                $used_var  = $part->{data};
 
-            for (my $j = 0; defined (my $backslash = $captures[$j]); $j += 2) {
-                if (!$backslash || length($backslash) % 2 == 0) { # not escaped
-                    my $specific_var = $captures[$j+1];
+                if ($part_type == REF) {
+                    $ref_count++;
+                    next;
+                }
 
-                    if ($specific_var eq '$::') { # XXX skip name space resolver
-                        next;
-                    }
+                if ($ref_count % 2 != 0) {
+                    $ref_count = 0;
+                    next;
+                }
 
-                    if ($specific_var =~ /\A(\$[\$'#_])(.*)/) {
-                        $specific_var = $1;
-                        my $suffix = $2;
-                        if ($suffix) {
-                            if ($specific_var eq '$#') {
-                                if ($suffix eq '$' || $suffix eq '{') {
-                                    next;
-                                }
+                if ($part_type == SPECIFIC_VALUE) {
+                    if ($used_var eq '$:') {
+                        $part = $parts->[$j+1];
+
+                        if ($part && $part->{type} == COLON) {
+                            $part = $parts->[$j+2];
+                            if ($part && $part->{type} == BIT_OR) {
+                                $used_var = '$::|';
                             }
-                            if ($suffix =~ /\A[a-zA-Z_]/) {
+                            else {
                                 next;
                             }
                         }
                     }
-
-                    if ($exempt_vars{$specific_var}) {
+                    # TODO
+                    # elsif ($used_var eq q{$'}) {
+                    #     $part = $parts->[$j+1];
+                    #     if ($part && $part->{type} == KEY) {
+                    #         # next;
+                    #     }
+                    # }
+                }
+                elsif ($part_type != ARRAY_SIZE) {
+                    if (!$var_token_types{$part_type}) {
                         next;
                     }
 
-                    if ($string_mode eq 'simple' && $ignore_for_interpolation{$specific_var}) {
-                        next;
+                    $part = $parts->[++$j];
+                    if ($part) {
+                        if ($used_var eq '$') {
+                            if ($part->{type} == RIGHT_BRACE) {
+                                $used_var = '$}';
+                            }
+                        }
+                        elsif ($used_var eq '@') {
+                            if ($part->{type} == MUL) {
+                                $used_var = '@*';
+                            }
+                        }
+                        elsif ($used_var eq '%-') {
+                            if ($part->{type} == INT) { # for formatting. e.g. "%-04f"
+                                next;
+                            }
+                        }
                     }
+                }
 
-                    if (! $magic_variables{$specific_var}) {
-                        next;
-                    }
+                if ($exempt_vars{$used_var}) {
+                    next;
+                }
 
+                if ($string_mode eq 'simple' && $ignore_for_interpolation{$used_var}) {
+                    next;
+                }
+
+                if ($magic_variables{$used_var}) {
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
-                        description => sprintf(DESC, $specific_var),
+                        description => sprintf(DESC, $used_var),
                         explanation => EXPL,
                         policy => __PACKAGE__,
                     };
                 }
             }
+
             next;
         }
     }

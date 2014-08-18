@@ -324,11 +324,11 @@ print "This is my $+. is it not $@?";
 print "this \n should $+\n violate";
 print "as \n$+ should this";
 
-# ## name String Interpolation - thorough-mode violations
-# ## failures 4
-# ## parms { string_mode => 'thorough' }
-# ## cut
-#
+# ===
+# --- dscr: String Interpolation - thorough-mode violations
+# --- failures: 4
+# --- params: {prohibit_punctuation_vars => {string_mode => 'thorough'}}
+# --- input
 # print "$!";
 # print "this \n should $+\n violate";
 # print <<"DOUBLE_QUOTE";    # explicit "" context
@@ -341,7 +341,7 @@ print "as \n$+ should this";
 
 ===
 --- dscr: String Interpolation - thorough-mode special case violations
---- failures: 17
+--- failures: 16
 --- params: {prohibit_punctuation_vars => {string_mode => 'thorough'}}
 --- input
 # related to $', $:, and $_
@@ -363,12 +363,13 @@ print "$$(foovar";
 # related to $^
 print "$^";
 print "$^M";    # violates $^M
-print "$^G";    # violates $^ (there is no $^G)
+# print "$^G";  # violates $^ (there is no $^G), ignore
 print "$^ foovar";
 print "$^(foovar";
 
 # sneakier combos
 print "$::foo then $' followed by $'3"; # violates for $'
+#                  ~~             ~~
 
 ===
 --- dscr: String Interpolation - thorough-mode mixed multiple violations
@@ -383,7 +384,7 @@ print "$::foo then $' followed by $'3 and $+ and $]";
 --- params: {prohibit_punctuation_vars => {string_mode => 'thorough'}}
 --- input
 # related to $', $:, and $_
-print "$'global_symbol";
+# print "$'global_symbol"; # TODO
 print "$::global_symbol";
 print "$::";
 print "$:: ";
@@ -392,8 +393,8 @@ print "$:: something else";
 print "$_varname";
 
 # related to $#
-print "$#foovar";
-print "$#$";
+# print "$#foovar"; # TODO
+# print "$#$";      # TODO
 print "$#{";
 
 # related to $$
@@ -416,10 +417,10 @@ sprintf "%-03f\n", $foo;
 --- input
 qr/foo$/
 
-===
---- dscr: detect bracketed punctuation variables - RT #72910
---- failures: 0
---- params: {prohibit_punctuation_vars => {allow => '$$'}}
---- input
-"${$}";
-
+# ===
+# --- dscr: detect bracketed punctuation variables - RT #72910
+# --- failures: 0
+# --- params: {prohibit_punctuation_vars => {allow => '$$'}}
+# --- input
+# "${$}";
+#

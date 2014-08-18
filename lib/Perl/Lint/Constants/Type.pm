@@ -31,7 +31,7 @@ our @EXPORT = qw(
     CONTINUE
     BUILTIN_FUNC GOTO RETURN
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
-    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
+    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND BIT_OR OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
     RIGHT_SHIFT_EQUAL LEFT_SHIFT_EQUAL
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
@@ -46,7 +46,7 @@ our @EXPORT = qw(
     SPECIFIC_VALUE SPECIFIC_KEYWORD ARRAY_SIZE
     DEFAULT
     PROTOTYPE
-    SCALAR_DEREFERENCE HASH_DEREFERENCE
+    SCALAR_DEREFERENCE HASH_DEREFERENCE ARRAY_DEREFERENCE
 );
 
 use constant {
@@ -154,6 +154,7 @@ use constant {
     ALPHABET_NOT => Compiler::Lexer::TokenType::T_AlphabetNot,
     ALPHABET_XOR => Compiler::Lexer::TokenType::T_AlphabetXOr,
     BIT_AND => Compiler::Lexer::TokenType::T_BitAnd,
+    BIT_OR  => Compiler::Lexer::TokenType::T_BitOr,
     OR_EQUAL => Compiler::Lexer::TokenType::T_OrEqual,
     AND_EQUAL => Compiler::Lexer::TokenType::T_AndEqual,
     EQUAL_EQUAL => Compiler::Lexer::TokenType::T_EqualEqual,
@@ -207,6 +208,7 @@ use constant {
 
     SCALAR_DEREFERENCE => Compiler::Lexer::TokenType::T_ScalarDereference,
     HASH_DEREFERENCE   => Compiler::Lexer::TokenType::T_HashDereference,
+    ARRAY_DEREFERENCE  => Compiler::Lexer::TokenType::T_ArrayDereference,
 };
 
 1;
