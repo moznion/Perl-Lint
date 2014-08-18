@@ -26,12 +26,12 @@ our @EXPORT = qw(
     HERE_DOCUMENT RAW_HERE_DOCUMENT HERE_DOCUMENT_END HERE_DOCUMENT_TAG HERE_DOCUMENT_RAW_TAG
     REG_QUOTE REG_DOUBLE_QUOTE
     REG_DELIM REG_OPT
-    REG_EXP REG_EXEC REG_LIST REG_ALL_REPLACE REG_MATCH REG_REPLACE REG_REPLACE_TO REG_REPLACE_FROM
+    REG_EXP REG_EXEC REG_LIST REG_ALL_REPLACE REG_MATCH REG_REPLACE REG_REPLACE_TO REG_REPLACE_FROM REG_DECL
     IF_STATEMENT ELSE_STATEMENT ELSIF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
     CONTINUE
     BUILTIN_FUNC GOTO RETURN
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
-    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
+    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND BIT_OR OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
     RIGHT_SHIFT_EQUAL LEFT_SHIFT_EQUAL
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP
@@ -43,10 +43,10 @@ our @EXPORT = qw(
     HANDLE HANDLE_DELIM DIAMOND
     LESS GREATER COMPARE STRING_COMPARE
     MUL STRING_ADD STRING_MUL
-    SPECIFIC_VALUE SPECIFIC_KEYWORD
+    SPECIFIC_VALUE SPECIFIC_KEYWORD ARRAY_SIZE
     DEFAULT
     PROTOTYPE
-    SCALAR_DEREFERENCE HASH_DEREFERENCE
+    SCALAR_DEREFERENCE HASH_DEREFERENCE ARRAY_DEREFERENCE
 );
 
 use constant {
@@ -131,6 +131,7 @@ use constant {
     REG_REPLACE_TO => Compiler::Lexer::TokenType::T_RegReplaceTo,
     REG_REPLACE_FROM => Compiler::Lexer::TokenType::T_RegReplaceFrom,
     REG_ALL_REPLACE => Compiler::Lexer::TokenType::T_RegAllReplace,
+    REG_DECL => Compiler::Lexer::TokenType::T_RegDecl,
 
     THREE_TERM_OP => Compiler::Lexer::TokenType::T_ThreeTermOperator,
 
@@ -153,6 +154,7 @@ use constant {
     ALPHABET_NOT => Compiler::Lexer::TokenType::T_AlphabetNot,
     ALPHABET_XOR => Compiler::Lexer::TokenType::T_AlphabetXOr,
     BIT_AND => Compiler::Lexer::TokenType::T_BitAnd,
+    BIT_OR  => Compiler::Lexer::TokenType::T_BitOr,
     OR_EQUAL => Compiler::Lexer::TokenType::T_OrEqual,
     AND_EQUAL => Compiler::Lexer::TokenType::T_AndEqual,
     EQUAL_EQUAL => Compiler::Lexer::TokenType::T_EqualEqual,
@@ -198,6 +200,7 @@ use constant {
 
     SPECIFIC_VALUE   => Compiler::Lexer::TokenType::T_SpecificValue,
     SPECIFIC_KEYWORD => Compiler::Lexer::TokenType::T_SpecificKeyword,
+    ARRAY_SIZE => Compiler::Lexer::TokenType::T_ArraySize,
 
     DEFAULT => Compiler::Lexer::TokenType::T_Default,
 
@@ -205,6 +208,7 @@ use constant {
 
     SCALAR_DEREFERENCE => Compiler::Lexer::TokenType::T_ScalarDereference,
     HASH_DEREFERENCE   => Compiler::Lexer::TokenType::T_HashDereference,
+    ARRAY_DEREFERENCE  => Compiler::Lexer::TokenType::T_ArrayDereference,
 };
 
 1;
