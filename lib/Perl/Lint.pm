@@ -11,13 +11,24 @@ our $VERSION = "0.01_01";
 sub new {
     my ($class, $args) = @_;
 
-    # TODO to be more pluggable!
     Module::Pluggable->import(
         search_path => 'Perl::Lint::Policy',
         require     => 1,
         inner       => 0,
     );
     my @site_policies = plugins(); # Exported by Module::Pluggable
+
+    if (my $ignores = $args->{ignore}) {
+        if (ref $ignores ne 'ARRAY') {
+            Carp::croak "`ignore` must be array reference";
+        }
+
+        for my $ignore (@$ignores) {
+            @site_policies = grep {$_ ne "Perl::Lint::Policy::$ignore"} @site_policies;
+        }
+    }
+
+    # TODO add mechanism to add extend policies
 
     bless {
         args => $args,
