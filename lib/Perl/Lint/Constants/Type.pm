@@ -27,9 +27,9 @@ our @EXPORT = qw(
     REG_QUOTE REG_DOUBLE_QUOTE
     REG_DELIM REG_OPT
     REG_EXP REG_EXEC REG_LIST REG_ALL_REPLACE REG_MATCH REG_REPLACE REG_REPLACE_TO REG_REPLACE_FROM REG_DECL
-    IF_STATEMENT ELSE_STATEMENT ELSIF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT
+    IF_STATEMENT ELSE_STATEMENT ELSIF_STATEMENT UNLESS_STATEMENT FOR_STATEMENT FOREACH_STATEMENT WHILE_STATEMENT UNTIL_STATEMENT WHEN_STATEMENT
     CONTINUE
-    BUILTIN_FUNC GOTO RETURN
+    BUILTIN_FUNC GOTO RETURN NEXT LAST REDO
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
     AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND BIT_OR OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
     RIGHT_SHIFT_EQUAL LEFT_SHIFT_EQUAL
@@ -88,12 +88,16 @@ use constant {
     FOR_STATEMENT     => Compiler::Lexer::TokenType::T_ForStmt,
     FOREACH_STATEMENT => Compiler::Lexer::TokenType::T_ForeachStmt,
     UNTIL_STATEMENT   => Compiler::Lexer::TokenType::T_UntilStmt,
+    WHEN_STATEMENT   => Compiler::Lexer::TokenType::T_WhenStmt,
 
     CONTINUE => Compiler::Lexer::TokenType::T_Continue,
 
     BUILTIN_FUNC => Compiler::Lexer::TokenType::T_BuiltinFunc,
     GOTO         => Compiler::Lexer::TokenType::T_Goto,
     RETURN       => Compiler::Lexer::TokenType::T_Return,
+    NEXT         => Compiler::Lexer::TokenType::T_Next,
+    LAST         => Compiler::Lexer::TokenType::T_Last,
+    REDO         => Compiler::Lexer::TokenType::T_Redo,
 
     RIGHT_BRACE => Compiler::Lexer::TokenType::T_RightBrace,
     LEFT_BRACE  => Compiler::Lexer::TokenType::T_LeftBrace,
