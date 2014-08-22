@@ -16,7 +16,6 @@ our @EXPORT = qw(
     SEMI_COLON COMMA ARROW COLON POINTER
     ASSIGN
     DOUBLE
-    DEFAULT
     RIGHT_BRACE LEFT_BRACE
     RIGHT_PAREN LEFT_PAREN
     RIGHT_BRACKET LEFT_BRACKET
@@ -34,7 +33,7 @@ our @EXPORT = qw(
     AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND BIT_OR OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
     RIGHT_SHIFT_EQUAL LEFT_SHIFT_EQUAL
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
-    THREE_TERM_OP
+    THREE_TERM_OP DEFAULT_OP
     DO
     RIGHT_SHIFT LEFT_SHIFT
     GLOB REF PROTOTYPE
@@ -139,6 +138,8 @@ use constant {
 
     THREE_TERM_OP => Compiler::Lexer::TokenType::T_ThreeTermOperator,
 
+    DEFAULT_OP => Compiler::Lexer::TokenType::T_DefaultOperator,
+
     COMMA      => Compiler::Lexer::TokenType::T_Comma,
     SEMI_COLON => Compiler::Lexer::TokenType::T_SemiColon,
     COLON      => Compiler::Lexer::TokenType::T_Colon,
@@ -147,8 +148,6 @@ use constant {
     POINTER    => Compiler::Lexer::TokenType::T_Pointer,
 
     DOUBLE => Compiler::Lexer::TokenType::T_Double,
-
-    DEFAULT => Compiler::Lexer::TokenType::T_Default,
 
     AND => Compiler::Lexer::TokenType::T_And,
     OR  => Compiler::Lexer::TokenType::T_Or,
