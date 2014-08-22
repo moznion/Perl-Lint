@@ -37,8 +37,11 @@ sub evaluate {
 
         if (!$is_non_target_reg && $token_type == REG_DELIM) {
             if (
-                $next_token_type == SEMI_COLON ||                        # when any regex options don't exist
-                ($next_token_type == REG_OPT && $next_token_data !~ /x/) # when the `x` regex option doesn't exist
+                defined $next_token_type &&
+                (
+                    $next_token_type == SEMI_COLON ||                        # when any regex options don't exist
+                    ($next_token_type == REG_OPT && $next_token_data !~ /x/) # when the `x` regex option doesn't exist
+                )
             ) {
                 if (
                     !($enabled_re_x_depth >= 0 && $depth >= $enabled_re_x_depth) ||
