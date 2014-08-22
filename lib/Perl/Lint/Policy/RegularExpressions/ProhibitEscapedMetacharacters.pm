@@ -36,9 +36,12 @@ sub evaluate {
             }
 
             my $regex_to_detect = qr/[{}().*+?|# ]/;
-            if ($maybe_regopt->{type} == REG_OPT) {
-                if ($maybe_regopt->{data} =~ /x/) {
-                    $regex_to_detect = qr/[{}().*+?| ]/;
+
+            if ($maybe_regopt) {
+                if ($maybe_regopt->{type} == REG_OPT) {
+                    if ($maybe_regopt->{data} =~ /x/) {
+                        $regex_to_detect = qr/[{}().*+?| ]/;
+                    }
                 }
             }
 
