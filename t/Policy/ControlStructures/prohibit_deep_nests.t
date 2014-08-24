@@ -185,3 +185,21 @@ if ($condition1) {
     }
   }
 }
+
+===
+--- dscr: 5 if blocks and one anon sub block
+--- failures: 0
+--- params:
+--- input
+if ($condition1) {
+  if ($condition2) {
+    if ($condition3) {
+      if ($condition4) {
+        if ($condition5) {
+            my $foo = sub {
+            };
+        }
+      }
+    }
+  }
+}
