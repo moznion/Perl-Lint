@@ -45,7 +45,7 @@ our @EXPORT = qw(
     SPECIFIC_VALUE SPECIFIC_KEYWORD ARRAY_SIZE
     DEFAULT
     PROTOTYPE
-    SCALAR_DEREFERENCE HASH_DEREFERENCE ARRAY_DEREFERENCE
+    SCALAR_DEREFERENCE HASH_DEREFERENCE ARRAY_DEREFERENCE ARRAY_SIZE_DEREFERENCE
 );
 
 use constant {
@@ -212,6 +212,7 @@ use constant {
     SCALAR_DEREFERENCE => Compiler::Lexer::TokenType::T_ScalarDereference,
     HASH_DEREFERENCE   => Compiler::Lexer::TokenType::T_HashDereference,
     ARRAY_DEREFERENCE  => Compiler::Lexer::TokenType::T_ArrayDereference,
+    ARRAY_SIZE_DEREFERENCE  => Compiler::Lexer::TokenType::T_ArraySizeDereference,
 };
 
 1;
