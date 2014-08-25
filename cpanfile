@@ -8,6 +8,7 @@ requires 'String::CamelCase';
 requires 'B::Keywords';
 requires 'Email::Address';
 requires 'Regexp::Parser';
+requires 'Module::Load';
 requires 'Module::Pluggable';
 
 on configure => sub {

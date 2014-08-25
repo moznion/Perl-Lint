@@ -5,28 +5,43 @@ use warnings;
 use Carp ();
 use Compiler::Lexer;
 use Module::Pluggable;
+use Module::Load;
 
 our $VERSION = "0.01_01";
 
 sub new {
     my ($class, $args) = @_;
 
-    Module::Pluggable->import(
-        search_path => 'Perl::Lint::Policy',
-        require     => 1,
-        inner       => 0,
-    );
-    my @site_policies = plugins(); # Exported by Module::Pluggable
+    my @ignores;
 
     if (my $ignores = $args->{ignore}) {
         if (ref $ignores ne 'ARRAY') {
             Carp::croak "`ignore` must be array reference";
         }
 
-        for my $ignore (@$ignores) {
-            @site_policies = grep {$_ ne "Perl::Lint::Policy::$ignore"} @site_policies;
+        push @ignores, map {"Perl::Lint::Policy::$_"} @$ignores;
+    }
+
+    if (my $filters = $args->{filter}) {
+        if (ref $filters ne 'ARRAY') {
+            Carp::croak "`filter` must be array reference";
+        }
+
+        for my $filter (@$filters) {
+            my $filter_package = "Perl::Lint::Filter::$filter";
+            load $filter_package;
+
+            push @ignores, map {"Perl::Lint::Policy::$_"} @{$filter_package->filter};
         }
     }
+
+    Module::Pluggable->import(
+        search_path => 'Perl::Lint::Policy',
+        require     => 1,
+        inner       => 0,
+        except      => [@ignores],
+    );
+    my @site_policies = plugins(); # Exported by Module::Pluggable
 
     # TODO add mechanism to add extend policies
 
