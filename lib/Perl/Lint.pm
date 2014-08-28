@@ -106,10 +106,11 @@ Perl::Lint - Yet Another Perl Source Code Linter
 
 =head1 SYNOPSIS
 
-    use Perl::Lint qw(lint);
+    use Perl::Lint;
 
+    my $linter = Perl::Lint->new;
     my $target_files = [qw(foo/bar.pl buz.pm)];
-    my $violations   = lint($target_files);
+    my $violations   = $linter->lint($target_files);
 
 =head1 DESCRIPTION
 
@@ -125,11 +126,11 @@ Development of this module aims to create a fast and flexible static analyzer fo
 
 Please see also L<http://news.perlfoundation.org/2014/03/grant-proposal-perllint---yet.html>.
 
-=head1 FUNCTIONS
+=head1 METHODS
 
 =over 4
 
-=item * C<lint($target_files:SCALAR or ARRAYREF, $args:HASHREF)>
+=item * C<< $linter->lint($target_files:SCALAR or ARRAYREF, $args:HASHREF) >>
 
 C<lint> checks the violations of target files. It can export.
 On default, this function checks the all of policies that are in C<Perl::Lint::Policy::*>.
