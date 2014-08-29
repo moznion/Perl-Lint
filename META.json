@@ -50,6 +50,7 @@
             "Compiler::Lexer" : "0.19",
             "Email::Address" : "0",
             "List::Util" : "1.38",
+            "Module::Load" : "0",
             "Module::Pluggable" : "0",
             "Regexp::Parser" : "0",
             "String::CamelCase" : "0",
@@ -60,6 +61,7 @@
       },
       "test" : {
          "requires" : {
+            "Capture::Tiny" : "0",
             "File::Temp" : "0",
             "Test::Base::Less" : "0",
             "Test::More" : "0.98"
@@ -78,6 +80,9 @@
          "web" : "https://github.com/moznion/Perl-Lint"
       }
    },
-   "version" : "0.01_01",
-   "x_authority" : "cpan:MOZNION"
+   "version" : "0.01_02",
+   "x_authority" : "cpan:MOZNION",
+   "x_contributors" : [
+      "Syohei YOSHIDA <syohex@gmail.com>"
+   ]
 }
