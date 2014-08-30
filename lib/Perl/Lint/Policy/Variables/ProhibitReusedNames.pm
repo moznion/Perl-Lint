@@ -43,7 +43,7 @@ sub evaluate {
         }
 
         if ($token_type == RIGHT_BRACE) {
-            pop $local_vars_by_depth[$depth];
+            pop @local_vars_by_depth;
             $depth--;
             next;
         }
