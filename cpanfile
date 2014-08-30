@@ -10,6 +10,7 @@ requires 'Email::Address';
 requires 'Regexp::Parser';
 requires 'Module::Load';
 requires 'Module::Pluggable';
+requires 'List::Flatten';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';
