@@ -6,10 +6,9 @@ use List::Util ();
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => '"%s" is declared but not used.',
+    EXPL => 'Unused variables clutter code and make it harder to read',
 };
 
 my %var_token_types = (
@@ -43,7 +42,7 @@ sub evaluate {
                 push @violations, {
                     filename => $file,
                     line     => $variable,
-                    description => DESC,
+                    description => sprintf(DESC, $variable),
                     explanation => EXPL,
                     policy => __PACKAGE__,
                 };
@@ -153,7 +152,7 @@ sub evaluate {
         push @violations, {
             filename => $file,
             line     => $variable,
-            description => DESC,
+            description => sprintf(DESC, $variable),
             explanation => EXPL,
             policy => __PACKAGE__,
         };
