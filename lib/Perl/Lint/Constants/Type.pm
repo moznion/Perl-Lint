@@ -12,7 +12,8 @@ our @EXPORT = qw(
     VAR CODE_VAR ARRAY_VAR HASH_VAR
     GLOBAL_VAR GLOBAL_ARRAY_VAR GLOBAL_HASH_VAR
     LOCAL_VAR LOCAL_ARRAY_VAR LOCAL_HASH_VAR
-    ARGUMENT_ARRAY
+    PROGRAM_ARGUMENT LIBRARY_DIRECTORIES ARGUMENT_ARRAY
+    INCLUDE ENVIRONMENT SIGNAL
     SEMI_COLON COMMA ARROW COLON POINTER
     ASSIGN
     DOUBLE
@@ -30,7 +31,7 @@ our @EXPORT = qw(
     CONTINUE
     BUILTIN_FUNC GOTO RETURN NEXT LAST REDO
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
-    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND BIT_OR OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
+    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND BIT_OR BIT_XOR OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
     RIGHT_SHIFT_EQUAL LEFT_SHIFT_EQUAL
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP DEFAULT_OP
@@ -38,10 +39,10 @@ our @EXPORT = qw(
     RIGHT_SHIFT LEFT_SHIFT
     GLOB REF PROTOTYPE
     MOD_WORD
-    TYPE_STDIN
+    TYPE_STDIN TYPE_STDOUT TYPE_STDERR
     HANDLE HANDLE_DELIM DIAMOND
     LESS GREATER COMPARE STRING_COMPARE
-    MUL STRING_ADD STRING_MUL
+    MUL MOD STRING_ADD STRING_MUL
     SPECIFIC_VALUE SPECIFIC_KEYWORD ARRAY_SIZE
     DEFAULT
     PROTOTYPE
@@ -77,7 +78,12 @@ use constant {
     LOCAL_ARRAY_VAR => Compiler::Lexer::TokenType::T_LocalArrayVar,
     LOCAL_HASH_VAR  => Compiler::Lexer::TokenType::T_LocalHashVar,
 
-    ARGUMENT_ARRAY => Compiler::Lexer::TokenType::T_ArgumentArray,
+    PROGRAM_ARGUMENT    => Compiler::Lexer::TokenType::T_ProgramArgument,
+    LIBRARY_DIRECTORIES => Compiler::Lexer::TokenType::T_LibraryDirectories,
+    ARGUMENT_ARRAY      => Compiler::Lexer::TokenType::T_ArgumentArray,
+    INCLUDE             => Compiler::Lexer::TokenType::T_Include,
+    ENVIRONMENT         => Compiler::Lexer::TokenType::T_Environment,
+    SIGNAL              => Compiler::Lexer::TokenType::T_Signal,
 
     IF_STATEMENT      => Compiler::Lexer::TokenType::T_IfStmt,
     ELSE_STATEMENT    => Compiler::Lexer::TokenType::T_ElseStmt,
@@ -158,6 +164,7 @@ use constant {
     ALPHABET_XOR => Compiler::Lexer::TokenType::T_AlphabetXOr,
     BIT_AND => Compiler::Lexer::TokenType::T_BitAnd,
     BIT_OR  => Compiler::Lexer::TokenType::T_BitOr,
+    BIT_XOR => Compiler::Lexer::TokenType::T_BitXOr,
     OR_EQUAL => Compiler::Lexer::TokenType::T_OrEqual,
     AND_EQUAL => Compiler::Lexer::TokenType::T_AndEqual,
     EQUAL_EQUAL => Compiler::Lexer::TokenType::T_EqualEqual,
@@ -187,6 +194,9 @@ use constant {
     MOD_WORD => Compiler::Lexer::TokenType::T_ModWord,
 
     TYPE_STDIN => Compiler::Lexer::TokenType::T_STDIN, # STDIN is reserved by main::
+    TYPE_STDOUT => Compiler::Lexer::TokenType::T_STDOUT, # STDOUT is reserved by main::
+    TYPE_STDERR => Compiler::Lexer::TokenType::T_STDERR, # STDERR is reserved by main::
+
 
     HANDLE => Compiler::Lexer::TokenType::T_Handle,
     HANDLE_DELIM => Compiler::Lexer::TokenType::T_HandleDelim,
@@ -198,6 +208,7 @@ use constant {
     STRING_COMPARE => Compiler::Lexer::TokenType::T_StringCompare,
 
     MUL => Compiler::Lexer::TokenType::T_Mul,
+    MOD => Compiler::Lexer::TokenType::T_Mod,
     STRING_ADD => Compiler::Lexer::TokenType::T_StringAdd,
     STRING_MUL => Compiler::Lexer::TokenType::T_StringMul,
 
