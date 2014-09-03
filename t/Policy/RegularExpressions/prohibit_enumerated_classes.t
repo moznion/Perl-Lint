@@ -7,7 +7,7 @@ use Test::Base::Less;
 my $class_name = 'RegularExpressions::ProhibitEnumeratedClasses';
 
 filters {
-    params => [qw/eval/], # TODO wrong!
+    params => [qw/eval/],
 };
 
 for my $block (blocks) {
@@ -74,13 +74,14 @@ m/[^a-zA-Z]/;   # \P{Alphabetic}
 m/[^ \t\r\n\f]/;# \S
 m/[^\ \t\r\n]/; # \S
 
-# ===
-# --- dscr: special negative successes
-# --- failures: 0
-# --- params:
-# --- input
-# m/[^\s\w]/;
-#
+===
+--- dscr: special negative successes
+--- failures: 0
+--- params:
+--- input
+m/[^\s\w]/;
+
+# TODO
 # ===
 # --- dscr: failing regexp with syntax error
 # --- failures: 0

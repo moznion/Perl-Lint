@@ -6,7 +6,7 @@ use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
 use constant {
-    DESC => 'Use named character classes',
+    DESC => 'Use named character classes (%s VS. %s)',
     EXPL => [248],
 };
 
@@ -64,17 +64,24 @@ sub evaluate {
 
                     my %parts = map {$_ => 1} @parts;
                     for (my $j = 0; $j < @patterns; $j += 2) {
-                        if (List::Util::all { $parts{$_} } @{$patterns[$j]}) {
+                        if (List::Util::all { exists $parts{$_} } @{$patterns[$j]}) {
                             my $index = 0;
                             if ($is_negate) {
                                 $index = 1;
                             }
 
-                            if ($patterns[$j+1]->[$index]) {
+                            if ($is_negate && ! defined $patterns[$j+1]->[0]) {
+                                # the [^\w] => \W rule only applies if \w is the only token.
+                                # that is it does not apply to [^\w\s]
+                                next if 1 != scalar keys %parts;
+                            }
+
+                            my $orig = join q{}, '[', ($is_negate ? q{^} : ()), @{$patterns[$j]}, ']';
+                            if (defined (my $improvement = $patterns[$j+1]->[$index])) {
                                 push @violations, {
                                     filename => $file,
                                     line     => $token->{line},
-                                    description => DESC,
+                                    description => sprintf(DESC, $orig, $improvement),
                                     explanation => EXPL,
                                     policy => __PACKAGE__,
                                 };
