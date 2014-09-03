@@ -47,7 +47,21 @@ sub evaluate {
                         next;
                     }
 
-                    my @parts = $in_brackets =~ m/([^\\]-[^\\] | [_ ] | \\[trnws] | \\0[0-7]+ | \\x[0-9a-f])/gx;
+                    my @parts = $in_brackets =~ /([^\\]-[^\\] | [_ ] | \\[trnws])/gx;
+                    my @octs = $in_brackets =~ /\\0([0-7]+)/gx;
+                    for my $oct (@octs) {
+                        if (my $chr = $ordinals{oct $oct}) {
+                            push @parts, $chr;
+                        }
+                    }
+
+                    my @hexs = $in_brackets =~ /\\x{?([0-9a-f]+)}?/gx;
+                    for my $hex (@hexs) {
+                        if (my $chr = $ordinals{hex $hex}) {
+                            push @parts, $chr;
+                        }
+                    }
+
                     my %parts = map {$_ => 1} @parts;
                     for (my $j = 0; $j < @patterns; $j += 2) {
                         if (List::Util::all { $parts{$_} } @{$patterns[$j]}) {

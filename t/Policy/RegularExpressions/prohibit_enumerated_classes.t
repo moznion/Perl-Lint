@@ -51,29 +51,29 @@ m/[a-zA-Z]/;   # \p{Alphabetic}
 m/[ \t\r\n\f]/;# \s
 m/[\ \t\r\n]/; # \s
 
-# ===
-# --- dscr: alterate representations of line endings
-# --- failures: 3
-# --- params:
-# --- input
-# m/[\ \t\012\015]/; # \s
-# m/[\ \t\x0a\x0d]/; # \s
-# m/[\ \t\x{0a}\x{0d}]/; # \s
-#
-# ===
-# --- dscr: negative failures
-# --- failures: 8
-# --- params:
-# --- input
-# m/[^\w]/;       # \W
-# m/[^\s]/;       # \S
-# m/[^0-9]/;      # \D
-# m/[^A-Za-z0-9_]/;  # \W
-# m/[^0-9a-z_A-Z]/;  # \W
-# m/[^a-zA-Z]/;   # \P{Alphabetic}
-# m/[^ \t\r\n\f]/;# \S
-# m/[^\ \t\r\n]/; # \S
-#
+===
+--- dscr: alterate representations of line endings
+--- failures: 3
+--- params:
+--- input
+m/[\ \t\012\015]/; # \s
+m/[\ \t\x0a\x0d]/; # \s
+m/[\ \t\x{0a}\x{0d}]/; # \s
+
+===
+--- dscr: negative failures
+--- failures: 8
+--- params:
+--- input
+m/[^\w]/;       # \W
+m/[^\s]/;       # \S
+m/[^0-9]/;      # \D
+m/[^A-Za-z0-9_]/;  # \W
+m/[^0-9a-z_A-Z]/;  # \W
+m/[^a-zA-Z]/;   # \P{Alphabetic}
+m/[^ \t\r\n\f]/;# \S
+m/[^\ \t\r\n]/; # \S
+
 # ===
 # --- dscr: special negative successes
 # --- failures: 0
