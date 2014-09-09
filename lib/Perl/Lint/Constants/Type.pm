@@ -15,7 +15,7 @@ our @EXPORT = qw(
     PROGRAM_ARGUMENT LIBRARY_DIRECTORIES ARGUMENT_ARRAY
     INCLUDE ENVIRONMENT SIGNAL
     SEMI_COLON COMMA ARROW COLON POINTER
-    ASSIGN
+    ASSIGN REG_OK REG_NOT
     DOUBLE
     RIGHT_BRACE LEFT_BRACE
     RIGHT_PAREN LEFT_PAREN
@@ -151,6 +151,8 @@ use constant {
     COLON      => Compiler::Lexer::TokenType::T_Colon,
     ARROW      => Compiler::Lexer::TokenType::T_Arrow,
     ASSIGN     => Compiler::Lexer::TokenType::T_Assign,
+    REG_OK     => Compiler::Lexer::TokenType::T_RegOK,
+    REG_NOT    => Compiler::Lexer::TokenType::T_RegNot,
     POINTER    => Compiler::Lexer::TokenType::T_Pointer,
 
     DOUBLE => Compiler::Lexer::TokenType::T_Double,
