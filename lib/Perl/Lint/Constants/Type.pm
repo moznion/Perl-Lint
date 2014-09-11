@@ -31,7 +31,7 @@ our @EXPORT = qw(
     CONTINUE
     BUILTIN_FUNC GOTO RETURN NEXT LAST REDO
     PACKAGE CLASS NAMESPACE NAMESPACE_RESOLVER
-    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND BIT_OR BIT_XOR OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT
+    AND OR ALPHABET_AND ALPHABET_OR ALPHABET_XOR BIT_AND BIT_OR BIT_XOR OR_EQUAL AND_EQUAL EQUAL_EQUAL NOT ALPHABET_NOT NOT_EQUAL
     RIGHT_SHIFT_EQUAL LEFT_SHIFT_EQUAL
     SHORT_SCALAR_DEREFERENCE SHORT_ARRAY_DEREFERENCE SHORT_HASH_DEREFERENCE SHORT_CODE_DEREFERENCE
     THREE_TERM_OP DEFAULT_OP
@@ -41,7 +41,9 @@ our @EXPORT = qw(
     MOD_WORD
     TYPE_STDIN TYPE_STDOUT TYPE_STDERR
     HANDLE HANDLE_DELIM DIAMOND
-    LESS GREATER COMPARE STRING_COMPARE
+    LESS LESS_EQUAL GREATER GREATER_EQUAL COMPARE
+    STRING_LESS STRING_GREATER STRING_COMPARE STRING_NOT_EQUAL
+    STRING_LESS_EQUAL STRING_GREATER_EQUAL
     MUL MOD STRING_ADD STRING_MUL
     SPECIFIC_VALUE SPECIFIC_KEYWORD ARRAY_SIZE
     DEFAULT
@@ -170,6 +172,7 @@ use constant {
     OR_EQUAL => Compiler::Lexer::TokenType::T_OrEqual,
     AND_EQUAL => Compiler::Lexer::TokenType::T_AndEqual,
     EQUAL_EQUAL => Compiler::Lexer::TokenType::T_EqualEqual,
+    NOT_EQUAL => Compiler::Lexer::TokenType::T_NotEqual,
 
     RIGHT_SHIFT_EQUAL => Compiler::Lexer::TokenType::T_RightShiftEqual,
     LEFT_SHIFT_EQUAL  => Compiler::Lexer::TokenType::T_LeftShiftEqual,
@@ -199,15 +202,22 @@ use constant {
     TYPE_STDOUT => Compiler::Lexer::TokenType::T_STDOUT, # STDOUT is reserved by main::
     TYPE_STDERR => Compiler::Lexer::TokenType::T_STDERR, # STDERR is reserved by main::
 
-
     HANDLE => Compiler::Lexer::TokenType::T_Handle,
     HANDLE_DELIM => Compiler::Lexer::TokenType::T_HandleDelim,
     DIAMOND => Compiler::Lexer::TokenType::T_Diamond,
 
     LESS => Compiler::Lexer::TokenType::T_Less,
+    LESS_EQUAL => Compiler::Lexer::TokenType::T_LessEqual,
     GREATER => Compiler::Lexer::TokenType::T_Greater,
+    GREATER_EQUAL => Compiler::Lexer::TokenType::T_GreaterEqual,
     COMPARE => Compiler::Lexer::TokenType::T_Compare,
-    STRING_COMPARE => Compiler::Lexer::TokenType::T_StringCompare,
+
+    STRING_LESS      => Compiler::Lexer::TokenType::T_StringLess,
+    STRING_GREATER   => Compiler::Lexer::TokenType::T_StringGreater,
+    STRING_COMPARE   => Compiler::Lexer::TokenType::T_StringCompare,
+    STRING_NOT_EQUAL => Compiler::Lexer::TokenType::T_StringNotEqual,
+    STRING_LESS_EQUAL    => Compiler::Lexer::TokenType::T_StringLessEqual,
+    STRING_GREATER_EQUAL => Compiler::Lexer::TokenType::T_StringGreaterEqual,
 
     MUL => Compiler::Lexer::TokenType::T_Mul,
     MOD => Compiler::Lexer::TokenType::T_Mod,
