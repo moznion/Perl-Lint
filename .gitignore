@@ -30,4 +30,3 @@ MYMETA.*
 
 perltidy.LOG
 
-t/Policy/Variables/require_localized_punctuation_vars.t
