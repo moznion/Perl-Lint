@@ -16,8 +16,8 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @marshals = ('warnings', 'Moose', 'Moose::Role', 'Moose::Util::TypeConstraints');
-    if (my $equivalents = $args->{require_use_warnings}->{equivalent_modules}) {
-        push @marshals, split / /, $equivalents;
+    if (my $this_policies_arg = $args->{require_use_warnings}) {
+        push @marshals, split / /, ($this_policies_arg->{equivalent_modules} || '');
     }
 
     my @violations;

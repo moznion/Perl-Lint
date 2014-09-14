@@ -14,8 +14,10 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @arg_allows;
-    if ($args->{allow}) {
-        @arg_allows = map { lc $_ } split(/[\s,]/, $args->{allow});
+    if (my $this_policies_arg = $args->{prohibit_no_strict}) {
+        if (my $allow = $this_policies_arg->{allow}) {
+            @arg_allows = map { lc $_ } split(/[\s,]/, $allow);
+        }
     }
 
     my @violations;

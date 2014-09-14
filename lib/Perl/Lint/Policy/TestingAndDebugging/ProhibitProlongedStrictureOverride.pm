@@ -15,7 +15,10 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $statements_arg = $args->{prohibit_prolonged_stricture_override}->{statements};
+    my $statements_arg;
+    if (my $this_policies_arg = $args->{prohibit_prolonged_stricture_override}) {
+        $statements_arg = $this_policies_arg->{statements};
+    }
     my $allow_statements_num = defined $statements_arg ? $statements_arg : DEFAULT_ALLOW_STATEMENTS_NUM;
 
     my @violations;

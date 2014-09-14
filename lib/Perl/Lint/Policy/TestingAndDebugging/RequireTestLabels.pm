@@ -14,9 +14,11 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @target_test_module = ('Test::More');
-    if (my $required_modules = $args->{require_test_labels}->{modules}) {
-        push @target_test_module, split / /, $required_modules;
+
+    if (my $this_policies_arg = $args->{require_test_labels}) {
+        push @target_test_module, split / /, ($this_policies_arg->{modules} || '');
     }
+
     my @violations;
     my $is_loaded = 0;
     my $token_num = scalar @$tokens;

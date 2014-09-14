@@ -13,10 +13,13 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @arg_allows;
-    if (my $allow = $args->{prohibit_no_warnings}->{allow}) {
-        @arg_allows = map { lc $_ } split(/[\s,]/, $allow);
+    my $allow_with_category_restriction;
+    if (my $this_policies_arg = $args->{prohibit_no_warnings}) {
+        if (my $allow = $this_policies_arg->{allow}) {
+            @arg_allows = map { lc $_ } split(/[\s,]/, $allow);
+        }
+        $allow_with_category_restriction = $this_policies_arg->{allow_with_category_restriction};
     }
-    my $allow_with_category_restriction = $args->{prohibit_no_warnings}->{allow_with_category_restriction};
 
     my @violations;
     my $token_num = scalar @$tokens;
