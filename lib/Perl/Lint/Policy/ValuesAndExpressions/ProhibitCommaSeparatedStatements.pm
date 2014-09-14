@@ -13,8 +13,10 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $allow_last_statement_to_be_comma_separated_in_map_and_grep =
-        $args->{prohibit_comma_separated_statements}->{allow_last_statement_to_be_comma_separated_in_map_and_grep} || 0;
+    my $allow_last_statement_to_be_comma_separated_in_map_and_grep;
+    if (my $this_policies_arg = $args->{prohibit_comma_separated_statements}) {
+        $allow_last_statement_to_be_comma_separated_in_map_and_grep = $this_policies_arg->{allow_last_statement_to_be_comma_separated_in_map_and_grep};
+    }
 
     my @violations;
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {

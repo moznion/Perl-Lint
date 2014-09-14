@@ -12,7 +12,10 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $forbid_use_version = $args->{prohibit_complex_version}->{forbid_use_version} || 0;
+    my $forbid_use_version;
+    if (my $this_policies_arg = $args->{prohibit_complex_version}) {
+        $forbid_use_version = $this_policies_arg->{forbid_use_version};
+    }
 
     my @violations;
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {

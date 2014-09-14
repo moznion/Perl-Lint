@@ -12,7 +12,10 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $is_strict = $args->{prohibit_leading_zeros}->{strict} || 0;
+    my $is_strict;
+    if (my $this_policies_arg = $args->{prohibit_leading_zeros}) {
+        $is_strict = $this_policies_arg->{strict};
+    }
 
     my @violations;
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {

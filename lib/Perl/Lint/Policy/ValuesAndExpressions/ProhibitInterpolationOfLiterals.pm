@@ -15,17 +15,19 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $prohibit_interpolation_of_literals = $args->{prohibit_interpolation_of_literals};
-
-    # e.g. {allow => 'qq( qq{ qq[ qq/'}}
-    my $allow_double_quote_literals = $prohibit_interpolation_of_literals->{allow};
     my @allow_double_quote_literals;
-    for my $allowed_literal (split /\s+/, $allow_double_quote_literals || '') {
-        $allowed_literal =~ s/\Aqq//;
-        push @allow_double_quote_literals, substr $allowed_literal, 0, 1;
+    my $allow_if_string_contains_single_quote;
+    if (my $this_policies_arg = $args->{prohibit_interpolation_of_literals}) {
+        $allow_if_string_contains_single_quote = $this_policies_arg->{allow_if_string_contains_single_quote};
+
+        # e.g. {allow => 'qq( qq{ qq[ qq/'}}
+        my $allow_double_quote_literals = $this_policies_arg->{allow};
+        for my $allowed_literal (split /\s+/, $allow_double_quote_literals || '') {
+            $allowed_literal =~ s/\Aqq//;
+            push @allow_double_quote_literals, substr $allowed_literal, 0, 1;
+        }
     }
 
-    my $allow_if_string_contains_single_quote = $prohibit_interpolation_of_literals->{allow_if_string_contains_single_quote} || 0;
 
     my @violations;
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {

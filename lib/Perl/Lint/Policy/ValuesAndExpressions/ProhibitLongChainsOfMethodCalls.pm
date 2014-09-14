@@ -13,7 +13,10 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $max_chain_length = $args->{prohibit_long_chains_of_method_calls}->{max_chain_length} || 3;
+    my $max_chain_length = 3;
+    if (my $this_policies_arg = $args->{prohibit_long_chains_of_method_calls}) {
+        $max_chain_length = $this_policies_arg->{max_chain_length} || $max_chain_length;
+    }
 
     my @violations;
     for (my $i = 0, my $token_type, my $num_of_chain = 0; my $token = $tokens->[$i]; $i++) {

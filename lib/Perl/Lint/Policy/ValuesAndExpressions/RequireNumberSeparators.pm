@@ -12,7 +12,10 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $min_value = $args->{require_number_separators}->{min_value} || 100_000;
+    my $min_value = 100_000;
+    if (my $this_policies_arg = $args->{require_number_separators}) {
+        $min_value = $this_policies_arg->{min_value} || $min_value;
+    }
 
     my @violations;
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {

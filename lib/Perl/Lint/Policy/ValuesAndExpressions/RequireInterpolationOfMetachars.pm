@@ -14,7 +14,10 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my @rcs_keywords = split /\s+/, $args->{require_interpolation_of_matchers}->{rcs_keywords} || '';
+    my @rcs_keywords = ();
+    if (my $this_policies_arg = $args->{require_interpolation_of_matchers}) {
+        @rcs_keywords = split /\s+/, $this_policies_arg->{rcs_keywords} || '';
+    }
 
     my $is_used_vers = 0;
 
