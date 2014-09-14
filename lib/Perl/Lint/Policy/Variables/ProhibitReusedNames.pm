@@ -27,7 +27,9 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @allows = qw/$self $class/;
-    push @allows, split(/\s+/, $args->{prohibit_reused_names}->{allow} || '');
+    if (my $this_policies_arg = $args->{prohibit_reused_names}) {
+        push @allows, split(/\s+/, $this_policies_arg->{allow} || '');
+    }
 
     my @violations;
 

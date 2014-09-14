@@ -6,7 +6,6 @@ use List::Util qw/any/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
     DESC => 'Magic punctuation variable %s used',
     EXPL => [79],
@@ -79,20 +78,25 @@ my %ignore_for_interpolation = (
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $string_mode = $args->{prohibit_punctuation_vars}->{string_mode} || '';
-
-    my %exempt_vars = $string_mode eq 'thorough' ? () : (
+    my $string_mode = '';
+    my %exempt_vars = (
         '$_' => 1, '@_' => 1, '$]' => 1,
         '$1' => 1, '$2' => 1, '$3' => 1,
         '$4' => 1, '$5' => 1, '$6' => 1,
         '$7' => 1, '$8' => 1, '$9' => 1,
     );
 
-    for my $exempt_var (split(/\s+/, $args->{prohibit_punctuation_vars}->{allow} || '')) {
-        $exempt_vars{$exempt_var} = 1;
+    if (my $this_policies_arg = $args->{prohibit_punctuation_vars}) {
+        $string_mode = $this_policies_arg->{string_mode} || '';
+        if ($string_mode eq 'thorough') {
+            %exempt_vars = ();
+        }
+
+        for my $exempt_var (split(/\s+/, $this_policies_arg->{allow} || '')) {
+            $exempt_vars{$exempt_var} = 1;
+        }
     }
 
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
     my $lexer_for_str = Compiler::Lexer->new;
 
     my @violations;

@@ -14,8 +14,10 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @allowed_packages = qw/Data::Dumper File::Find FindBin Log::Log4perl/;
-    if (my $add_packages = $args->{prohibit_package_vars}->{add_packages}) {
-        push @allowed_packages, split /\s+/, $add_packages;
+    if (my $this_policies_arg = $args->{prohibit_package_vars}) {
+        if (my $add_packages = $this_policies_arg->{add_packages}) {
+            push @allowed_packages, split /\s+/, $add_packages;
+        }
     }
 
     my @violations;

@@ -40,7 +40,9 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my @exemptions = qw/$_ $ARG @_/;
-    push @exemptions, split(/\s+/, $args->{require_localized_punctuation_vars}->{allow} || '');
+    if (my $this_policies_arg = $args->{require_localized_punctuation_vars}) {
+        push @exemptions, split(/\s+/, $this_policies_arg->{allow} || '');
+    }
     my %exemptions = map { $_ => 1 } @exemptions;
 
     my @violations;
