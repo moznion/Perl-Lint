@@ -4,4 +4,5 @@ install: "ln -s $HOME/.ukigumo/perl-lint/extlib ./extlib"
 before_script:
   - perl t/Policy/Variables/require_localized_punctuation_vars.PL
   - perl t/Policy/ControlStructures/prohibit_negative_expressions_in_unless_and_until_conditions.PL
+  - perl t/Policy/NamingConventions/capitalization.PL
 script: prove -lrv -j3 -Iextlib/lib/perl5 t
