@@ -5,7 +5,7 @@ use Compiler::Lexer::Constants;
 use parent qw/Exporter/;
 
 our @EXPORT = qw(
-    VAR_DECL OUR_DECL LOCAL_DECL FUNCTION_DECL FORMAT_DECL
+    VAR_DECL OUR_DECL LOCAL_DECL FUNCTION_DECL FORMAT_DECL STATE_DECL
     USE_DECL REQUIRE_DECL
     USED_NAME REQUIRED_NAME
     CALL FUNCTION
@@ -57,6 +57,7 @@ use constant {
     LOCAL_DECL    => Compiler::Lexer::TokenType::T_LocalDecl,
     FUNCTION_DECL => Compiler::Lexer::TokenType::T_FunctionDecl,
     FORMAT_DECL   => Compiler::Lexer::TokenType::T_FormatDecl,
+    STATE_DECL    => Compiler::Lexer::TokenType::T_StateDecl,
 
     USE_DECL     => Compiler::Lexer::TokenType::T_UseDecl,
     REQUIRE_DECL => Compiler::Lexer::TokenType::T_RequireDecl,
