@@ -314,15 +314,16 @@ sub emit_all_tests_for_name_and_capitalization_scheme {
         $test_file, $name, $capitalization_scheme, $failures,
     );
 
-    # TODO
+    # NOTE need it?
     # emit_scoped_lexical_variable_test(
     #     $test_file, $name, $capitalization_scheme, $failures,
     # );
 
-    # TODO
+    # NOTE need it?
     # emit_file_lexical_variable_test(
     #     $test_file, $name, $capitalization_scheme, $failures,
     # );
+
     emit_global_variable_test(
         $test_file, $name, $capitalization_scheme, $failures,
     );
@@ -546,7 +547,7 @@ foreach state \$$variable_name (\@_) {
     say \$$variable_name;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "$variable_name" vs the "$capitalization_scheme" capitalization scheme.
 # --- failures: $failures
@@ -632,15 +633,14 @@ for (local \$$variable_name = -7; \$$variable_name <= 17; \$$variable_name += 3)
     say \$$variable_name;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the "$capitalization_scheme" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => '$capitalization_scheme'}}
-# --- input
-# for (local \$EVAL_ERROR = -23; \$EVAL_ERROR <= 17; \$EVAL_ERROR += 3) {
-#     say \$EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the "$capitalization_scheme" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => '$capitalization_scheme'}}
+--- input
+for (local \$EVAL_ERROR = -23; \$EVAL_ERROR <= 17; \$EVAL_ERROR += 3) {
+    say \$EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the "$capitalization_scheme" capitalization scheme.
@@ -708,6 +708,7 @@ sub emit_footer {
     my ($test_file) = @_;
 
     print {$test_file} <<'END_FOOTER';
+# NOTE need it?
 # ===
 # --- dscr: Variable in continue block gets handled as a local lexical and not a scoped lexical.
 # --- failures: 1

@@ -247,7 +247,7 @@ foreach state $all_lower_case (@_) {
     say $all_lower_case;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "all_lower_case" vs the ":single_case" capitalization scheme.
 # --- failures: 0
@@ -323,15 +323,14 @@ for (local $all_lower_case = -7; $all_lower_case <= 17; $all_lower_case += 3) {
     say $all_lower_case;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':single_case'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':single_case'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":single_case" capitalization scheme.
@@ -491,7 +490,7 @@ foreach state $ALL_UPPER_CASE (@_) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "ALL_UPPER_CASE" vs the ":single_case" capitalization scheme.
 # --- failures: 0
@@ -567,15 +566,14 @@ for (local $ALL_UPPER_CASE = -7; $ALL_UPPER_CASE <= 17; $ALL_UPPER_CASE += 3) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':single_case'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':single_case'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":single_case" capitalization scheme.
@@ -735,7 +733,7 @@ foreach state $mixedCase (@_) {
     say $mixedCase;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "mixedCase" vs the ":single_case" capitalization scheme.
 # --- failures: 1
@@ -811,15 +809,14 @@ for (local $mixedCase = -7; $mixedCase <= 17; $mixedCase += 3) {
     say $mixedCase;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':single_case'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':single_case'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":single_case" capitalization scheme.
@@ -979,7 +976,7 @@ foreach state $a11_lower_case_with_digits (@_) {
     say $a11_lower_case_with_digits;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "a11_lower_case_with_digits" vs the ":single_case" capitalization scheme.
 # --- failures: 0
@@ -1055,15 +1052,14 @@ for (local $a11_lower_case_with_digits = -7; $a11_lower_case_with_digits <= 17; 
     say $a11_lower_case_with_digits;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':single_case'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':single_case'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":single_case" capitalization scheme.
@@ -1223,7 +1219,7 @@ foreach state $A11_UPPER_CASE_WITH_DIGITS (@_) {
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "A11_UPPER_CASE_WITH_DIGITS" vs the ":single_case" capitalization scheme.
 # --- failures: 0
@@ -1299,15 +1295,14 @@ for (local $A11_UPPER_CASE_WITH_DIGITS = -7; $A11_UPPER_CASE_WITH_DIGITS <= 17; 
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':single_case'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":single_case" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':single_case'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":single_case" capitalization scheme.
@@ -1467,7 +1462,7 @@ foreach state $all_lower_case (@_) {
     say $all_lower_case;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "all_lower_case" vs the ":all_lower" capitalization scheme.
 # --- failures: 0
@@ -1543,15 +1538,14 @@ for (local $all_lower_case = -7; $all_lower_case <= 17; $all_lower_case += 3) {
     say $all_lower_case;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_lower" capitalization scheme.
@@ -1711,7 +1705,7 @@ foreach state $ALL_UPPER_CASE (@_) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "ALL_UPPER_CASE" vs the ":all_lower" capitalization scheme.
 # --- failures: 1
@@ -1787,15 +1781,14 @@ for (local $ALL_UPPER_CASE = -7; $ALL_UPPER_CASE <= 17; $ALL_UPPER_CASE += 3) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_lower" capitalization scheme.
@@ -1955,7 +1948,7 @@ foreach state $mixedCase (@_) {
     say $mixedCase;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "mixedCase" vs the ":all_lower" capitalization scheme.
 # --- failures: 1
@@ -2031,15 +2024,14 @@ for (local $mixedCase = -7; $mixedCase <= 17; $mixedCase += 3) {
     say $mixedCase;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_lower" capitalization scheme.
@@ -2199,7 +2191,7 @@ foreach state $a11_lower_case_with_digits (@_) {
     say $a11_lower_case_with_digits;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "a11_lower_case_with_digits" vs the ":all_lower" capitalization scheme.
 # --- failures: 0
@@ -2275,15 +2267,14 @@ for (local $a11_lower_case_with_digits = -7; $a11_lower_case_with_digits <= 17; 
     say $a11_lower_case_with_digits;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_lower" capitalization scheme.
@@ -2443,7 +2434,7 @@ foreach state $A11_UPPER_CASE_WITH_DIGITS (@_) {
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "A11_UPPER_CASE_WITH_DIGITS" vs the ":all_lower" capitalization scheme.
 # --- failures: 1
@@ -2519,15 +2510,14 @@ for (local $A11_UPPER_CASE_WITH_DIGITS = -7; $A11_UPPER_CASE_WITH_DIGITS <= 17; 
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_lower" capitalization scheme.
@@ -2687,7 +2677,7 @@ foreach state $all_lower_case (@_) {
     say $all_lower_case;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "all_lower_case" vs the ":all_upper" capitalization scheme.
 # --- failures: 1
@@ -2763,15 +2753,14 @@ for (local $all_lower_case = -7; $all_lower_case <= 17; $all_lower_case += 3) {
     say $all_lower_case;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_upper" capitalization scheme.
@@ -2931,7 +2920,7 @@ foreach state $ALL_UPPER_CASE (@_) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "ALL_UPPER_CASE" vs the ":all_upper" capitalization scheme.
 # --- failures: 0
@@ -3007,15 +2996,14 @@ for (local $ALL_UPPER_CASE = -7; $ALL_UPPER_CASE <= 17; $ALL_UPPER_CASE += 3) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_upper" capitalization scheme.
@@ -3175,7 +3163,7 @@ foreach state $mixedCase (@_) {
     say $mixedCase;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "mixedCase" vs the ":all_upper" capitalization scheme.
 # --- failures: 1
@@ -3251,15 +3239,14 @@ for (local $mixedCase = -7; $mixedCase <= 17; $mixedCase += 3) {
     say $mixedCase;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_upper" capitalization scheme.
@@ -3419,7 +3406,7 @@ foreach state $a11_lower_case_with_digits (@_) {
     say $a11_lower_case_with_digits;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "a11_lower_case_with_digits" vs the ":all_upper" capitalization scheme.
 # --- failures: 1
@@ -3495,15 +3482,14 @@ for (local $a11_lower_case_with_digits = -7; $a11_lower_case_with_digits <= 17; 
     say $a11_lower_case_with_digits;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_upper" capitalization scheme.
@@ -3663,7 +3649,7 @@ foreach state $A11_UPPER_CASE_WITH_DIGITS (@_) {
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "A11_UPPER_CASE_WITH_DIGITS" vs the ":all_upper" capitalization scheme.
 # --- failures: 0
@@ -3739,15 +3725,14 @@ for (local $A11_UPPER_CASE_WITH_DIGITS = -7; $A11_UPPER_CASE_WITH_DIGITS <= 17; 
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':all_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":all_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':all_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":all_upper" capitalization scheme.
@@ -3907,7 +3892,7 @@ foreach state $all_lower_case (@_) {
     say $all_lower_case;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "all_lower_case" vs the ":starts_with_lower" capitalization scheme.
 # --- failures: 0
@@ -3983,15 +3968,14 @@ for (local $all_lower_case = -7; $all_lower_case <= 17; $all_lower_case += 3) {
     say $all_lower_case;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
@@ -4151,7 +4135,7 @@ foreach state $ALL_UPPER_CASE (@_) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "ALL_UPPER_CASE" vs the ":starts_with_lower" capitalization scheme.
 # --- failures: 1
@@ -4227,15 +4211,14 @@ for (local $ALL_UPPER_CASE = -7; $ALL_UPPER_CASE <= 17; $ALL_UPPER_CASE += 3) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
@@ -4395,7 +4378,7 @@ foreach state $________all_lower_case_with_leading_underscores (@_) {
     say $________all_lower_case_with_leading_underscores;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "________all_lower_case_with_leading_underscores" vs the ":starts_with_lower" capitalization scheme.
 # --- failures: 0
@@ -4471,15 +4454,14 @@ for (local $________all_lower_case_with_leading_underscores = -7; $________all_l
     say $________all_lower_case_with_leading_underscores;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
@@ -4639,7 +4621,7 @@ foreach state $a11_lower_case_with_digits (@_) {
     say $a11_lower_case_with_digits;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "a11_lower_case_with_digits" vs the ":starts_with_lower" capitalization scheme.
 # --- failures: 0
@@ -4715,15 +4697,14 @@ for (local $a11_lower_case_with_digits = -7; $a11_lower_case_with_digits <= 17; 
     say $a11_lower_case_with_digits;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
@@ -4883,7 +4864,7 @@ foreach state $A11_UPPER_CASE_WITH_DIGITS (@_) {
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "A11_UPPER_CASE_WITH_DIGITS" vs the ":starts_with_lower" capitalization scheme.
 # --- failures: 1
@@ -4959,15 +4940,14 @@ for (local $A11_UPPER_CASE_WITH_DIGITS = -7; $A11_UPPER_CASE_WITH_DIGITS <= 17; 
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_lower'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_lower'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_lower" capitalization scheme.
@@ -5127,7 +5107,7 @@ foreach state $all_lower_case (@_) {
     say $all_lower_case;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "all_lower_case" vs the ":starts_with_upper" capitalization scheme.
 # --- failures: 1
@@ -5203,15 +5183,14 @@ for (local $all_lower_case = -7; $all_lower_case <= 17; $all_lower_case += 3) {
     say $all_lower_case;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
@@ -5371,7 +5350,7 @@ foreach state $ALL_UPPER_CASE (@_) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "ALL_UPPER_CASE" vs the ":starts_with_upper" capitalization scheme.
 # --- failures: 0
@@ -5447,15 +5426,14 @@ for (local $ALL_UPPER_CASE = -7; $ALL_UPPER_CASE <= 17; $ALL_UPPER_CASE += 3) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
@@ -5615,7 +5593,7 @@ foreach state $________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES (@_) {
     say $________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES" vs the ":starts_with_upper" capitalization scheme.
 # --- failures: 0
@@ -5691,15 +5669,14 @@ for (local $________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES = -7; $________ALL_U
     say $________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
@@ -5859,7 +5836,7 @@ foreach state $a11_lower_case_with_digits (@_) {
     say $a11_lower_case_with_digits;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "a11_lower_case_with_digits" vs the ":starts_with_upper" capitalization scheme.
 # --- failures: 1
@@ -5935,15 +5912,14 @@ for (local $a11_lower_case_with_digits = -7; $a11_lower_case_with_digits <= 17; 
     say $a11_lower_case_with_digits;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
@@ -6103,7 +6079,7 @@ foreach state $A11_UPPER_CASE_WITH_DIGITS (@_) {
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "A11_UPPER_CASE_WITH_DIGITS" vs the ":starts_with_upper" capitalization scheme.
 # --- failures: 0
@@ -6179,15 +6155,14 @@ for (local $A11_UPPER_CASE_WITH_DIGITS = -7; $A11_UPPER_CASE_WITH_DIGITS <= 17; 
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':starts_with_upper'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':starts_with_upper'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":starts_with_upper" capitalization scheme.
@@ -6347,7 +6322,7 @@ foreach state $all_lower_case (@_) {
     say $all_lower_case;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "all_lower_case" vs the ":no_restriction" capitalization scheme.
 # --- failures: 0
@@ -6423,15 +6398,14 @@ for (local $all_lower_case = -7; $all_lower_case <= 17; $all_lower_case += 3) {
     say $all_lower_case;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':no_restriction'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':no_restriction'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":no_restriction" capitalization scheme.
@@ -6591,7 +6565,7 @@ foreach state $ALL_UPPER_CASE (@_) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "ALL_UPPER_CASE" vs the ":no_restriction" capitalization scheme.
 # --- failures: 0
@@ -6667,15 +6641,14 @@ for (local $ALL_UPPER_CASE = -7; $ALL_UPPER_CASE <= 17; $ALL_UPPER_CASE += 3) {
     say $ALL_UPPER_CASE;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':no_restriction'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':no_restriction'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":no_restriction" capitalization scheme.
@@ -6835,7 +6808,7 @@ foreach state $mixedCase (@_) {
     say $mixedCase;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "mixedCase" vs the ":no_restriction" capitalization scheme.
 # --- failures: 0
@@ -6911,15 +6884,14 @@ for (local $mixedCase = -7; $mixedCase <= 17; $mixedCase += 3) {
     say $mixedCase;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':no_restriction'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':no_restriction'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":no_restriction" capitalization scheme.
@@ -7079,7 +7051,7 @@ foreach state $________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES (@_) {
     say $________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES" vs the ":no_restriction" capitalization scheme.
 # --- failures: 0
@@ -7155,15 +7127,14 @@ for (local $________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES = -7; $________ALL_U
     say $________ALL_UPPER_CASE_WITH_LEADING_UNDERSCORES;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':no_restriction'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':no_restriction'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":no_restriction" capitalization scheme.
@@ -7323,7 +7294,7 @@ foreach state $a11_lower_case_with_digits (@_) {
     say $a11_lower_case_with_digits;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "a11_lower_case_with_digits" vs the ":no_restriction" capitalization scheme.
 # --- failures: 0
@@ -7399,15 +7370,14 @@ for (local $a11_lower_case_with_digits = -7; $a11_lower_case_with_digits <= 17; 
     say $a11_lower_case_with_digits;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':no_restriction'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':no_restriction'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":no_restriction" capitalization scheme.
@@ -7567,7 +7537,7 @@ foreach state $A11_UPPER_CASE_WITH_DIGITS (@_) {
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "A11_UPPER_CASE_WITH_DIGITS" vs the ":no_restriction" capitalization scheme.
 # --- failures: 0
@@ -7643,15 +7613,14 @@ for (local $A11_UPPER_CASE_WITH_DIGITS = -7; $A11_UPPER_CASE_WITH_DIGITS <= 17; 
     say $A11_UPPER_CASE_WITH_DIGITS;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => ':no_restriction'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the ":no_restriction" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => ':no_restriction'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the ":no_restriction" capitalization scheme.
@@ -7811,7 +7780,7 @@ foreach state $foobar (@_) {
     say $foobar;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "foobar" vs the "foo.*bar" capitalization scheme.
 # --- failures: 0
@@ -7887,15 +7856,14 @@ for (local $foobar = -7; $foobar <= 17; $foobar += 3) {
     say $foobar;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the "foo.*bar" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => 'foo.*bar'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the "foo.*bar" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => 'foo.*bar'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the "foo.*bar" capitalization scheme.
@@ -8055,7 +8023,7 @@ foreach state $fooXYZZYbar (@_) {
     say $fooXYZZYbar;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "fooXYZZYbar" vs the "foo.*bar" capitalization scheme.
 # --- failures: 0
@@ -8131,15 +8099,14 @@ for (local $fooXYZZYbar = -7; $fooXYZZYbar <= 17; $fooXYZZYbar += 3) {
     say $fooXYZZYbar;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the "foo.*bar" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => 'foo.*bar'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the "foo.*bar" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => 'foo.*bar'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the "foo.*bar" capitalization scheme.
@@ -8299,7 +8266,7 @@ foreach state $xyzzy (@_) {
     say $xyzzy;
 }
 
-# TODO
+# NOTE need it?
 # ===
 # --- dscr: Implied local lexical variable as foreach loop variable named "xyzzy" vs the "foo.*bar" capitalization scheme.
 # --- failures: 1
@@ -8375,15 +8342,14 @@ for (local $xyzzy = -7; $xyzzy <= 17; $xyzzy += 3) {
     say $xyzzy;
 }
 
-# TODO yaruzo
-# ===
-# --- dscr: Localized builtin variable as C-style for loop variable vs the "foo.*bar" capitalization scheme.
-# --- failures: 0
-# --- params: {capitalization => {global_variables => 'foo.*bar'}}
-# --- input
-# for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
-#     say $EVAL_ERROR;
-# }
+===
+--- dscr: Localized builtin variable as C-style for loop variable vs the "foo.*bar" capitalization scheme.
+--- failures: 0
+--- params: {capitalization => {global_variables => 'foo.*bar'}}
+--- input
+for (local $EVAL_ERROR = -23; $EVAL_ERROR <= 17; $EVAL_ERROR += 3) {
+    say $EVAL_ERROR;
+}
 
 ===
 --- dscr: Localized variable in another package as C-style for loop variable vs the "foo.*bar" capitalization scheme.
@@ -8424,6 +8390,7 @@ bLaHlAhLaH:
 while ( foo() ) {
     next bLaHlAhLaH;
 }
+# NOTE need it?
 # ===
 # --- dscr: Variable in continue block gets handled as a local lexical and not a scoped lexical.
 # --- failures: 1
