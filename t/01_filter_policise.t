@@ -50,7 +50,7 @@ subtest 'Ignore with filter' => sub {
             ],
         });
 
-        is scalar(@{$linter->{site_policies}}), scalar(@site_policies) - 21; # XXX in truth, 22. Not 21.
+        is scalar(@{$linter->{site_policies}}), scalar(@site_policies) - 22;
     };
 
     subtest 'Should die when it gives invalid type to `filter`' => sub {
