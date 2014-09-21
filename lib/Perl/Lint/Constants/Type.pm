@@ -49,6 +49,11 @@ our @EXPORT = qw(
     DEFAULT
     PROTOTYPE
     SCALAR_DEREFERENCE HASH_DEREFERENCE ARRAY_DEREFERENCE ARRAY_SIZE_DEREFERENCE
+
+    POWER_EQUAL ADD_EQUAL MUL_EQUAL AND_BIT_EQUAL SUB_EQUAL DIV_EQUAL
+    OR_BIT_EQUAL MOD_EQUAL NOT_BIT_EQUAL DEFAULT_EQUAL STRING_ADD_EQUAL
+
+    PLUSPLUS MINUSMINUS
 );
 
 use constant {
@@ -237,6 +242,21 @@ use constant {
     HASH_DEREFERENCE   => Compiler::Lexer::TokenType::T_HashDereference,
     ARRAY_DEREFERENCE  => Compiler::Lexer::TokenType::T_ArrayDereference,
     ARRAY_SIZE_DEREFERENCE  => Compiler::Lexer::TokenType::T_ArraySizeDereference,
+
+    POWER_EQUAL   => Compiler::Lexer::TokenType::T_PowerEqual,
+    ADD_EQUAL     => Compiler::Lexer::TokenType::T_AddEqual,
+    MUL_EQUAL     => Compiler::Lexer::TokenType::T_MulEqual,
+    AND_BIT_EQUAL => Compiler::Lexer::TokenType::T_AndBitEqual,
+    SUB_EQUAL     => Compiler::Lexer::TokenType::T_SubEqual,
+    DIV_EQUAL     => Compiler::Lexer::TokenType::T_DivEqual,
+    OR_BIT_EQUAL  => Compiler::Lexer::TokenType::T_OrBitEqual,
+    MOD_EQUAL     => Compiler::Lexer::TokenType::T_ModEqual,
+    NOT_BIT_EQUAL => Compiler::Lexer::TokenType::T_NotBitEqual,
+    DEFAULT_EQUAL => Compiler::Lexer::TokenType::T_DefaultEqual,
+    STRING_ADD_EQUAL => Compiler::Lexer::TokenType::T_StringAddEqual,
+
+    PLUSPLUS => Compiler::Lexer::TokenType::T_Inc,
+    MINUSMINUS => Compiler::Lexer::TokenType::T_Dec,
 };
 
 1;

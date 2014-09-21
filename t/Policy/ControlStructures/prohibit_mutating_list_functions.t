@@ -21,15 +21,28 @@ __DATA__
 
 ===
 --- dscr: Assignment and op-assignment
---- failures: 4
+--- failures: 18
 --- params:
 --- input
-# TODO: PPI as of 1.215 doesn't parse all of the augmented assignment
-# operators, so we can't do exhaustive testing.
-@bar = map {$_ = 1} @foo;
-@bar = map {$_ *= 2} @foo;
 @bar = map {$_++} @foo;
 @bar = map {$_--} @foo;
+@bar = map {$_ = 1} @foo;
+@bar = map {$_ **= 2} @foo;
+@bar = map {$_ += 2} @foo;
+@bar = map {$_ *= 2} @foo;
+@bar = map {$_ &= 2} @foo;
+@bar = map {$_ <<= 2} @foo;
+@bar = map {$_ &&= 2} @foo;
+@bar = map {$_ -= 2} @foo;
+@bar = map {$_ /= 2} @foo;
+@bar = map {$_ |= 2} @foo;
+@bar = map {$_ >>= 2} @foo;
+@bar = map {$_ ||= 2} @foo;
+@bar = map {$_ .= 2} @foo;
+@bar = map {$_ %= 2} @foo;
+@bar = map {$_ ^= 2} @foo;
+@bar = map {$_ //= 2} @foo;
+# @bar = map {$_ x= 2} @foo; # TODO
 
 ===
 --- dscr: ++ and -- operators
@@ -68,21 +81,27 @@ __DATA__
 
 ===
 --- dscr: Implicit chomp-ish builtins
---- failures: 2
+--- failures: 4
 --- params:
 --- input
 @bar = map {chop} @foo;
 @bar = map {chomp} @foo;
 @bar = map {undef} @foo;
+@bar = map {chop()} @foo;
+@bar = map {chomp()} @foo;
+@bar = map {undef()} @foo;
 
 ===
 --- dscr: Explicit chomp-ish builtins
---- failures: 3
+--- failures: 6
 --- params:
 --- input
 @bar = map {chop $_} @foo;
 @bar = map {chomp $_} @foo;
 @bar = map {undef $_} @foo;
+@bar = map {chop($_)} @foo;
+@bar = map {chomp($_)} @foo;
+@bar = map {undef($_)} @foo;
 
 ===
 --- dscr: substr
