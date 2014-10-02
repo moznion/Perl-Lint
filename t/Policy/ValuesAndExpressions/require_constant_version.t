@@ -276,23 +276,23 @@ use version; our $VERSION = qv((qw$Revision$)[1] / 1000);
 our $VERSION = qv('1.2.3');
 our $VERSION = version->new('1.2.3');
 our $VERSION = version->new(qw$Revision$);
-#
-# ===
-# --- dscr: RT #55600 ( $bar = sprintf '%s', $VERSION ) =~ s/0// false positive
-# --- failures: 0
-# --- params:
-# --- input
-# # This is cut-and-paste directly from the RT ticket. I did not make it up.
-# (my $BAR = sprintf q{%s/%s}, __PACKAGE__, $VERSION) =~ s{o\z}{}xms;
-#
-# # The following were not issues raised in the ticket, but ought to pass as a
-# # result of the work done for the ticket.
-#
-# ( my $BAR = ___PACKAGE__ . '/' . $VERSION ) =~ s{ o \z }{}xms;
-# ( my $BAR = join '/', __PACKAGE__, $VERSION ) =~ s{ o \z }{}xms;
-#
-# # In fact, the following should pass also, though I can't imagine why anyone
-# # would do it.
-#
-# sprintf( q{%s/%s}, __PACKAGE__, $VERSION ) =~ s{ o \z }{}xms;
-#
+
+===
+--- dscr: RT #55600 ( $bar = sprintf '%s', $VERSION ) =~ s/0// false positive
+--- failures: 0
+--- params:
+--- input
+# This is cut-and-paste directly from the RT ticket. I did not make it up.
+(my $BAR = sprintf q{%s/%s}, __PACKAGE__, $VERSION) =~ s{o\z}{}xms;
+
+# The following were not issues raised in the ticket, but ought to pass as a
+# result of the work done for the ticket.
+
+( my $BAR = ___PACKAGE__ . '/' . $VERSION ) =~ s{ o \z }{}xms;
+( my $BAR = join '/', __PACKAGE__, $VERSION ) =~ s{ o \z }{}xms;
+
+# In fact, the following should pass also, though I can't imagine why anyone
+# would do it.
+
+sprintf( q{%s/%s}, __PACKAGE__, $VERSION ) =~ s{ o \z }{}xms;
+

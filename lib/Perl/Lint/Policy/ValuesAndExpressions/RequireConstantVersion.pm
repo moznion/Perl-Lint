@@ -20,7 +20,8 @@ sub evaluate {
     my @violations;
     # use Data::Dumper; warn Dumper($tokens);
 
-    my $before_token;
+    my $is_version_assigner = 0;
+    my $is_version_in_func_call_ctx = 0;
 
     TOP: for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
@@ -29,6 +30,37 @@ sub evaluate {
         # `use version;` declared?
         if ($token_type == USED_NAME && $token_data eq 'version') {
             $is_used_version = 1;
+            next;
+        }
+
+        # in assigning context?
+        if ($token_type == ASSIGN) {
+            $is_version_assigner = 1;
+            next;
+        }
+
+        # reset context information
+        if ($token_type == SEMI_COLON) {
+            $is_version_assigner = 0;
+            next;
+        }
+
+        if ($token_type == BUILTIN_FUNC) {
+            $token = $tokens->[++$i] or last;
+            if ($token->{type} == LEFT_PAREN) {
+                # skip tokens which are surrounded by parenthesis
+                my $lpnum = 1;
+                for ($i++; $token = $tokens->[$i]; $i++) {
+                    $token_type = $token->{type};
+                    if ($token_type == LEFT_PAREN) {
+                        $lpnum++;
+                    }
+                    elsif ($token_type == RIGHT_PAREN) {
+                        last if --$lpnum <= 0;
+                    }
+                }
+            }
+            # else: skip a token (means NOP)
         }
 
         if ($token_type != GLOBAL_VAR && $token_type != VAR) {
@@ -39,10 +71,8 @@ sub evaluate {
             next;
         }
 
-        $before_token = $tokens->[$i - 1] or next;
-        if ($before_token->{type} == ASSIGN) {
-            # e.g.
-            #   my $foo = $VERSION;
+        if ($is_version_assigner) {
+            $is_version_assigner = 0;
             next;
         }
 
