@@ -18,10 +18,8 @@ sub evaluate {
     }
 
     my @violations;
-    # use Data::Dumper; warn Dumper($tokens);
 
     my $is_version_assigner = 0;
-    my $is_version_in_func_call_ctx = 0;
 
     TOP: for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
@@ -52,6 +50,7 @@ sub evaluate {
                 my $lpnum = 1;
                 for ($i++; $token = $tokens->[$i]; $i++) {
                     $token_type = $token->{type};
+
                     if ($token_type == LEFT_PAREN) {
                         $lpnum++;
                     }
@@ -72,6 +71,7 @@ sub evaluate {
         }
 
         if ($is_version_assigner) {
+            # skip this!
             $is_version_assigner = 0;
             next;
         }
@@ -95,92 +95,77 @@ sub evaluate {
             }
         }
 
-        if (!$is_invalid) {
-            for ($i++; $token = $tokens->[$i]; $i++) {
-                $token_type = $token->{type};
-                $token_data = $token->{data};
+        if ($is_invalid) {
+            goto JUDGEMENT;
+        }
 
-                if ($token_type == SEMI_COLON) {
-                    last;
-                }
-                elsif ($token_type == STRING) {
-                    if ($is_invalid = $class->_check_interpolation($token_data)) {
-                        last;
-                    }
-                }
-                elsif ($token_type == BUILTIN_FUNC) {
-                    $is_invalid = 1;
-                    last;
-                }
-                elsif ($token_type == REG_DOUBLE_QUOTE) {
-                    $i += 2;
-                    $token = $tokens->[$i] or last;
-                    if ($token->{type} == REG_EXP) {
-                        if ($is_invalid = $class->_check_interpolation($token->{data})) {
-                            last;
-                        }
-                    }
-                }
-                elsif ($token_type == DO) {
-                    $is_invalid = 1;
-                    last;
-                }
-                elsif ($token_type == STRING_MUL) {
-                    $is_invalid = 1;
-                    last;
-                }
-                elsif ($token_type == NAMESPACE) {
-                    $is_invalid = 1;
-                    last;
-                }
-                elsif ($token_type == REG_OK) {
-                    $is_invalid = 1;
-                    last;
-                }
-                elsif ($token_type == LEFT_BRACKET) {
-                    $is_invalid = 1;
-                    last;
-                }
-                elsif ($token_type == VAR || $token_type == GLOBAL_VAR) {
-                    $is_var_assigned = 1;
-                }
-                elsif ($token_type == ASSIGN) {
-                    $is_var_assigned = 0;
-                }
-                elsif ($token_type == KEY) {
-                    if ($token_data eq 'qv') {
-                        # for `qv(...)` notation
-                        if (!$is_used_version) {
-                            $is_invalid = 1;
-                            last;
-                        }
-                    }
-                    elsif ($token_data eq 'version') {
-                        # for `version->new(...)` notation
+        for ($i++; $token = $tokens->[$i]; $i++) {
+            $token_type = $token->{type};
+            $token_data = $token->{data};
 
-                        $token = $tokens->[++$i] or last;
-                        if ($token->{type} != POINTER) {
-                            next;
-                        }
-
-                        $token = $tokens->[++$i] or last;
-                        if ($token->{type} != METHOD && $token->{data} ne 'new') {
-                            next;
-                        }
-
-                        if (!$is_used_version) {
-                            $is_invalid = 1;
-                            last;
-                        }
-                    }
-                    else {
+            if ($token_type == SEMI_COLON) {
+                last;
+            }
+            elsif ($token_type == STRING) {
+                if ($is_invalid = $class->_is_interpolation($token_data)) {
+                    last;
+                }
+            }
+            elsif ($token_type == REG_DOUBLE_QUOTE) {
+                $i += 2; # skip delimiter
+                $token = $tokens->[$i] or last;
+                if ($is_invalid = $class->_is_interpolation($token->{data})) {
+                    last;
+                }
+            }
+            elsif (
+                $token_type == BUILTIN_FUNC ||
+                $token_type == DO           || # do {...}
+                $token_type == STRING_MUL   || # "a" x 42
+                $token_type == NAMESPACE    || # call other package
+                $token_type == REG_OK       || # =~
+                $token_type == LEFT_BRACKET    # access element of array
+            ) {
+                $is_invalid = 1;
+                last;
+            }
+            elsif ($token_type == ASSIGN) {
+                $is_var_assigned = 0;
+            }
+            elsif ($token_type == VAR || $token_type == GLOBAL_VAR) {
+                $is_var_assigned = 1;
+            }
+            elsif ($token_type == KEY) {
+                if ($token_data eq 'qv') { # for `qv(...)` notation
+                    if (!$is_used_version) {
                         $is_invalid = 1;
                         last;
                     }
                 }
+                elsif ($token_data eq 'version') { # for `version->new(...)` notation
+                    if (!$is_used_version) {
+                        $is_invalid = 1;
+                        last;
+                    }
+
+                    $token = $tokens->[++$i] or last;
+                    if ($token->{type} != POINTER) {
+                        next;
+                    }
+
+                    $token = $tokens->[++$i] or last;
+                    if ($token->{type} != METHOD && $token->{data} ne 'new') {
+                        next;
+                    }
+                }
+                else { # for others
+                    $is_invalid = 1;
+                    last;
+                }
             }
         }
 
+        JUDGEMENT:
         if ($is_invalid || $is_var_assigned) {
             push @violations, {
                 filename => $file,
@@ -195,7 +180,7 @@ sub evaluate {
     return \@violations;
 }
 
-sub _check_interpolation {
+sub _is_interpolation {
     my ($class, $str) = @_;
 
     while ($str =~ /(\\*)(\$\S+)/gc) {
