@@ -1,0 +1,298 @@
+use strict;
+use warnings;
+use Perl::Lint::Policy::ValuesAndExpressions::RequireConstantVersion;
+use t::Policy::Util qw/fetch_violations/;
+use Test::Base::Less;
+
+my $class_name = 'ValuesAndExpressions::RequireConstantVersion';
+
+filters {
+    params => [qw/eval/],
+};
+
+for my $block (blocks) {
+    my $violations = fetch_violations($class_name, $block->input, $block->params);
+    is scalar @$violations, $block->failures, $block->dscr;
+}
+
+done_testing;
+
+__DATA__
+
+===
+--- dscr: basic passes
+--- failures: 0
+--- params:
+--- input
+our $VERSION = 2.718;
+our $VERSION = $VERSION = 2.718;
+$VERSION = '3.14159';
+$VERSION = "3.14159";
+$VERSION = "foo\$bar";
+our $VERSION = q{1.618};
+our $VERSION = qq{1.618};
+use version; $VERSION = qv('1.2.3');
+use version; $VERSION = qv("1.2.3");
+# The following from ExtUtils::MakeMaker
+(our $Revision = $VERSION) =~ s{_}{};
+
+===
+--- dscr: basic failures
+--- failures: 7
+--- params:
+--- input
+our $VERSION = "$foo";
+our $VERSION = eval $VERSION;
+our $VERSION = qq{foo\\$bar};
+our ( $VERSION ) = q$REVISION: 42$ =~ m/(\d+)/;
+( $VERSION = '$REVISION: 42$' ) =~ s/.*\s+(\d+).*/$1/;
+use Foo; $VERSION = $Foo::VERSION;
+use version; $VERSION = qv("1.$foo.3");
+
+===
+--- dscr: require 'use version' before qv()
+--- failures: 1
+--- params:
+--- input
+$VERSION = qv('1.2.3');
+
+===
+--- dscr: require 'use version' before version->new()
+--- failures: 1
+--- params:
+--- input
+$VERSION = version->new('1.2.3');
+
+===
+--- dscr: passes involving other assignment operators
+--- failures: 0
+--- params:
+--- input
+our $VERSION ||= 1.23;
+our $VERSION ||= '1.23';
+our $VERSION ||= "1.23";
+use version; our $VERSION = version->new('1.2.3');
+
+===
+--- dscr: failures involving other assignment operators
+--- failures: 4
+--- params:
+--- input
+our $VERSION ||= qw{$Revision 42 $}[1];
+our $VERSION ||= $Foo::VERSION;
+our $VERSION ||= "$Foo::VERSION";
+our $VERSION ||= version->new('1.2.3');
+
+===
+--- dscr: passes from the ProhibitMagicNumbers.run treasury
+--- failures: 0
+--- params:
+--- input
+our $VERSION : unique = "1.23";
+our $VERSION : unique = '1.23';
+our $VERSION = "1.2.3";
+our $VERSION = "1.2.3.0";
+our $VERSION = "1.2.3.blah";
+our $VERSION = "1.23 2005-05-20";
+our $VERSION = "1.23";
+our $VERSION = "1.23, 2004-12-07";
+our $VERSION = "1.23_blah";
+our $VERSION = "1.23blah";
+our $VERSION = "1.2_3";
+our $VERSION = "123";
+our $VERSION = "INSERT";
+our $VERSION = '$Revision$';
+our $VERSION = '-123 blah';
+our $VERSION = '1.2.3';
+our $VERSION = '1.2.3.0';
+our $VERSION = '1.2.3blah';
+our $VERSION = '1.23';
+our $VERSION = '1.23_blah';
+our $VERSION = '1.23blah';
+our $VERSION = '1.2_3';
+our $VERSION = '123';
+our $VERSION = 1.23;
+our $VERSION = 1.2_3;
+our $VERSION = 123;
+our $VERSION = q$0.04$;
+our $VERSION = q$Revision$;
+our $VERSION = q(0.14);
+# Should the following be allowed? I am not sure I really know what qv() means
+# without the 'use version;'.
+# our $VERSION = qv('1.2.3');
+# Hmmm - this is not technically a violation
+our $VERSION = qw(1.2.3);
+# Should the following be allowed? I am not sure I really know what
+# version->new() means without the 'use version;'.
+# our $VERSION = version->new('1.2.3');
+# our $VERSION = version->new(qw$Revision$);
+our ($VERSION) = "1.23";
+our ($VERSION) = '1.23';
+our ($VERSION) = 1.23;
+use version; our $VERSION = 1.23;
+use version; our $VERSION = qv("1.2.3");
+use version; our $VERSION = qv('1.2.3');
+use version; our $VERSION = qv('1.23');
+use version; our $VERSION = version->new('1.23');
+# V-strings are deprecated, but ...
+our $VERSION = 1.2.3;
+our $VERSION = v1.2.3.0;
+our $VERSION = v1.2.3;
+our $VERSION = v1.23;
+
+===
+--- dscr: failures from the ProhibitMagicNumbers.run treasury
+--- failures: 108
+--- params:
+--- input
+(our $VERSION = q$Revision$) =~ s/Revision //;
+(our $VERSION) = '$Revision$' =~ /([\d.]+)/;
+(our $VERSION) = sprintf "%d", q$Revision$ =~ /Revision:\s+(\S+)/;
+our $VERSION = "$local_variable v1.23";
+our $VERSION = "1." . sprintf "%d", q$Revision$ =~ /: (\d+)/;
+our $VERSION = "1.23 (liblgrp version $local_variable)";
+our $VERSION = $SomeOtherModule::VERSION;
+# Technically the following is a constant, but it is also one of the things
+# the policy is designed to prevent.
+our $VERSION = $VERSION = (qw($Revision$))[1];
+our $VERSION = $local_variable;
+our $VERSION = '$Date$'; $VERSION =~ s|^\$Date:\s*([0-9]{4})/([0-9]{2})/([0-9]{2})\s.*|\1.\2.\3| ;
+our $VERSION = '$Revision$' =~ /\$Revision:\s+([^\s]+)/;
+# our $VERSION = '1.' . qw $Revision$[1]; # TODO Possibly Compiler::Lexers' misrecognizing
+our $VERSION = '1.' . sprintf "%d", (qw($Revision$))[1];
+our $VERSION = '1.' . sprintf("%d", (qw($Revision$))[1]);
+# In practice the following is a constant, but if someone goes this far out of
+# their way to obfuscate a constant, I for one am not going to dissapoint
+# them.
+our $VERSION = '1.23' || do { q $Revision$ =~ /(\d+)/; sprintf "%4.2f", $1 / 100 };
+our $VERSION = ('$Revision$' =~ /(\d+.\d+)/)[ 0];
+our $VERSION = ('$Revision$' =~ /(\d+\.\d+)/);
+our $VERSION = ('$Revision$' =~ m/(\d+)/)[0];
+our $VERSION = ((require SomeOtherModule), $SomeOtherModule::VERSION)[1];
+our $VERSION = (q$Revision$ =~ /([\d\.]+)/);
+our $VERSION = (q$Revision$ =~ /(\d+)/g)[0];
+our $VERSION = (qq$Revision$ =~ /(\d+)/)[0];
+our $VERSION = (qw$Revision$)[-1];
+our $VERSION = (qw$Revision$)[1];
+our $VERSION = (qw($Revision$))[1];
+our $VERSION = (split(/ /, '$Revision$'))[1];
+our $VERSION = (split(/ /, '$Revision$'))[2];
+our $VERSION = SomeOtherModule::RCSVersion('$Revision$');
+our $VERSION = SomeOtherModule::VERSION;
+our $VERSION = [ qw{ $Revision$ } ]->[1];
+our $VERSION = do { (my $v = q%version: 1.23 %) =~ s/.*://; sprintf("%d.%d", split(/\./, $v), 0) };
+our $VERSION = do { (my $v = q%version: 123 %) =~ s/.*://; sprintf("%d.%d", split(/\./, $v), 0) };
+our $VERSION = do { q $Revision$ =~ /(\d+)/; sprintf "%4.2f", $1 / 100 };
+our $VERSION = do { q$Revision$ =~ /Revision: (\d+)/; sprintf "1.%d", $1; };
+our $VERSION = do { require mod_perl2; $mod_perl2::VERSION };
+our $VERSION = do {(q$URL$=~ m$.*/(?:tags|branches)/([^/ \t]+)$)[0] || "0.0"};
+our $VERSION = eval { require version; version::qv((qw$Revision$)[1] / 1000) };
+# Should the following be allowed? I really don't know what 'qv' means without
+# the leading 'use version;'.
+our $VERSION = qv('1.2.3');
+our $VERSION = sprintf "%.02f", $local_variable/100 + 0.3;
+our $VERSION = sprintf "%.3f", 123 + substr(q$Revision$, 4)/1000;
+our $VERSION = sprintf "%d.%d", '$Revision$' =~ /(\d+)\.(\d+)/;
+our $VERSION = sprintf "%d.%d", '$Revision$' =~ /(\d+)/g;
+our $VERSION = sprintf "%d.%d", '$Revision$' =~ /(\d+)\.(\d+)/;
+our $VERSION = sprintf "%d.%d", q$Revision$ =~ /: (\d+)\.(\d+)/;
+our $VERSION = sprintf "%d.%d", q$Revision$ =~ /(\d+)/g;
+our $VERSION = sprintf "%d.%d", q$Revision$ =~ /(\d+)\.(\d+)/;
+our $VERSION = sprintf "%d.%d", q$Revision$ =~ /(\d+)\.(\d+)/g;
+our $VERSION = sprintf "%d.%d", q$Revision$ =~ /: (\d+)\.(\d+)/;
+our $VERSION = sprintf "%d.%d", q$Revision$ =~ m/ (\d+) \. (\d+) /xg;
+our $VERSION = sprintf "%d.%d", q$Revision$ ~~ m:P5:g/(\d+)/;
+our $VERSION = sprintf "%d.%d%d", (split /\D+/, '$Name: beta0_1_1 $')[1..3];
+our $VERSION = sprintf "%s.%s%s", q$Name: Rel-0_90 $ =~ /^Name: Rel-(\d+)_(\d+)(_\d+|)\s*$/, 999, "00", join "", (gmtime)[5] +1900, map {sprintf "%d", $_} (gmtime)[4]+1;
+our $VERSION = sprintf "1.%d", '$Revision$' =~ /(\d+)/;
+our $VERSION = sprintf "1.%d", q$Revision$ =~ /(\d+)/g;
+our $VERSION = sprintf '%d.%d', (q$Revision$ =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf '%d.%d', q$Revision$ =~ /(\d+)\.(\d+)/;
+our $VERSION = sprintf '%d.%d', q$Revision$ =~ /(\d+)\.(\d+)/;
+our $VERSION = sprintf '%s', 'q$Revision$' =~ /\S+\s+(\S+)\s+/ ;
+our $VERSION = sprintf '%s', 'q$Revision$' =~ /\S+\s+(\S+)\s+/ ;
+our $VERSION = sprintf '%s', q$Revision$ =~ /Revision:\s+(\S+)\s+/ ;
+our $VERSION = sprintf '%s', q{$Revision$} =~ /\S+\s+(\S+)/ ;
+our $VERSION = sprintf '1.%d', (q$Revision$ =~ /\D(\d+)\s*$/)[0] + 15;
+our $VERSION = sprintf("%d", q$Id: SomeModule.pm,v 1.23 2006/04/10 22:39:38 matthew Exp $ =~ /\s(\d+)\s/);
+our $VERSION = sprintf("%d", q$Id: SomeModule.pm,v 1.23 2006/04/10 22:39:39 matthew Exp $ =~ /\s(\d+)\s/);
+our $VERSION = sprintf("%d.%d", "Revision: 2006.0626" =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf("%d.%d", '$Name: v0_018-2006-06-15b $' =~ /(\d+)_(\d+)/, 0, 0);
+our $VERSION = sprintf("%d.%d", 0, q$Revision$ =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf("%d.%d", q$Name: REL-0-13 $ =~ /(\d+)-(\d+)/, 999, 99);
+our $VERSION = sprintf("%d.%d", q$Name: ical-parser-html-1-6 $ =~ /(\d+)-(\d+)/);
+our $VERSION = sprintf("%d.%d", q$Revision$ =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf("%d.%d", q$Revision$ =~ /(\d+)\.(\d+)/o);
+our $VERSION = sprintf("%d.%d", q$Revision$ =~ m/(\d+)\.(\d+)/);
+our $VERSION = sprintf("%d.%d", q$Revision$=~/(\d+)\.(\d+)/);
+our $VERSION = sprintf("%d.%d", q'$Revision$' =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf("%d.%d.%d", 0, q$Revision$ =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf("1.%d", q$Revision$ =~ / (\d+) /);
+our $VERSION = sprintf("1.%d", q$Revision$ =~ /(\d+)/);
+our $VERSION = sprintf("1.2%d%d", q$Revision$ =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf('%d.%d', '$Revision$' =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf('%d.%d', q$Revision$ =~ /(\d+)\.(\d+)/);
+our $VERSION = sprintf('%d.%d', q$Revision$ =~ /(\d+)\.(\d+)/);
+our $VERSION = substr q$Revision$, 10;
+our $VERSION = substr(q$Revision$, 10);
+# Initially at least this is a violation simply because of the hoops that need
+# to be jumped through to make it work.
+our ($PACKAGE, $VERSION) = ('') x 2;
+# Should the following be allowed? I am not sure I really know what
+# version->new() means without the leading 'use version;'.
+our $VERSION = version->new('1.2.3');
+our $VERSION = version->new(qw$Revision$);
+our ($VERSION) = $SomeOtherModule::VERSION;
+our ($VERSION) = '$Revision$' =~ /\$Revision:\s+([^\s]+)/;
+our ($VERSION) = '$Revision$' =~ /\$Revision:\s+([^\s]+)/;
+our ($VERSION) = '$Revision$' =~ m{ \$Revision: \s+ (\S+) }x;
+our ($VERSION) = '$Revision$' =~ m{ \$Revision: \s+ (\S+) }xm;
+our ($VERSION) = '$Revision$'=~/(\d+(\.\d+))/;
+our ($VERSION) = '$Revision$' =~ m{ \$Revision: \s+ (\S+) }x;
+# Another case of a constant so obfuscated as to perhaps not be worth the
+# analysis to straighten it out.
+our ($VERSION) = '1.23' =~ /([.,\d]+)/;
+our ($VERSION) = ($local_variable =~ /(\d+\.\d+)/);
+our ($VERSION) = ('$Revision$' =~ /(\d+\.\d+)/) ;
+our ($VERSION) = ('$Revision$' =~ /(\d+\.\d+)/);
+our ($VERSION) = ('$Revision$' =~ m/([\.\d]+)/) ;
+our ($VERSION) = (q$Revision$ =~ /([\d\.]+)/);
+our ($VERSION) = (qq$Revision$ =~ /(\d+)/)[0];
+our ($VERSION) = q$Revision$ =~ /Revision:\s+(\S+)/ or $VERSION = "1.23";
+our ($VERSION) = q$Revision$ =~ /Revision:\s+(\S+)/ or $VERSION = '1.23';
+our ($VERSION) = q$Revision$ =~ /[\d.]+/g;
+our ($VERSION) = q$Revision$ =~ /^Revision:\s+(\S+)/ or $VERSION = "1.23";
+require SomeOtherModule; our $VERSION = $SomeOtherModule::VERSION;
+use SomeOtherModule; our $VERSION = $SomeOtherModule::VERSION;
+use SomeOtherModule; our $VERSION = SomeOtherModule::VERSION;
+use base 'SomeOtherModule'; our $VERSION = $SomeOtherModule::VERSION;
+use version; our $VERSION = qv((qw$Revision$)[1] / 1000);
+
+===
+--- dscr: version-like things are OK without 'use version;' if explicitly allowed
+--- failures: 0
+--- params: {require_constant_version => {allow_version_without_use_on_same_line => '1'}}
+--- input
+our $VERSION = qv('1.2.3');
+our $VERSION = version->new('1.2.3');
+our $VERSION = version->new(qw$Revision$);
+
+===
+--- dscr: RT #55600 ( $bar = sprintf '%s', $VERSION ) =~ s/0// false positive
+--- failures: 0
+--- params:
+--- input
+# This is cut-and-paste directly from the RT ticket. I did not make it up.
+(my $BAR = sprintf q{%s/%s}, __PACKAGE__, $VERSION) =~ s{o\z}{}xms;
+
+# The following were not issues raised in the ticket, but ought to pass as a
+# result of the work done for the ticket.
+
+( my $BAR = ___PACKAGE__ . '/' . $VERSION ) =~ s{ o \z }{}xms;
+( my $BAR = join '/', __PACKAGE__, $VERSION ) =~ s{ o \z }{}xms;
+
+# In fact, the following should pass also, though I can't imagine why anyone
+# would do it.
+
+sprintf( q{%s/%s}, __PACKAGE__, $VERSION ) =~ s{ o \z }{}xms;
+
