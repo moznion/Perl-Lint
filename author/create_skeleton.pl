@@ -88,7 +88,7 @@ use Test::Base::Less;
 my \$class_name = '$category\:\:$polycy';
 
 filters {
-    params => [qw/eval/], # TODO wrong!
+    params => [qw/eval/],
 };
 
 for my \$block (blocks) {
