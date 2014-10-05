@@ -106,196 +106,245 @@ sub evaluate {
         }
 
         if (
-            $token_type != ASSIGN &&
-            ($allow_to_the_right_of_a_fat_comma || $token_type != ARROW)
+            $token_type == ASSIGN ||
+            (!$allow_to_the_right_of_a_fat_comma && $token_type == ARROW)
         ) {
-            next;
-        }
+            $token = $tokens->[++$i] or last;
+            $token_type = $token->{type};
+            $token_data = $token->{data};
 
-        $token = $tokens->[++$i] or last;
-        $token_type = $token->{type};
-        $token_data = $token->{data};
-
-        if ($token_type == DOUBLE) {
-            if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
-                my $next_token = $tokens->[$i+1];
-                if ($next_token && $next_token->{type} == DOUBLE) {
+            if ($token_type == DOUBLE) {
+                if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
+                    my $next_token = $tokens->[$i+1];
+                    if ($next_token && $next_token->{type} == DOUBLE) {
+                        $is_invalid = 1;
+                    }
+                }
+                else {
                     $is_invalid = 1;
                 }
             }
-            else {
-                $is_invalid = 1;
-            }
-        }
-        elsif ($token_type == INT) {
-            if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
-                if ($1 eq 'b') {
-                    if (!$allowed_types{Binary}) {
-                        $is_invalid = 1;
-                        goto JUDGEMENT;
+            elsif ($token_type == INT) {
+                if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
+                    if ($1 eq 'b') {
+                        if (!$allowed_types{Binary}) {
+                            $is_invalid = 1;
+                            goto JUDGEMENT;
+                        }
                     }
-                }
-                elsif ($1 eq '0') {
-                    if (!$allowed_types{Octal}) {
-                        $is_invalid = 1;
-                        goto JUDGEMENT;
+                    elsif ($1 eq '0') {
+                        if (!$allowed_types{Octal}) {
+                            $is_invalid = 1;
+                            goto JUDGEMENT;
+                        }
                     }
-                }
-                elsif ($1 eq 'x') {
-                    if (!$allowed_types{Hex}) {
-                        $is_invalid = 1;
-                        goto JUDGEMENT;
+                    elsif ($1 eq 'x') {
+                        if (!$allowed_types{Hex}) {
+                            $is_invalid = 1;
+                            goto JUDGEMENT;
+                        }
                     }
-                }
-                elsif ($1 eq 'e') {
-                    if (!$allowed_types{Exp}) {
-                        $is_invalid = 1;
-                        goto JUDGEMENT;
+                    elsif ($1 eq 'e') {
+                        if (!$allowed_types{Exp}) {
+                            $is_invalid = 1;
+                            goto JUDGEMENT;
+                        }
                     }
-                }
-            }
-
-            if (!$allowed_types{Int}) {
-                $is_invalid = 1;
-            }
-            elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
-                $is_invalid = 1;
-            }
-        }
-        elsif ($token_type == LEFT_PAREN) {
-            my $lpnum = 1;
-            for ($i++; $token = $tokens->[$i]; $i++) {
-                $token_type = $token->{type};
-                $token_data = $token->{data};
-
-                if ($token_type == LEFT_PAREN) {
-                    $lpnum++;
-                }
-                elsif ($token_type == RIGHT_PAREN) {
-                    last if --$lpnum <= 0;
                 }
 
-                # XXX ugly!!!
-                elsif ($token_type == DOUBLE) {
-                    if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
-                        my $next_token = $tokens->[$i+1];
-                        if ($next_token && $next_token->{type} == DOUBLE) {
+                if (!$allowed_types{Int}) {
+                    $is_invalid = 1;
+                }
+                elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
+                    $is_invalid = 1;
+                }
+            }
+            elsif ($token_type == LEFT_PAREN) {
+                my $lpnum = 1;
+                for ($i++; $token = $tokens->[$i]; $i++) {
+                    $token_type = $token->{type};
+                    $token_data = $token->{data};
+
+                    if ($token_type == LEFT_PAREN) {
+                        $lpnum++;
+                    }
+                    elsif ($token_type == RIGHT_PAREN) {
+                        last if --$lpnum <= 0;
+                    }
+
+                    # XXX ugly!!!
+                    elsif ($token_type == DOUBLE) {
+                        if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
+                            my $next_token = $tokens->[$i+1];
+                            if ($next_token && $next_token->{type} == DOUBLE) {
+                                $is_invalid = 1;
+                            }
+                        }
+                        else {
                             $is_invalid = 1;
                         }
                     }
-                    else {
-                        $is_invalid = 1;
-                    }
-                }
-                elsif ($token_type == INT) {
-                    if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
-                        if ($1 eq 'b') {
-                            if (!$allowed_types{Binary}) {
-                                $is_invalid = 1;
-                                goto JUDGEMENT;
+                    elsif ($token_type == INT) {
+                        if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
+                            if ($1 eq 'b') {
+                                if (!$allowed_types{Binary}) {
+                                    $is_invalid = 1;
+                                    goto JUDGEMENT;
+                                }
+                            }
+                            elsif ($1 eq '0') {
+                                if (!$allowed_types{Octal}) {
+                                    $is_invalid = 1;
+                                    goto JUDGEMENT;
+                                }
+                            }
+                            elsif ($1 eq 'x') {
+                                if (!$allowed_types{Hex}) {
+                                    $is_invalid = 1;
+                                    goto JUDGEMENT;
+                                }
+                            }
+                            elsif ($1 eq 'e') {
+                                if (!$allowed_types{Exp}) {
+                                    $is_invalid = 1;
+                                    goto JUDGEMENT;
+                                }
                             }
                         }
-                        elsif ($1 eq '0') {
-                            if (!$allowed_types{Octal}) {
-                                $is_invalid = 1;
-                                goto JUDGEMENT;
-                            }
-                        }
-                        elsif ($1 eq 'x') {
-                            if (!$allowed_types{Hex}) {
-                                $is_invalid = 1;
-                                goto JUDGEMENT;
-                            }
-                        }
-                        elsif ($1 eq 'e') {
-                            if (!$allowed_types{Exp}) {
-                                $is_invalid = 1;
-                                goto JUDGEMENT;
-                            }
-                        }
-                    }
 
-                    if (!$allowed_types{Int}) {
-                        $is_invalid = 1;
-                    }
-                    elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
-                        $is_invalid = 1;
+                        if (!$allowed_types{Int}) {
+                            $is_invalid = 1;
+                        }
+                        elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
+                            $is_invalid = 1;
+                        }
                     }
                 }
             }
+            elsif ($token_type == LEFT_BRACKET) {
+                my $lbnum = 1;
+                for ($i++; $token = $tokens->[$i]; $i++) {
+                    $token_type = $token->{type};
+                    $token_data = $token->{data};
+
+                    if ($token_type == LEFT_BRACKET) {
+                        $lbnum++;
+                    }
+                    elsif ($token_type == RIGHT_BRACKET) {
+                        last if --$lbnum <= 0;
+                    }
+
+                    # XXX ugly!!!
+                    elsif ($token_type == DOUBLE) {
+                        if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
+                            my $next_token = $tokens->[$i+1];
+                            if ($next_token && $next_token->{type} == DOUBLE) {
+                                $is_invalid = 1;
+                            }
+                        }
+                        else {
+                            $is_invalid = 1;
+                        }
+                    }
+                    elsif ($token_type == INT) {
+                        if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
+                            if ($1 eq 'b') {
+                                if (!$allowed_types{Binary}) {
+                                    $is_invalid = 1;
+                                    goto JUDGEMENT;
+                                }
+                            }
+                            elsif ($1 eq '0') {
+                                if (!$allowed_types{Octal}) {
+                                    $is_invalid = 1;
+                                    goto JUDGEMENT;
+                                }
+                            }
+                            elsif ($1 eq 'x') {
+                                if (!$allowed_types{Hex}) {
+                                    $is_invalid = 1;
+                                    goto JUDGEMENT;
+                                }
+                            }
+                            elsif ($1 eq 'e') {
+                                if (!$allowed_types{Exp}) {
+                                    $is_invalid = 1;
+                                    goto JUDGEMENT;
+                                }
+                            }
+                        }
+
+                        if (!$allowed_types{Int}) {
+                            $is_invalid = 1;
+                        }
+                        elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
+                            $is_invalid = 1;
+                        }
+                    }
+                }
+            }
+            JUDGEMENT:
+            if ($is_invalid) {
+                push @violations, {
+                    filename => $file,
+                    line     => $token->{line},
+                    description => DESC,
+                    explanation => EXPL,
+                    policy => __PACKAGE__,
+                };
+            }
         }
-        elsif ($token_type == LEFT_BRACKET) {
+        elsif ($token_type == FUNCTION) {
+            $token = $tokens->[++$i];
+
+            my $buf = [];
+            my @statements = ();
+
             my $lbnum = 1;
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};
-                $token_data = $token->{data};
 
-                if ($token_type == LEFT_BRACKET) {
+                if ($token_type == LEFT_BRACE) {
                     $lbnum++;
                 }
-                elsif ($token_type == RIGHT_BRACKET) {
-                    last if --$lbnum <= 0;
-                }
-
-                # XXX ugly!!!
-                elsif ($token_type == DOUBLE) {
-                    if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
-                        my $next_token = $tokens->[$i+1];
-                        if ($next_token && $next_token->{type} == DOUBLE) {
-                            $is_invalid = 1;
-                        }
-                    }
-                    else {
-                        $is_invalid = 1;
+                elsif ($token_type == RIGHT_BRACE) {
+                    if (--$lbnum <= 0) {
+                        last;
                     }
                 }
-                elsif ($token_type == INT) {
-                    if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
-                        if ($1 eq 'b') {
-                            if (!$allowed_types{Binary}) {
-                                $is_invalid = 1;
-                                goto JUDGEMENT;
-                            }
-                        }
-                        elsif ($1 eq '0') {
-                            if (!$allowed_types{Octal}) {
-                                $is_invalid = 1;
-                                goto JUDGEMENT;
-                            }
-                        }
-                        elsif ($1 eq 'x') {
-                            if (!$allowed_types{Hex}) {
-                                $is_invalid = 1;
-                                goto JUDGEMENT;
-                            }
-                        }
-                        elsif ($1 eq 'e') {
-                            if (!$allowed_types{Exp}) {
-                                $is_invalid = 1;
-                                goto JUDGEMENT;
-                            }
-                        }
-                    }
+                elsif ($token_type == SEMI_COLON) {
+                    push @statements, $buf;
+                    $buf = [];
+                }
+                else {
+                    push @$buf, $token;
+                }
+            }
 
-                    if (!$allowed_types{Int}) {
-                        $is_invalid = 1;
-                    }
-                    elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
-                        $is_invalid = 1;
+            if (scalar @statements > 1) {
+                my $last_statement = pop @statements;
+
+                my $return_value_token = pop @$last_statement or next;
+                if ($return_value_token->{type} == RETURN) {
+                    $return_value_token = pop @$last_statement or next;
+                }
+
+                if (
+                    $return_value_token->{type} == INT ||
+                    $return_value_token->{type} == DOUBLE
+                ) {
+                    # TODO it should support type constraint
+                    if (!$allowed_values{$return_value_token->{data}+0}) { # `+0` to convert to number
+                        push @violations, {
+                            filename => $file,
+                            line     => $token->{line},
+                            description => DESC,
+                            explanation => EXPL,
+                            policy => __PACKAGE__,
+                        };
                     }
                 }
             }
-        }
-
-        JUDGEMENT:
-        if ($is_invalid) {
-            push @violations, {
-                filename => $file,
-                line     => $token->{line},
-                description => DESC,
-                explanation => EXPL,
-                policy => __PACKAGE__,
-            };
         }
     }
 

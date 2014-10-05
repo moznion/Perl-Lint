@@ -235,15 +235,25 @@ sub constant_subroutine { 104598 }
 --- input
 sub constant_subroutine { return 9068; }
 
-# ===
-# --- dscr: Subroutines that contain something other than a constant return value are not allowed.
-# --- failures: 1
-# --- params:
-# --- input
-# sub constant_subroutine {
-#     print 'blah';
-#     return 9068;
-# }
+===
+--- dscr: Subroutines that contain something other than a constant return value are not allowed.
+--- failures: 1
+--- params:
+--- input
+sub constant_subroutine {
+    print 'blah';
+    return 9068;
+}
+
+===
+--- dscr: Subroutines that contain something other than a constant return value are not allowed with implicit.
+--- failures: 1
+--- params:
+--- input
+sub constant_subroutine {
+    print 'blah';
+    9068;
+}
 
 # ===
 # --- dscr: Magic numbers not allowed in ranges.
