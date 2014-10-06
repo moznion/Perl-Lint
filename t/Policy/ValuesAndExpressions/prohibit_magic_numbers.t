@@ -255,41 +255,41 @@ sub constant_subroutine {
     9068;
 }
 
-# ===
-# --- dscr: Magic numbers not allowed in ranges.
-# --- failures: 1
-# --- params:
-# --- input
-# foreach my $solid (1..5) {
-#     frobnicate($solid);
-# }
+===
+--- dscr: Magic numbers not allowed in ranges.
+--- failures: 1
+--- params:
+--- input
+foreach my $solid (1..5) {
+    frobnicate($solid);
+}
 
-# ===
-# --- dscr: Readonly numbers allowed in ranges.
-# --- failures: 0
-# --- params:
-# --- input
-# use Readonly;
-#
-# Readonly my $REGULAR_GEOMETRIC_SOLIDS => 5;
-#
-# foreach my $solid (1..$REGULAR_GEOMETRIC_SOLIDS) {
-#     frobnicate($solid);
-# }
-#
-# ===
-# --- dscr: Binary zero isn't allowed in regular statements.
-# --- failures: 1
-# --- params:
-# --- input
-# $battlemech = 0b0;
-#
-# ===
-# --- dscr: Readonly binary zero is allowed.
-# --- failures: 0
-# --- params:
-# --- input
-# Readonly $giant_eel => 0b0;
+===
+--- dscr: Readonly numbers allowed in ranges.
+--- failures: 0
+--- params:
+--- input
+use Readonly;
+
+Readonly my $REGULAR_GEOMETRIC_SOLIDS => 5;
+
+foreach my $solid (1..$REGULAR_GEOMETRIC_SOLIDS) {
+    frobnicate($solid);
+}
+
+===
+--- dscr: Binary zero isn't allowed in regular statements.
+--- failures: 1
+--- params:
+--- input
+$battlemech = 0b0;
+
+===
+--- dscr: Readonly binary zero is allowed.
+--- failures: 0
+--- params:
+--- input
+Readonly $giant_eel => 0b0;
 
 ===
 --- dscr: Binary one isn't allowed in regular statements.

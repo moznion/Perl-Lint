@@ -346,6 +346,33 @@ sub evaluate {
                 }
             }
         }
+        elsif ($token_type == FOR_STATEMENT || $token_type == FOREACH_STATEMENT) {
+            for ($i++; $token = $tokens->[$i]; $i++) {
+                $token_type = $token->{type};
+
+                if ($token_type == SEMI_COLON || $token_type == LEFT_BRACE) { # XXX
+                    last;
+                }
+                elsif ($token_type == SLICE) {
+                    my $begin = $tokens->[$i-1] or last;
+                    my $end   = $tokens->[$i+1] or last;
+                    if ($begin->{type} == INT && $end->{type} == INT) {
+                        if (
+                            !$allowed_values{$begin->{data}} ||
+                            !$allowed_values{$end->{data}}
+                        ) {
+                            push @violations, {
+                                filename => $file,
+                                line     => $token->{line},
+                                description => DESC,
+                                explanation => EXPL,
+                                policy => __PACKAGE__,
+                            };
+                        }
+                    }
+                }
+            }
+        }
     }
 
     return \@violations;
