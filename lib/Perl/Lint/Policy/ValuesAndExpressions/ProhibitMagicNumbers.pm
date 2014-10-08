@@ -45,7 +45,6 @@ sub evaluate {
             }
         }
     }
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
 
     my @violations;
     my $is_invalid;
@@ -101,7 +100,12 @@ sub evaluate {
             ($token_type == VAR || $token_type == GLOBAL_VAR) &&
             $token_data eq '$VERSION'
         ) {
-            $i++; # skip a token to assign
+            for ($i++; $token = $tokens->[$i]; $i++) {
+                $token_type = $token->{type};
+                if ($token_type == ASSIGN || $token_type == SEMI_COLON) {
+                    last;
+                }
+            }
             next;
         }
 
