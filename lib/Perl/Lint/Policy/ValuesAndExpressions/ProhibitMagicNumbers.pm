@@ -20,7 +20,7 @@ sub evaluate {
         2 => 1,
     );
 
-    my %allowed_types =(
+    my %allowed_types = (
         Int   => 1,
         Float => 1,
     );
@@ -159,7 +159,7 @@ sub evaluate {
                 if (!$allowed_types{Int}) {
                     $is_invalid = 1;
                 }
-                elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
+                elsif (!$allowed_values{all_integers} && !$allowed_values{$token_data+0}) { # `+0` to convert to number
                     $is_invalid = 1;
                 }
             }

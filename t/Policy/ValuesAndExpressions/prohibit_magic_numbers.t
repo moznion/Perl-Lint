@@ -802,14 +802,14 @@ $basilisk = 000;
 --- input
 $brown_mold = 001;
 
-# ===
-# --- dscr: Any integer value should pass if the allowed values contains 'all_integers'.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => 'all_integers'}}
-# --- input
-# $brogmoid = 356_634_627;
-# $rat_ant  =     -29_422;
-#
+===
+--- dscr: Any integer value should pass if the allowed values contains 'all_integers'.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => 'all_integers'}}
+--- input
+$brogmoid = 356_634_627;
+$rat_ant  =     -29_422;
+
 # ===
 # --- dscr: Any floating-point value without a fractional portion should pass if the allowed values contains 'all_integers'.
 # --- failures: 0
