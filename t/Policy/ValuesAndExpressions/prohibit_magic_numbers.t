@@ -824,27 +824,27 @@ $human = 102_938.0;
 --- input
 $Norn = 429.73902;
 
-# ===
-# --- dscr: Any binary value should pass if the allowed values contains 'all_integers' and allowed types includes 'Binary'.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => 'all_integers', allowed_types => 'Binary'}}
-# --- input
-# $baby_blue_dragon = 0b01100101_01101010_01110011;
-#
-# ===
-# --- dscr: Any hexadecimal value should pass if the allowed values contains 'all_integers' and allowed types includes 'Hex'.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => 'all_integers', allowed_types => 'Hex'}}
-# --- input
-# $killer_bee = 0x656a73;
-#
-# ===
-# --- dscr: Any octal value should pass if the allowed values contains 'all_integers' and allowed types includes 'Octal'.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => 'all_integers', allowed_types => 'Octal'}}
-# --- input
-# $ettin_mummy = 0145_152_163;
-#
+===
+--- dscr: Any binary value should pass if the allowed values contains 'all_integers' and allowed types includes 'Binary'.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => 'all_integers', allowed_types => 'Binary'}}
+--- input
+$baby_blue_dragon = 0b01100101_01101010_01110011;
+
+===
+--- dscr: Any hexadecimal value should pass if the allowed values contains 'all_integers' and allowed types includes 'Hex'.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => 'all_integers', allowed_types => 'Hex'}}
+--- input
+$killer_bee = 0x656a73;
+
+===
+--- dscr: Any octal value should pass if the allowed values contains 'all_integers' and allowed types includes 'Octal'.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => 'all_integers', allowed_types => 'Octal'}}
+--- input
+$ettin_mummy = 0145_152_163;
+
 # ===
 # --- dscr: Zero, one, three, four, and five decimal values should pass if the allowed values contains the '3..5' range.
 # --- failures: 0
