@@ -124,7 +124,7 @@ sub evaluate {
                         $is_invalid = 1;
                     }
                 }
-                else {
+                elsif (!$allowed_values{all_integers} || $token_data !~ /[.]0+\z/) {
                     $is_invalid = 1;
                 }
             }

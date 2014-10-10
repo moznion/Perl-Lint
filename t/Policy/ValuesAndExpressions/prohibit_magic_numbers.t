@@ -810,20 +810,20 @@ $brown_mold = 001;
 $brogmoid = 356_634_627;
 $rat_ant  =     -29_422;
 
-# ===
-# --- dscr: Any floating-point value without a fractional portion should pass if the allowed values contains 'all_integers'.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => 'all_integers'}}
-# --- input
-# $human = 102_938.0;
-#
-# ===
-# --- dscr: A non-integral value should pass if the allowed values contains it and 'all_integers'.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => 'all_integers 429.73902'}}
-# --- input
-# $Norn = 429.73902;
-#
+===
+--- dscr: Any floating-point value without a fractional portion should pass if the allowed values contains 'all_integers'.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => 'all_integers'}}
+--- input
+$human = 102_938.0;
+
+===
+--- dscr: A non-integral value should pass if the allowed values contains it and 'all_integers'.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => 'all_integers 429.73902'}}
+--- input
+$Norn = 429.73902;
+
 # ===
 # --- dscr: Any binary value should pass if the allowed values contains 'all_integers' and allowed types includes 'Binary'.
 # --- failures: 0
