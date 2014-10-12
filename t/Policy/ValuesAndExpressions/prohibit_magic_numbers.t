@@ -1065,13 +1065,14 @@ use version; our $VERSION = version->new('1.23');
 --- input
 blahlahlah my $answer => 42;
 
-# ===
-# --- dscr: allow version as second argument of package. RT #67159
-# --- failures: 0
-# --- params:
-# --- input
-# package Maggot 0.01;
+===
+--- dscr: allow version as second argument of package. RT #67159
+--- failures: 0
+--- params:
+--- input
+package Maggot 0.01;
 
+# NOTE: I feel not needed following function
 # ===
 # --- dscr: do not allow numbers elsewhere in package statement. RT #67159
 # --- failures: 2
@@ -1079,4 +1080,4 @@ blahlahlah my $answer => 42;
 # --- input
 # package 42; # Illegal, but check anyway.
 # package Maggot 0.01 42;
-#
+
