@@ -316,61 +316,14 @@ sub _scan_assigning_context {
         my $lbnum = 1;
         for ($$i++; $token = $tokens->[$$i]; $$i++) {
             $token_type = $token->{type};
-            $token_data = $token->{data};
-
             if ($token_type == LEFT_BRACKET) {
                 $lbnum++;
             }
             elsif ($token_type == RIGHT_BRACKET) {
                 last if --$lbnum <= 0;
             }
-
-            # XXX ugly!!!
-            elsif ($token_type == DOUBLE) {
-                if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
-                    my $next_token = $tokens->[$$i+1];
-                    if ($next_token && $next_token->{type} == DOUBLE) {
-                        push @invalid_tokens, $next_token;
-                    }
-                }
-                else {
-                    push @invalid_tokens, $token;
-                }
-            }
-            elsif ($token_type == INT) {
-                if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
-                    if ($1 eq 'b') {
-                        if (!$allowed_types{Binary}) {
-                            push @invalid_tokens, $token;
-                            goto JUDGEMENT;
-                        }
-                    }
-                    elsif ($1 eq '0') {
-                        if (!$allowed_types{Octal}) {
-                            push @invalid_tokens, $token;
-                            goto JUDGEMENT;
-                        }
-                    }
-                    elsif ($1 eq 'x') {
-                        if (!$allowed_types{Hex}) {
-                            push @invalid_tokens, $token;
-                            goto JUDGEMENT;
-                        }
-                    }
-                    elsif ($1 eq 'e') {
-                        if (!$allowed_types{Exp}) {
-                            push @invalid_tokens, $token;
-                            goto JUDGEMENT;
-                        }
-                    }
-                }
-
-                if (!$allowed_types{Int}) {
-                    push @invalid_tokens, $token;
-                }
-                elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
-                    push @invalid_tokens, $token;
-                }
+            else {
+                push @violations, @{$class->_scan_assigning_context($i)};
             }
         }
     }
