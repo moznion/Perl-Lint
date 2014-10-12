@@ -25,6 +25,12 @@ sub evaluate {
         Float => 1,
     );
 
+    my %constant_creator_subroutines = (
+        plan     => 1,
+        Readonly => 1,
+        const    => 1,
+    );
+
     my $allow_to_the_right_of_a_fat_comma = 1;
     if (my $this_policies_arg = $args->{prohibit_magic_numbers}) {
         $allow_to_the_right_of_a_fat_comma = $this_policies_arg->{allow_to_the_right_of_a_fat_comma} // 1;
@@ -60,6 +66,13 @@ sub evaluate {
                 $allowed_types{$allowed_type} = 1;
             }
         }
+
+        my $constant_creator_subroutines = $this_policies_arg->{constant_creator_subroutines};
+        if (defined $constant_creator_subroutines) {
+            for my $sub (split /\s+/, $constant_creator_subroutines) {
+                $constant_creator_subroutines{$sub} = 1;
+            }
+        }
     }
 
     my @violations;
@@ -73,14 +86,7 @@ sub evaluate {
         if (
             $token_type == USE_DECL     ||
             $token_type == REQUIRE_DECL ||
-            (
-                $token_type == KEY &&
-                (
-                    $token_data eq 'plan'     ||
-                    $token_data eq 'Readonly' ||
-                    $token_data eq 'const'
-                )
-            )
+            ($token_type == KEY && $constant_creator_subroutines{$token_data})
         ) {
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};

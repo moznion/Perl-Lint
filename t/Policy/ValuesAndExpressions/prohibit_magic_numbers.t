@@ -1058,12 +1058,12 @@ use version; our $VERSION = qv('1.23');
 use version; our $VERSION = qv((qw$Revision$)[1] / 1000);
 use version; our $VERSION = version->new('1.23');
 
-# ===
-# --- dscr: user-defined constant creators. RT #62562
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allow_to_the_right_of_a_fat_comma => 0, constant_creator_subroutines => 'blahlahlah'}}
-# --- input
-# blahlahlah my $answer => 42;
+===
+--- dscr: user-defined constant creators. RT #62562
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allow_to_the_right_of_a_fat_comma => 0, constant_creator_subroutines => 'blahlahlah'}}
+--- input
+blahlahlah my $answer => 42;
 
 # ===
 # --- dscr: allow version as second argument of package. RT #67159
