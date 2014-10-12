@@ -76,10 +76,11 @@ sub evaluate {
     }
 
     my @violations;
-    my $is_in_constant_ctx = 0;
+    my $is_readonly_array1_ctx = 0;
     my @invalid_tokens;
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         @invalid_tokens = ();
+        $is_readonly_array1_ctx = 0;
 
         $token_type = $token->{type};
         $token_data = $token->{data};
@@ -103,19 +104,25 @@ sub evaluate {
             if ($token->{type} == NAMESPACE_RESOLVER) {
                 $token = $tokens->[++$i] or last;
                 $token_data = $token->{data};
-                if (
-                    $token->{type} == NAMESPACE &&
-                    ($token_data eq 'Scalar' || $token_data eq 'Array')
-                ) {
-                    for ($i++; $token = $tokens->[$i]; $i++) {
-                        $token_type = $token->{type};
-                        if ($token_type == SEMI_COLON) {
-                            last;
+                if ($token->{type} == NAMESPACE) {
+                    if ($token_data eq 'Scalar' || $token_data eq 'Array') {
+                        for ($i++; $token = $tokens->[$i]; $i++) {
+                            $token_type = $token->{type};
+                            if ($token_type == SEMI_COLON) {
+                                last;
+                            }
                         }
+                        next;
                     }
-                    next;
+                    elsif ($token_data eq 'Array1') {
+                        $i += 2;
+                        $token = $tokens->[$i];
+                        $token_type = $token->{type};
+                        $token_data = $token->{data};
+                        $is_readonly_array1_ctx = 1;
+                        # no break
+                    }
                 }
-                $is_in_constant_ctx = 1;
             }
         }
 
@@ -134,7 +141,7 @@ sub evaluate {
 
         if (
             $token_type == ASSIGN ||
-            (!$allow_to_the_right_of_a_fat_comma && $token_type == ARROW)
+            ((!$allow_to_the_right_of_a_fat_comma || $is_readonly_array1_ctx) && $token_type == ARROW)
         ) {
             $token = $tokens->[++$i] or last;
             $token_type = $token->{type};
@@ -399,9 +406,6 @@ sub evaluate {
                     }
                 }
             }
-        }
-        elsif ($token_type == SEMI_COLON) {
-            $is_in_constant_ctx = 0;
         }
     }
 

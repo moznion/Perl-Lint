@@ -176,14 +176,14 @@ use Readonly;
 
 Readonly::Array @frobnication_factors => ( 57, 193, 49675 );
 
-# ===
-# --- dscr: The Readonly::Array1 subroutine does not work.
-# --- failures: 3
-# --- params:
-# --- input
-# use Readonly;
-#
-# Readonly::Array1 @frobnication_factors => ( 57, 193, 49675 );
+===
+--- dscr: The Readonly::Array1 subroutine does not work.
+--- failures: 3
+--- params:
+--- input
+use Readonly;
+
+Readonly::Array1 @frobnication_factors => ( 57, 193, 49675 );
 
 ===
 --- dscr: The Readonly::Hash subroutine works.
