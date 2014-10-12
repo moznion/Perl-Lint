@@ -557,26 +557,26 @@ Readonly @elf_mummy => ( 1, 2, 3, 4 );
 --- input
 our $VERSION = 0.21;
 
-# ===
-# --- dscr: Last element of an array gets a special exemption.
-# --- failures: 0
-# --- params:
-# --- input
-# $Invid = $nalfeshnee[-1];
-#
-# ===
-# --- dscr: Last element exemption does not work if there is anything else within the subscript.
-# --- failures: 1
-# --- params:
-# --- input
-# $warhorse = $Cerberus[-1 * 1];
-#
-# ===
-# --- dscr: Penultimate element of an array does not get a special exemption.
-# --- failures: 1
-# --- params:
-# --- input
-# $scorpion = $shadow[-2];
+===
+--- dscr: Last element of an array gets a special exemption.
+--- failures: 0
+--- params:
+--- input
+$Invid = $nalfeshnee[-1];
+
+===
+--- dscr: Last element exemption does not work if there is anything else within the subscript.
+--- failures: 1
+--- params:
+--- input
+$warhorse = $Cerberus[-1 * 1];
+
+===
+--- dscr: Penultimate element of an array does not get a special exemption.
+--- failures: 1
+--- params:
+--- input
+$scorpion = $shadow[-2];
 
 ===
 --- dscr: Decimal zero is allowed even if the configuration specifies that there aren't any allowed literals.

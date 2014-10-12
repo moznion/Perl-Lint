@@ -142,7 +142,7 @@ sub evaluate {
         ) {
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};
-                if ($token_type == ASSIGN || $token_type == SEMI_COLON) {
+                if ($token_type == SEMI_COLON) {
                     last;
                 }
             }
@@ -235,6 +235,34 @@ sub evaluate {
                 }
             }
         }
+        elsif ($token_type == LEFT_BRACKET) {
+            my $next_token = $tokens->[$i+1] or last;
+            if ($next_token->{type} == INT) {
+                my $int_token = $next_token;
+                $next_token = $tokens->[$i+2] or last;
+
+                my $invalid_token;
+                if ($next_token->{type} == RIGHT_BRACKET) {
+                    my $num = $int_token->{data} + 0;
+                    if (!$allowed_values{$num} && $num ne -1) { # -1 is allowed if it is used as index of array
+                        $invalid_token = $int_token;
+                    }
+                }
+                elsif ($next_token->{type} != COMMA) {
+                    $invalid_token = $next_token;
+                }
+
+                if ($invalid_token) {
+                    push @violations, {
+                        filename => $file,
+                        line     => $invalid_token->{line},
+                        description => DESC,
+                        explanation => EXPL,
+                        policy => __PACKAGE__,
+                    };
+                }
+            }
+        }
     }
 
     return \@violations;
@@ -245,11 +273,11 @@ sub _scan_assigning_context {
 
     my @violations;
 
-    my $token = $tokens->[$$i] or last;
+    my $token = $tokens->[$$i] or return;
     my $token_type = $token->{type};
     my $token_data = $token->{data};
 
-    my @invalid_tokens;
+    my @invalid_tokens; # TODO ok?
 
     if ($token_type == DOUBLE) {
         if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
@@ -314,6 +342,7 @@ sub _scan_assigning_context {
     }
     elsif ($token_type == LEFT_BRACKET) {
         my $lbnum = 1;
+
         for ($$i++; $token = $tokens->[$$i]; $$i++) {
             $token_type = $token->{type};
             if ($token_type == LEFT_BRACKET) {
