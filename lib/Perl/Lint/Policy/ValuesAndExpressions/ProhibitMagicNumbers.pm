@@ -76,10 +76,11 @@ sub evaluate {
     }
 
     my @violations;
-    my $is_invalid;
     my $is_in_constant_ctx = 0;
+    my @invalid_tokens;
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
-        $is_invalid = 0;
+        @invalid_tokens = ();
+
         $token_type = $token->{type};
         $token_data = $token->{data};
 
@@ -114,8 +115,8 @@ sub evaluate {
                     }
                     next;
                 }
+                $is_in_constant_ctx = 1;
             }
-            $is_in_constant_ctx = 1;
         }
 
         if (
@@ -143,46 +144,46 @@ sub evaluate {
                 if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
                     my $next_token = $tokens->[$i+1];
                     if ($next_token && $next_token->{type} == DOUBLE) {
-                        $is_invalid = 1;
+                        push @invalid_tokens, $next_token;
                     }
                 }
                 elsif (!$allowed_values{all_integers} || $token_data !~ /[.]0+\z/) {
-                    $is_invalid = 1;
+                    push @invalid_tokens, $token;
                 }
             }
             elsif ($token_type == INT) {
                 if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
                     if ($1 eq 'b') {
                         if (!$allowed_types{Binary}) {
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                             goto JUDGEMENT;
                         }
                     }
                     elsif ($1 eq '0') {
                         if (!$allowed_types{Octal}) {
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                             goto JUDGEMENT;
                         }
                     }
                     elsif ($1 eq 'x') {
                         if (!$allowed_types{Hex}) {
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                             goto JUDGEMENT;
                         }
                     }
                     elsif ($1 eq 'e') {
                         if (!$allowed_types{Exp}) {
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                             goto JUDGEMENT;
                         }
                     }
                 }
 
                 if (!$allowed_types{Int}) {
-                    $is_invalid = 1;
+                    push @invalid_tokens, $token;
                 }
                 elsif (!$allowed_values{all_integers} && !$allowed_values{$token_data+0}) { # `+0` to convert to number
-                    $is_invalid = 1;
+                    push @invalid_tokens, $token;
                 }
             }
             elsif ($token_type == LEFT_PAREN) {
@@ -203,46 +204,46 @@ sub evaluate {
                         if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
                             my $next_token = $tokens->[$i+1];
                             if ($next_token && $next_token->{type} == DOUBLE) {
-                                $is_invalid = 1;
+                                push @invalid_tokens, $next_token;
                             }
                         }
                         else {
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                         }
                     }
                     elsif ($token_type == INT) {
                         if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
                             if ($1 eq 'b') {
                                 if (!$allowed_types{Binary}) {
-                                    $is_invalid = 1;
+                                    push @invalid_tokens, $token;
                                     goto JUDGEMENT;
                                 }
                             }
                             elsif ($1 eq '0') {
                                 if (!$allowed_types{Octal}) {
-                                    $is_invalid = 1;
+                                    push @invalid_tokens, $token;
                                     goto JUDGEMENT;
                                 }
                             }
                             elsif ($1 eq 'x') {
                                 if (!$allowed_types{Hex}) {
-                                    $is_invalid = 1;
+                                    push @invalid_tokens, $token;
                                     goto JUDGEMENT;
                                 }
                             }
                             elsif ($1 eq 'e') {
                                 if (!$allowed_types{Exp}) {
-                                    $is_invalid = 1;
+                                    push @invalid_tokens, $token;
                                     goto JUDGEMENT;
                                 }
                             }
                         }
 
                         if (!$allowed_types{Int}) {
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                         }
                         elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                         }
                     }
                 }
@@ -265,55 +266,55 @@ sub evaluate {
                         if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
                             my $next_token = $tokens->[$i+1];
                             if ($next_token && $next_token->{type} == DOUBLE) {
-                                $is_invalid = 1;
+                                push @invalid_tokens, $next_token;
                             }
                         }
                         else {
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                         }
                     }
                     elsif ($token_type == INT) {
                         if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
                             if ($1 eq 'b') {
                                 if (!$allowed_types{Binary}) {
-                                    $is_invalid = 1;
+                                    push @invalid_tokens, $token;
                                     goto JUDGEMENT;
                                 }
                             }
                             elsif ($1 eq '0') {
                                 if (!$allowed_types{Octal}) {
-                                    $is_invalid = 1;
+                                    push @invalid_tokens, $token;
                                     goto JUDGEMENT;
                                 }
                             }
                             elsif ($1 eq 'x') {
                                 if (!$allowed_types{Hex}) {
-                                    $is_invalid = 1;
+                                    push @invalid_tokens, $token;
                                     goto JUDGEMENT;
                                 }
                             }
                             elsif ($1 eq 'e') {
                                 if (!$allowed_types{Exp}) {
-                                    $is_invalid = 1;
+                                    push @invalid_tokens, $token;
                                     goto JUDGEMENT;
                                 }
                             }
                         }
 
                         if (!$allowed_types{Int}) {
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                         }
                         elsif (!$allowed_values{$token_data+0}) { # `+0` to convert to number
-                            $is_invalid = 1;
+                            push @invalid_tokens, $token;
                         }
                     }
                 }
             }
             JUDGEMENT:
-            if ($is_invalid) {
+            for my $t (@invalid_tokens) {
                 push @violations, {
                     filename => $file,
-                    line     => $token->{line},
+                    line     => $t->{line},
                     description => DESC,
                     explanation => EXPL,
                     policy => __PACKAGE__,
@@ -398,6 +399,9 @@ sub evaluate {
                     }
                 }
             }
+        }
+        elsif ($token_type == SEMI_COLON) {
+            $is_in_constant_ctx = 0;
         }
     }
 

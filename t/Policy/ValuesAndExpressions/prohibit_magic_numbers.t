@@ -410,12 +410,12 @@ require Some::Other::Module [ 1, 2, 3, 4 ];
 --- input
 Readonly $Totoro => [ 1, 2, 3, 4 ];
 
-# ===
-# --- dscr: Magic numbers not allowed in array references in regular statement.
-# --- failures: 2
-# --- params:
-# --- input
-# $Evil_Iggy = [ 1, 2, 3, 4 ];
+===
+--- dscr: Magic numbers not allowed in array references in regular statement.
+--- failures: 2
+--- params:
+--- input
+$Evil_Iggy = [ 1, 2, 3, 4 ];
 
 ===
 --- dscr: Array references containing only good numbers are allowed (by this policy).
@@ -487,12 +487,12 @@ require Some::Other::Module ( 1, 2, 3, 4 );
 --- input
 Readonly @elf_mummy => ( 1, 2, 3, 4 );
 
-# ===
-# --- dscr: Magic numbers not allowed in lists in regular statement.
-# --- failures: 2
-# --- params:
-# --- input
-# @kitten = ( 1, 2, 3, 4 );
+===
+--- dscr: Magic numbers not allowed in lists in regular statement.
+--- failures: 2
+--- params:
+--- input
+@kitten = ( 1, 2, 3, 4 );
 
 ===
 --- dscr: Lists containing only good numbers are allowed (by this policy).
@@ -501,19 +501,19 @@ Readonly @elf_mummy => ( 1, 2, 3, 4 );
 --- input
 @purple_worm = ( 1, 0, 1, 0 );
 
-# ===
-# --- dscr: Magic numbers not allowed in nested lists in regular statement.
-# --- failures: 2
-# --- params:
-# --- input
-# @quivering_blob = ( 1, ( 2, 3, 4 ) );
+===
+--- dscr: Magic numbers not allowed in nested lists in regular statement.
+--- failures: 2
+--- params:
+--- input
+@quivering_blob = ( 1, ( 2, 3, 4 ) );
 
-# ===
-# --- dscr: Magic numbers not allowed in nested array references in regular statement.
-# --- failures: 2
-# --- params:
-# --- input
-# @green_slime = ( 1, [ 2, 3, 4 ] );
+===
+--- dscr: Magic numbers not allowed in nested array references in regular statement.
+--- failures: 2
+--- params:
+--- input
+@green_slime = ( 1, [ 2, 3, 4 ] );
 
 # ===
 # --- dscr: Magic numbers allowed in nested hash references in regular statement if allow_to_the_right_of_a_fat_comma is set.
@@ -873,12 +873,12 @@ $nurse = 4.5;
 --- input
 $owlbear = [ -1.5, -1, -.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 ];
 
-# ===
-# --- dscr: Negative two and four should not pass if the allowed values contains the '-1.5..3.5:by(0.5)' range.
-# --- failures: 2
-# --- params: {prohibit_magic_numbers => {allowed_values => '-1.5..3.5:by(0.5)'}}
-# --- input
-# $lurker_above = [ -2, 4 ];
+===
+--- dscr: Negative two and four should not pass if the allowed values contains the '-1.5..3.5:by(0.5)' range.
+--- failures: 2
+--- params: {prohibit_magic_numbers => {allowed_values => '-1.5..3.5:by(0.5)'}}
+--- input
+$lurker_above = [ -2, 4 ];
 
 ===
 --- dscr: -3/2, -1/2, 1/2 ... 7/5, plus 0 and 1 should pass if the allowed values contains the '-1.5..3.5' range.
