@@ -845,61 +845,61 @@ $killer_bee = 0x656a73;
 --- input
 $ettin_mummy = 0145_152_163;
 
-# ===
-# --- dscr: Zero, one, three, four, and five decimal values should pass if the allowed values contains the '3..5' range.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => '3..5'}}
-# --- input
-# $guide = 0;
-# $cuatl = 1;
-# $Master_Assassin = 3;
-# $orc = 4;
-# $trapper = 5;
-#
-# ===
-# --- dscr: Negative one, two, and six decimal values and fractional values should not pass if the allowed values contains the '3..5' range.
-# --- failures: 4
-# --- params: {prohibit_magic_numbers => {allowed_values => '3..5'}}
-# --- input
-# $Elvenking = -1;
-# $brown_pudding = 2;
-# $archeologist = 6;
-# $nurse = 4.5;
-#
-# ===
-# --- dscr: -3/2, -2/2, -1/2 ... 7/5 should pass if the allowed values contains the '-1.5..3.5:by(0.5)' range.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => '-1.5..3.5:by(0.5)'}}
-# --- input
-# $owlbear = [ -1.5, -1, -.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 ];
-#
+===
+--- dscr: Zero, one, three, four, and five decimal values should pass if the allowed values contains the '3..5' range.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => '3..5'}}
+--- input
+$guide = 0;
+$cuatl = 1;
+$Master_Assassin = 3;
+$orc = 4;
+$trapper = 5;
+
+===
+--- dscr: Negative one, two, and six decimal values and fractional values should not pass if the allowed values contains the '3..5' range.
+--- failures: 4
+--- params: {prohibit_magic_numbers => {allowed_values => '3..5'}}
+--- input
+$Elvenking = -1;
+$brown_pudding = 2;
+$archeologist = 6;
+$nurse = 4.5;
+
+===
+--- dscr: -3/2, -2/2, -1/2 ... 7/5 should pass if the allowed values contains the '-1.5..3.5:by(0.5)' range.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => '-1.5..3.5:by(0.5)'}}
+--- input
+$owlbear = [ -1.5, -1, -.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 ];
+
 # ===
 # --- dscr: Negative two and four should not pass if the allowed values contains the '-1.5..3.5:by(0.5)' range.
 # --- failures: 2
 # --- params: {prohibit_magic_numbers => {allowed_values => '-1.5..3.5:by(0.5)'}}
 # --- input
 # $lurker_above = [ -2, 4 ];
-#
-# ===
-# --- dscr: -3/2, -1/2, 1/2 ... 7/5, plus 0 and 1 should pass if the allowed values contains the '-1.5..3.5' range.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => '-1.5..3.5'}}
-# --- input
-# $long_worm = [ -1.5, -.5, 0, 0.5, 1, 1.5, 2.5, 3.5 ];
-#
-# ===
-# --- dscr: -3/2, -2/2, -1/2 ... 7/5 should pass if the allowed values contains the '-1.5..3.5' range and 'all_integers'.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => 'all_integers -1.5..3.5'}}
-# --- input
-# $ice_devil = [ -1.5, -1, -.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 ];
-#
-# ===
-# --- dscr: -5, -4, -3, -2, 0, 1, 21, 22, 23, and 24 should pass if the allowed values contains the '-5..-2' and '21..24 ranges.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allowed_values => '-5..-2 21..24'}}
-# --- input
-# $newt = [ -5, -4, -3, -2, 0, 1, 21, 22, 23, 24 ];
+
+===
+--- dscr: -3/2, -1/2, 1/2 ... 7/5, plus 0 and 1 should pass if the allowed values contains the '-1.5..3.5' range.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => '-1.5..3.5'}}
+--- input
+$long_worm = [ -1.5, -.5, 0, 0.5, 1, 1.5, 2.5, 3.5 ];
+
+===
+--- dscr: -3/2, -2/2, -1/2 ... 7/5 should pass if the allowed values contains the '-1.5..3.5' range and 'all_integers'.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => 'all_integers -1.5..3.5:by(0.5)'}}
+--- input
+$ice_devil = [ -1.5, -1, -.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5 ];
+
+===
+--- dscr: -5, -4, -3, -2, 0, 1, 21, 22, 23, and 24 should pass if the allowed values contains the '-5..-2' and '21..24 ranges.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allowed_values => '-5..-2 21..24'}}
+--- input
+$newt = [ -5, -4, -3, -2, 0, 1, 21, 22, 23, 24 ];
 
 ===
 --- dscr: Should pass mini-CPAN accumulated \$VERSION declarations.

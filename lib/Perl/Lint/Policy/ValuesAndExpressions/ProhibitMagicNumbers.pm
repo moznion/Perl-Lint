@@ -33,7 +33,23 @@ sub evaluate {
         if (defined $allowed_values) {
             delete $allowed_values{2};
             for my $allowed_value (split /\s+/, $allowed_values) {
-                $allowed_values{$allowed_value} = 1;
+                my ($begin, $end) = split /[.][.]/, $allowed_value;
+                if (defined $begin && defined $end) {
+                    if (my ($delta) = $end =~ /:by\((.+)\)\z/) {
+                        for (my $num = $begin; $num <= $end; $num += $delta) {
+                            $allowed_values{$num} = 1;
+                        }
+                    }
+                    else {
+                        my $delta = 1;
+                        for (my $num = $begin; $num <= $end; $num += $delta) {
+                            $allowed_values{$num} = 1;
+                        }
+                    }
+                }
+                else {
+                    $allowed_values{$allowed_value} = 1;
+                }
             }
         }
 
