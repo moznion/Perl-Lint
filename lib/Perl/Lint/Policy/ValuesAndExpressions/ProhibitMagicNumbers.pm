@@ -87,9 +87,7 @@ sub evaluate {
 
     my @violations;
     my $is_readonly_array1_ctx = 0;
-    my @invalid_tokens;
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
-        @invalid_tokens = ();
         $is_readonly_array1_ctx = 0;
 
         $token_type = $token->{type};
@@ -277,52 +275,50 @@ sub _scan_assigning_context {
     my $token_type = $token->{type};
     my $token_data = $token->{data};
 
-    my @invalid_tokens; # TODO ok?
+    my $invalid_token;
 
     if ($token_type == DOUBLE) {
         if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
             my $next_token = $tokens->[$$i+1];
             if ($next_token && $next_token->{type} == DOUBLE) {
-                push @invalid_tokens, $next_token;
+                $invalid_token = $next_token;
             }
         }
         elsif (!$allowed_values{all_integers} || $token_data !~ /[.]0+\z/) {
-            push @invalid_tokens, $token;
+            $invalid_token = $token;
         }
     }
     elsif ($token_type == INT) {
         if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) {
             if ($1 eq 'b') {
                 if (!$allowed_types{Binary}) {
-                    push @invalid_tokens, $token;
-                    goto JUDGEMENT;
+                    $invalid_token = $token;
                 }
             }
             elsif ($1 eq '0') {
                 if (!$allowed_types{Octal}) {
-                    push @invalid_tokens, $token;
-                    goto JUDGEMENT;
+                    $invalid_token = $token;
                 }
             }
             elsif ($1 eq 'x') {
                 if (!$allowed_types{Hex}) {
-                    push @invalid_tokens, $token;
-                    goto JUDGEMENT;
+                    $invalid_token = $token;
                 }
             }
             elsif ($1 eq 'e') {
                 if (!$allowed_types{Exp}) {
-                    push @invalid_tokens, $token;
-                    goto JUDGEMENT;
+                    $invalid_token = $token;
                 }
             }
         }
 
-        if (!$allowed_types{Int}) {
-            push @invalid_tokens, $token;
-        }
-        elsif (!$allowed_values{all_integers} && !$allowed_values{$token_data+0}) { # `+0` to convert to number
-            push @invalid_tokens, $token;
+        if (!$invalid_token) {
+            if (!$allowed_types{Int}) {
+                $invalid_token = $token;
+            }
+            elsif (!$allowed_values{all_integers} && !$allowed_values{$token_data+0}) { # `+0` to convert to number
+                $invalid_token = $token;
+            }
         }
     }
     elsif ($token_type == LEFT_PAREN) {
@@ -357,11 +353,10 @@ sub _scan_assigning_context {
         }
     }
 
-    JUDGEMENT:
-    for my $t (@invalid_tokens) {
+    if ($invalid_token) {
         push @violations, {
             filename => $file,
-            line     => $t->{line},
+            line     => $invalid_token->{line},
             description => DESC,
             explanation => EXPL,
             policy => __PACKAGE__,
