@@ -244,11 +244,11 @@ sub evaluate {
                 my $invalid_token;
                 if ($next_token->{type} == RIGHT_BRACKET) {
                     my $num = $int_token->{data} + 0;
-                    if (!$allowed_values{$num} && $num ne -1) { # -1 is allowed if it is used as index of array
+                    if (!$allowed_values{$num} && $num ne -1) { # -1 is allowed specially when it is used as index of array
                         $invalid_token = $int_token;
                     }
                 }
-                elsif ($next_token->{type} != COMMA) {
+                elsif ($next_token->{type} != COMMA) { # if it is not enumeration (probably it is any handling for index of array)
                     $invalid_token = $next_token;
                 }
 
@@ -291,7 +291,7 @@ sub _scan_assigning_context {
         }
     }
     elsif ($token_type == INT) {
-        if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) { # XXX
+        if (my ($base_type) = $token_data =~ /\A[0-9]([b0xe]).+\z/) {
             if ($1 eq 'b') {
                 if (!$allowed_types{Binary}) {
                     push @invalid_tokens, $token;
