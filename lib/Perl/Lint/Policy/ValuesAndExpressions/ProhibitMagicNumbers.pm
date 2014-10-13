@@ -17,6 +17,8 @@ my $tokens;
 my %allowed_values;
 my %allowed_types;
 my %constant_creator_subroutines;
+my $allow_to_the_right_of_a_fat_comma;
+my $is_readonly_array1_ctx;
 
 sub evaluate {
     my $class = shift;
@@ -41,7 +43,7 @@ sub evaluate {
         const    => 1,
     );
 
-    my $allow_to_the_right_of_a_fat_comma = 1;
+    $allow_to_the_right_of_a_fat_comma = 1;
     if (my $this_policies_arg = $args->{prohibit_magic_numbers}) {
         $allow_to_the_right_of_a_fat_comma = $this_policies_arg->{allow_to_the_right_of_a_fat_comma} // 1;
 
@@ -86,7 +88,6 @@ sub evaluate {
     }
 
     my @violations;
-    my $is_readonly_array1_ctx = 0;
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $is_readonly_array1_ctx = 0;
 
@@ -151,8 +152,7 @@ sub evaluate {
             $token_type == ASSIGN ||
             ((!$allow_to_the_right_of_a_fat_comma || $is_readonly_array1_ctx) && $token_type == ARROW)
         ) {
-            $i++;
-            push @violations, @{$class->_scan_assigning_context(\$i)};
+            push @violations, @{$class->_scan(\$i)};
         }
         elsif ($token_type == FUNCTION) {
             $token = $tokens->[++$i];
@@ -266,17 +266,35 @@ sub evaluate {
     return \@violations;
 }
 
-sub _scan_assigning_context {
+my $is_in_assigning_context;
+sub _scan {
     my ($class, $i) = @_;
-
-    my @violations;
 
     my $token = $tokens->[$$i] or return;
     my $token_type = $token->{type};
     my $token_data = $token->{data};
 
+    if ($token_type == ASSIGN) {
+        $is_in_assigning_context = 1;
+
+        $token = $tokens->[++$$i] or return;
+        $token_type = $token->{type};
+        $token_data = $token->{data};
+    }
+    elsif ($token_type == ARROW) {
+        $is_in_assigning_context = 0;
+        if (!$allow_to_the_right_of_a_fat_comma || $is_readonly_array1_ctx) {
+            $is_in_assigning_context = 1;
+        }
+
+        $token = $tokens->[++$$i] or return;
+        $token_type = $token->{type};
+        $token_data = $token->{data};
+    }
+
     my $invalid_token;
 
+    my @violations;
     if ($token_type == DOUBLE) {
         if ($allowed_types{Float} && $allowed_values{$token_data+0}) { # `+0` to convert to number
             my $next_token = $tokens->[$$i+1];
@@ -332,7 +350,7 @@ sub _scan_assigning_context {
                 last if --$lpnum <= 0;
             }
             else {
-                push @violations, @{$class->_scan_assigning_context($i)};
+                push @violations, @{$class->_scan($i)};
             }
         }
     }
@@ -348,12 +366,12 @@ sub _scan_assigning_context {
                 last if --$lbnum <= 0;
             }
             else {
-                push @violations, @{$class->_scan_assigning_context($i)};
+                push @violations, @{$class->_scan($i)};
             }
         }
     }
 
-    if ($invalid_token) {
+    if ($is_in_assigning_context && $invalid_token) {
         push @violations, {
             filename => $file,
             line     => $invalid_token->{line},

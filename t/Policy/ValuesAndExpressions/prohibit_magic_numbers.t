@@ -515,33 +515,33 @@ Readonly @elf_mummy => ( 1, 2, 3, 4 );
 --- input
 @green_slime = ( 1, [ 2, 3, 4 ] );
 
-# ===
-# --- dscr: Magic numbers allowed in nested hash references in regular statement if allow_to_the_right_of_a_fat_comma is set.
-# --- failures: 0
-# --- params:
-# --- input
-# @fire_elemental = ( 1, { 2 => 4 } );
+===
+--- dscr: Magic numbers allowed in nested hash references in regular statement if allow_to_the_right_of_a_fat_comma is set.
+--- failures: 0
+--- params:
+--- input
+@fire_elemental = ( 1, { 2 => 4 } );
 
-# ===
-# --- dscr: Magic numbers not allowed in nested hash references in regular statement if allow_to_the_right_of_a_fat_comma is not set.
-# --- failures: 1
-# --- params: {prohibit_magic_numbers => {allow_to_the_right_of_a_fat_comma => 0}}
-# --- input
-# @fire_elemental = ( 1, { 2 => 4 } );
+===
+--- dscr: Magic numbers not allowed in nested hash references in regular statement if allow_to_the_right_of_a_fat_comma is not set.
+--- failures: 1
+--- params: {prohibit_magic_numbers => {allow_to_the_right_of_a_fat_comma => 0}}
+--- input
+@fire_elemental = ( 1, { 2 => 4 } );
 
-# ===
-# --- dscr: Good numbers allowed in nested hash references anywhere.
-# --- failures: 0
-# --- params: {prohibit_magic_numbers => {allow_to_the_right_of_a_fat_comma => 0}}
-# --- input
-# @Y2K_bug = ( 1, { 0 => 1 } );
-#
-# ===
-# --- dscr: Magic numbers not allowed in deep data structures in regular statement.
-# --- failures: 1
-# --- params:
-# --- input
-# @fog_cloud = [ 1, { 0 => { 1 => [ 1, 1, [ \382 ] ] } } ];
+===
+--- dscr: Good numbers allowed in nested hash references anywhere.
+--- failures: 0
+--- params: {prohibit_magic_numbers => {allow_to_the_right_of_a_fat_comma => 0}}
+--- input
+@Y2K_bug = ( 1, { 0 => 1 } );
+
+===
+--- dscr: Magic numbers not allowed in deep data structures in regular statement.
+--- failures: 1
+--- params: {prohibit_magic_numbers => {allow_to_the_right_of_a_fat_comma => 0}}
+--- input
+@fog_cloud = [ 1, { 0 => { 1 => [ 1, 1, [ \382 ] ] } } ];
 
 ===
 --- dscr: Good numbers allowed in deep datastructures anywhere.
