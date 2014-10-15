@@ -54,6 +54,8 @@ our @EXPORT = qw(
     OR_BIT_EQUAL MOD_EQUAL NOT_BIT_EQUAL DEFAULT_EQUAL STRING_ADD_EQUAL
 
     PLUSPLUS MINUSMINUS
+
+    SLICE
 );
 
 use constant {
@@ -257,6 +259,8 @@ use constant {
 
     PLUSPLUS => Compiler::Lexer::TokenType::T_Inc,
     MINUSMINUS => Compiler::Lexer::TokenType::T_Dec,
+
+    SLICE => Compiler::Lexer::TokenType::T_Slice,
 };
 
 1;
