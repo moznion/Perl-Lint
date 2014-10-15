@@ -4,10 +4,9 @@ use warnings;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Close filehandles as soon as possible after opening them..',
+    EXPL => [209],
 };
 
 sub evaluate {
@@ -29,8 +28,6 @@ sub evaluate {
     my %closed_file_globs_for_each_depth;
 
     my %function_declared_depth;
-
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
 
     my @not_closed_file_handlers;
 
@@ -58,7 +55,32 @@ sub evaluate {
             next;
         }
 
-        if ($token_type == BUILTIN_FUNC && $token_data eq 'open') {
+        # to support CORE(::GLOBAL)::open or close
+        my $is_core_func = 0;
+        if ($token_type == NAMESPACE && $token_data eq 'CORE') {
+            $token = $tokens->[++$i] or last;
+            if ($token->{type} == NAMESPACE_RESOLVER) {
+                $token = $tokens->[++$i] or last;
+                if ($token->{type} == NAMESPACE && $token->{data} eq 'GLOBAL') {
+                    $token = $tokens->[++$i] or last;
+                    if ($token->{type} == NAMESPACE_RESOLVER) {
+                        $token = $tokens->[++$i] or last;
+                    }
+                }
+                $is_core_func = 1;
+                $token_type = $token->{type};
+                $token_data = $token->{data};
+
+            }
+
+            # fall through
+        }
+
+        # for open()
+        if (
+            ($token_type == BUILTIN_FUNC && $token_data eq 'open') ||
+            ($is_core_func && $token_type == NAMESPACE && $token_data eq 'open')
+        ) {
             my $lbnum = 0;
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};
@@ -101,7 +123,13 @@ sub evaluate {
 
             next;
         }
-        elsif ($token_type == RETURN || ($token_type == BUILTIN_FUNC && $token_data eq 'close')) {
+
+        # for close() or return
+        # If file handler is returned by function, it is equivalent to be closed.
+        if (
+            $token_type == RETURN || ($token_type == BUILTIN_FUNC && $token_data eq 'close') ||
+            ($is_core_func && $token_type == NAMESPACE && $token_data eq 'close')
+        ) {
             $token = $tokens->[++$i] or last;
             $token_type = $token->{type};
             if ($token_type == LEFT_PAREN) {
@@ -132,6 +160,7 @@ sub evaluate {
             }
         }
 
+        # for close method (OOP style)
         if ($token_type == METHOD && $token_data eq 'close') {
             my $var_token = $tokens->[$i-2];
             my $var_type = $var_token->{type};
@@ -154,6 +183,7 @@ sub evaluate {
             }
         }
 
+        # to separate scope by function inside and outside
         if ($token_type == FUNCTION_DECL) {
             $function_declared_depth{$depth} = 1;
 
@@ -162,13 +192,10 @@ sub evaluate {
         }
     }
 
+    # for file handlers (variable)
     my %not_closed_file_handlers = %{$opened_file_handlers_for_each_depth[-1]->[0] || {}};
     for my $not_closed_fh_name (keys %not_closed_file_handlers) {
         push @not_closed_file_handlers, $not_closed_file_handlers{$not_closed_fh_name};
-    }
-
-    for my $not_closed_file_glob (keys %closed_file_globs_for_each_depth) {
-        delete $opened_file_globs_for_each_depth{$not_closed_file_glob};
     }
 
     for my $not_closed_file_handler (@not_closed_file_handlers) {
@@ -179,6 +206,11 @@ sub evaluate {
             explanation => EXPL,
             policy => __PACKAGE__,
         };
+    }
+
+    # If glob is used as file handler, it beyonds the scope
+    for my $not_closed_file_glob (keys %closed_file_globs_for_each_depth) {
+        delete $opened_file_globs_for_each_depth{$not_closed_file_glob};
     }
 
     for my $not_closed_file_glob (keys %opened_file_globs_for_each_depth) {

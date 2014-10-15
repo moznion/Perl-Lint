@@ -321,37 +321,37 @@ open @foo, '<', $filename; # nonsense
 open @$foo, '<', $filename; # nonsense
 open my @bar, '<', $filename; # nonsense
 
-# ===
-# --- dscr: CORE::close() - RT #52391
-# --- failures: 0
-# --- params:
-# --- input
-# open( my $fh, '<', $filename );
-# my $value = <$fh>;
-# CORE::close($fh);
+===
+--- dscr: CORE::close() - RT #52391
+--- failures: 0
+--- params:
+--- input
+open( my $fh, '<', $filename );
+my $value = <$fh>;
+CORE::close($fh);
 
-# ===
-# --- dscr: CORE::GLOBAL::close()
-# --- failures: 0
-# --- params:
-# --- input
-# open my $fh, '<', $filename;
-# my $value = <$fh>;
-# CORE::GLOBAL::close($fh);
+===
+--- dscr: CORE::GLOBAL::close()
+--- failures: 0
+--- params:
+--- input
+open my $fh, '<', $filename;
+my $value = <$fh>;
+CORE::GLOBAL::close($fh);
 
-# ===
-# --- dscr: CORE::open()
-# --- failures: 1
-# --- params:
-# --- input
-# CORE::open my $fh, '<', $filename;
+===
+--- dscr: CORE::open()
+--- failures: 1
+--- params:
+--- input
+CORE::open my $fh, '<', $filename;
 
-# ===
-# --- dscr: CORE::GLOBAL::open()
-# --- failures: 1
-# --- params:
-# --- input
-# CORE::GLOBAL::open(my $fh, '<', $filename);
+===
+--- dscr: CORE::GLOBAL::open()
+--- failures: 1
+--- params:
+--- input
+CORE::GLOBAL::open(my $fh, '<', $filename);
 
 ===
 --- dscr: Handle declared in outer scope RT #64437
