@@ -141,13 +141,13 @@ for (m/(foo)/) {
 # foo 'bar', m/(foo)/;
 # foo m/(foo)/, 'bar';
 
-===
---- dscr: slurpy with assignment
---- failures: 0
---- params:
---- input
-my ($foo) = grep {$b++ == 2} m/(foo)/g;
-my ($foo) = grep {$b++ == 2} $str =~ m/(foo)/g;
+# ===
+# --- dscr: slurpy with assignment
+# --- failures: 0
+# --- params:
+# --- input
+# my ($foo) = grep {$b++ == 2} m/(foo)/g;
+# my ($foo) = grep {$b++ == 2} $str =~ m/(foo)/g;
 
 ===
 --- dscr: slurpy with array assignment
@@ -272,25 +272,25 @@ for (qw/(foo)/) {
 }
 
 
-# ===
-# --- dscr: basic failures
-# --- failures: 5
-# --- params:
-# --- input
-# m/(foo)/;
-# my ($foo) = m/(foo)/g;
-#
-# if (m/(foo)/) {
-#    print "bar";
-# }
-# if (m/(foo)(bar)/) {
-#    my $foo = $1;
-#    print $foo;
-# }
-#
-# for (m/(foo)/) {
-#    print "bar";
-# }
+===
+--- dscr: basic failures
+--- failures: 5
+--- params:
+--- input
+m/(foo)/;
+my ($foo) = m/(foo)/g;
+
+if (m/(foo)/) {
+   print "bar";
+}
+if (m/(foo)(bar)/) {
+   my $foo = $1;
+   print $foo;
+}
+
+for (m/(foo)/) {
+   print "bar";
+}
 
 ===
 --- dscr: negated regexp failures
@@ -317,26 +317,26 @@ sub foo {
 }
 print $1;
 
-# ===
-# --- dscr: anon sub failures
-# --- failures: 1
-# --- params:
-# --- input
-# ## TODO PPI v1.118 doesn't recognize anonymous subroutines
-# my $sub = sub foo {
-#   m/(foo)/;
-#   return;
-# };
-# print $1;
-#
-# ===
-# --- dscr: ref constructors
-# --- failures: 0
-# --- params:
-# --- input
-# $f = { m/(\w+)=(\w+)/g };
-# $f = [ m/(\w+)/g ];
-#
+===
+--- dscr: anon sub failures
+--- failures: 1
+--- params:
+--- input
+## TODO PPI v1.118 doesn't recognize anonymous subroutines
+my $sub = sub foo {
+  m/(foo)/;
+  return;
+};
+print $1;
+
+===
+--- dscr: ref constructors
+--- failures: 0
+--- params:
+--- input
+$f = { m/(\w+)=(\w+)/g };
+$f = [ m/(\w+)/g ];
+
 # ===
 # --- dscr: sub returns
 # --- failures: 0
@@ -349,21 +349,22 @@ print $1;
 #    return m/(foo)/;
 # }
 # map { m/(foo)/ } (1, 2, 3);
-#
+
+# NOTE: ignore
 # ===
 # --- dscr: failing regexp with syntax error
 # --- failures: 0
 # --- params:
 # --- input
 # m/(foo)(/;
-#
-# ===
-# --- dscr: lvalue sub assigment pass
-# --- failures: 0
-# --- params:
-# --- input
-# (substr $str, 0, 1) = m/(\w+)/;
-#
+
+===
+--- dscr: lvalue sub assigment pass
+--- failures: 0
+--- params:
+--- input
+(substr $str, 0, 1) = m/(\w+)/;
+
 # ===
 # --- dscr: lvalue sub assigment failure
 # --- failures: 1
@@ -371,26 +372,26 @@ print $1;
 # --- input
 # ## TODO lvalue subs are too complex to support
 # (substr $str, 0, 1) = m/(\w+)(\d+)/;
-#
-# ===
-# --- dscr: code coverage
-# --- failures: 1
-# --- params:
-# --- input
-# m/(foo)/;
-# print $0;
-# print @ARGV;
-# print $_;
-#
-# ===
-# --- dscr: while loop with /g
-# --- failures: 0
-# --- params:
-# --- input
-# while (m/(\d+)/g) {
-#     print $1, "\n";
-# }
-#
+
+===
+--- dscr: code coverage
+--- failures: 1
+--- params:
+--- input
+m/(foo)/;
+print $0;
+print @ARGV;
+print $_;
+
+===
+--- dscr: while loop with /g
+--- failures: 0
+--- params:
+--- input
+while (m/(\d+)/g) {
+    print $1, "\n";
+}
+
 # ===
 # --- dscr: conditional named captures
 # --- failures: 0
@@ -405,7 +406,7 @@ print $1;
 # }
 #
 # m/(?P<foo>\w+)|(?<foo>\W+)/ and print $+{foo}, "\n";
-#
+
 # ===
 # --- dscr: named capture in array context is unused
 # --- failures: 2
@@ -415,7 +416,7 @@ print $1;
 # sub foo {
 #     return m/(?<foo>\W+)/;
 # }
-#
+
 # ===
 # --- dscr: named capture in array context with siblings is OK
 # --- failures: 0
@@ -423,21 +424,21 @@ print $1;
 # --- input
 # my @foo = m/(?<foo>\w+)/;
 # print $+{foo}, "\n";
-#
+
 # ===
 # --- dscr: named capture not used in replacement
 # --- failures: 1
 # --- params:
 # --- input
 # s/(?<foo>\w+)/foo$1/g;
-#
+
 # ===
 # --- dscr: named capture used in replacement
 # --- failures: 0
 # --- params:
 # --- input
 # s/(?<foo>\w+)/foo$+{foo}/g;
-#
+
 # ===
 # --- dscr: subscripted capture
 # --- failures: 0
@@ -449,14 +450,14 @@ print $1;
 # s/(foo)/$-[ -1 ]/;
 # m/(\w+)/ and print substr( $_, $-[ 1 ], $+[ 1 ] - $-[ 1 ] );
 # m/(\w+)/ and print substr( $_, $-[ -1 ], $+[ -1 ] - $-[ -1 ] );
-#
+
 # ===
 # --- dscr: named capture English name in replacement RT #60002
 # --- failures: 1
 # --- params:
 # --- input
 # s/(?<foo>\w+)/foo$LAST_PAREN_MATCH{foo}/g;
-#
+
 # ===
 # --- dscr: named capture English name in code RT #60002
 # --- failures: 1
@@ -464,7 +465,7 @@ print $1;
 # --- input
 #
 # m/(?P<foo>\w+)|(?<foo>\W+)/ and print $LAST_PAREN_MATCH{foo}, "\n";
-#
+
 # ===
 # --- dscr: named capture English name in replacement RT #60002
 # --- failures: 0
@@ -473,7 +474,7 @@ print $1;
 # use English;
 #
 # s/(?<foo>\w+)/foo$LAST_PAREN_MATCH{foo}/g;
-#
+
 # ===
 # --- dscr: named capture English name in code RT #60002
 # --- failures: 0
@@ -521,7 +522,7 @@ print $1;
 # --- params:
 # --- input
 # s/(\w+)/$replace{$1} || "<$1>"/ge;
-#
+
 # ===
 # --- dscr: Capture used in double-quotish string. RT #38942 redux
 # --- failures: 0
@@ -535,7 +536,7 @@ print $1;
 #
 # m/(\d+)/;
 # print "${1}234";
-#
+
 # ===
 # --- dscr: Capture used in a here document. RT #38942 redux
 # --- failures: 0
@@ -545,7 +546,7 @@ print $1;
 # print <<EOD
 # $+[2] $1
 # EOD
-#
+
 # ===
 # --- dscr: Alternation. RT #38942 redux
 # --- failures: 0
@@ -569,7 +570,7 @@ print $1;
 # if ( /(a)/ or /(b)/ ) {
 #     say $1;
 # }
-#
+
 # ===
 # --- dscr: Alternation with conjunction. RT #38942 redux
 # --- failures: 4
@@ -589,19 +590,19 @@ print $1;
 # if ( /(a)/ || /(b)/ and /(c)/ ) {
 #     say $1;
 # }
-#
-# ===
-# --- dscr: RT #67116 - Incorrect check of here document.
-# --- failures: 1
-# --- params:
-# --- input
-# $x !~ /()/;
-# <<X;
-# .
-# .
-# .
-# X
-#
+
+===
+--- dscr: RT #67116 - Incorrect check of here document.
+--- failures: 1
+--- params:
+--- input
+$x !~ /()/;
+<<X;
+.
+.
+.
+X
+
 # ===
 # --- dscr: RT #69867 - Incorrect check of if() statement if regexp negated
 # --- failures: 0
@@ -612,12 +613,12 @@ print $1;
 # } else {
 #     my ( $before, $after ) = ( $1, $2 );
 # }
-#
-# ===
-# --- dscr: RT #72086 - False positive with /e and parens
-# --- failures: 0
-# --- params:
-# --- input
-# s/(.)/($1)/e;
-# s/(.)/ { $1 } /e;
+
+===
+--- dscr: RT #72086 - False positive with /e and parens
+--- failures: 0
+--- params:
+--- input
+s/(.)/($1)/e;
+s/(.)/ { $1 } /e;
 

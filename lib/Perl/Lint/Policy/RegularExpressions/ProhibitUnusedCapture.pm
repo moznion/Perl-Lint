@@ -24,7 +24,7 @@ sub evaluate {
     my @violations;
     my @captured_for_each_scope = ({});
     my $just_before_regex_token;
-    my $assign_ctx = 0;
+    my $assign_ctx = 'NONE';
     my $reg_not_ctx = 0;
 
     my %depth_for_each_subs;
@@ -43,12 +43,56 @@ sub evaluate {
         }
 
         if ($token_type == ASSIGN) {
-            $assign_ctx = 1;
+            $token = $tokens->[$i-1] or next;
+            $token_type = $token->{type};
+
+            $assign_ctx = 'ANY'; # XXX
+
+            if (
+                $token_type == GLOBAL_VAR ||
+                $token_type == LOCAL_VAR ||
+                $token_type == VAR
+            ) {
+                $assign_ctx = 'SUCCESS';
+            }
+            elsif (
+                $token_type == GLOBAL_ARRAY_VAR ||
+                $token_type == LOCAL_ARRAY_VAR ||
+                $token_type == ARRAY_VAR ||
+                $token_type == GLOBAL_HASH_VAR ||
+                $token_type == LOCAL_HASH_VAR ||
+                $token_type == HASH_VAR
+            ) {
+                $assign_ctx = 'UNLIMITED';
+            }
+            elsif ($token_type == RIGHT_PAREN) {
+                $assign_ctx = 'LIMITED';
+
+                $token = $tokens->[$i-2] or next;
+                $token_type = $token->{type};
+                if ($token_type == LEFT_PAREN) {
+                    $assign_ctx = 'UNLIMITED';
+                }
+                elsif ($token_type == DEFAULT) {
+                    $token = $tokens->[$i-3] or next;
+                    $token_type = $token->{type};
+                    if ($token_type == LEFT_PAREN) {
+                        $assign_ctx = 'UNLIMITED';
+                    }
+                }
+            }
+
+            $token = $tokens->[$i+1] or next;
+            $token_type = $token->{type};
+            if ($token_type == LEFT_BRACE || $token_type == LEFT_BRACKET) {
+                $assign_ctx = 'UNLIMITED';
+            }
+
             next;
         }
 
         if ($token_type == SEMI_COLON) {
-            $assign_ctx = 0;
+            $assign_ctx = 'NONE';
             next;
         }
 
@@ -119,10 +163,6 @@ sub evaluate {
             $captured_for_each_scope[$sub_depth] = {};
             $just_before_regex_token = $token;
 
-            if ($assign_ctx && !$reg_not_ctx) {
-                next;
-            }
-
             my @re_chars = split //, $token_data;
 
             my $escaped = 0;
@@ -176,6 +216,23 @@ sub evaluate {
                 }
             }
 
+            if ($assign_ctx ne 'NONE') {
+                $captured_for_each_scope[$sub_depth] = {};
+                my $maybe_reg_opt = $tokens->[$i+2] or next;
+                if ($maybe_reg_opt->{type} == REG_OPT) {
+                    if ($assign_ctx ne 'UNLIMITED' && $maybe_reg_opt->{data} =~ /g/) {
+                        push @violations, {
+                            filename => $file,
+                            line     => $token->{line},
+                            description => DESC,
+                            explanation => EXPL,
+                            policy => __PACKAGE__,
+                        };
+                    }
+                }
+                next;
+            }
+
             $reg_not_ctx = 0;
             next;
         }
@@ -208,6 +265,7 @@ sub evaluate {
 
         if ($token_type == FUNCTION_DECL) {
             $depth_for_each_subs{$lbnum_for_scope} = 1;
+            $assign_ctx = 'NONE'; # XXX Umm...
             $sub_depth++;
             $captured_for_each_scope[$sub_depth] = {};
             next;
