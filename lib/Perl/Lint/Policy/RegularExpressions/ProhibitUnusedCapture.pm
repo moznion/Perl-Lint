@@ -22,10 +22,15 @@ sub evaluate {
     # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
 
     my @violations;
-    my %captured;
+    my @captured_for_each_scope = ({});
     my $just_before_regex_token;
     my $assign_ctx = 0;
     my $reg_not_ctx = 0;
+
+    my %depth_for_each_subs;
+    my $lbnum_for_scope = 0;
+    my $sub_depth = 0;
+
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
         $token_data = $token->{data};
@@ -71,7 +76,7 @@ sub evaluate {
                 if ($escaped) {
                     if ($re_char =~ /[0-9]/) {
                         # TODO should track follows number
-                        delete $captured{q<$> . $re_char};
+                        delete $captured_for_each_scope[$sub_depth]->{q<$> . $re_char};
                     }
                     $escaped = 0;
                     next;
@@ -80,7 +85,7 @@ sub evaluate {
                 if ($is_var) {
                     if ($re_char =~ /[0-9]/) {
                         # TODO should track follows number
-                        delete $captured{q<$> . $re_char};
+                        delete $captured_for_each_scope[$sub_depth]->{q<$> . $re_char};
                     }
                     $is_var = 0;
                     next;
@@ -101,7 +106,7 @@ sub evaluate {
         }
 
         if ($token_type == REG_EXP || $token_type == REG_REPLACE_FROM) {
-            if (%captured) {
+            if (%{$captured_for_each_scope[$sub_depth]}) {
                 push @violations, {
                     filename => $file,
                     line     => $just_before_regex_token->{line},
@@ -111,7 +116,7 @@ sub evaluate {
                 };
             }
 
-            %captured = ();
+            $captured_for_each_scope[$sub_depth] = {};
             $just_before_regex_token = $token;
 
             if ($assign_ctx && !$reg_not_ctx) {
@@ -127,7 +132,7 @@ sub evaluate {
                 if ($escaped) {
                     if ($re_char =~ /[0-9]/) {
                         # TODO should track follows number
-                        delete $captured{q<$> . $re_char};
+                        delete $captured_for_each_scope[$sub_depth]->{q<$> . $re_char};
                     }
                     $escaped = 0;
                     next;
@@ -165,7 +170,7 @@ sub evaluate {
                         }
                         else {
                             $captured_num++;
-                            $captured{q<$> . $captured_num} = 1;
+                            $captured_for_each_scope[$sub_depth]->{q<$> . $captured_num} = 1;
                         }
                     }
                 }
@@ -197,12 +202,40 @@ sub evaluate {
         # }
 
         if ($token_type == SPECIFIC_VALUE) {
-            delete $captured{$token_data};
+            delete $captured_for_each_scope[$sub_depth]->{$token_data};
+            next;
+        }
+
+        if ($token_type == FUNCTION_DECL) {
+            $depth_for_each_subs{$lbnum_for_scope} = 1;
+            $sub_depth++;
+            $captured_for_each_scope[$sub_depth] = {};
+            next;
+        }
+
+        if ($token_type == LEFT_BRACE) {
+            $lbnum_for_scope++;
+            next;
+        }
+
+        if ($token_type == RIGHT_BRACE) {
+            $lbnum_for_scope--;
+            if (delete $depth_for_each_subs{$lbnum_for_scope}) {
+                if (%{pop @captured_for_each_scope}) {
+                    push @violations, {
+                        filename => $file,
+                        line     => $just_before_regex_token->{line},
+                        description => DESC,
+                        explanation => EXPL,
+                        policy => __PACKAGE__,
+                    };
+                }
+            }
             next;
         }
     }
 
-    if (%captured) {
+    if (%{$captured_for_each_scope[-1]}) {
         push @violations, {
             filename => $file,
             line     => $just_before_regex_token->{line},
