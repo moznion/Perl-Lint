@@ -46,7 +46,7 @@ sub evaluate {
             $token = $tokens->[$i-1] or next;
             $token_type = $token->{type};
 
-            $assign_ctx = 'ANY'; # XXX
+            $assign_ctx = 'ANY'; # XXX Any!?
 
             if (
                 $token_type == GLOBAL_VAR ||
@@ -198,7 +198,18 @@ sub evaluate {
                 }
 
                 if ($re_char eq '(') {
-                    if ($re_chars[$j+1] ne '?' || $re_chars[$j+2] ne ':') {
+                    my $captured_name = '';
+                    if ($re_chars[$j+1] eq '?' && $re_chars[$j+2] eq '<') {
+                        for ($j += 3; $re_char = $re_chars[$j]; $j++) {
+                            if ($re_char eq '>') {
+                                last;
+                            }
+                            $captured_name .= $re_char;
+                        }
+
+                        $captured_for_each_scope[$sub_depth]->{$captured_name} = 1;
+                    }
+                    elsif ($re_chars[$j+1] ne '?' || $re_chars[$j+2] ne ':') {
                         if ($reg_not_ctx) {
                             push @violations, {
                                 filename => $file,
@@ -259,7 +270,16 @@ sub evaluate {
         # }
 
         if ($token_type == SPECIFIC_VALUE) {
-            delete $captured_for_each_scope[$sub_depth]->{$token_data};
+            if ($token_data =~ /\A\$[0-9]+\Z/) {
+                delete $captured_for_each_scope[$sub_depth]->{$token_data};
+                next;
+            }
+
+            if ($token_data eq '$+') {
+                $token = $tokens->[$i+2] or next;
+                delete $captured_for_each_scope[$sub_depth]->{$token->{data}};
+            }
+
             next;
         }
 
