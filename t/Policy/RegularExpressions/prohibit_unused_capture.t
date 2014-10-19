@@ -401,56 +401,56 @@ if ( m/(?<foo>bar)/ ) {
     print $+{foo}, "\n";
 }
 
-# # while ( m/(?'foo'\d+)/g ) {
-# #     print $-{foo}[0], "\n";
-# # }
-# #
-# # m/(?P<foo>\w+)|(?<foo>\W+)/ and print $+{foo}, "\n";
-#
-# # ===
-# # --- dscr: named capture in array context is unused
-# # --- failures: 2
-# # --- params:
-# # --- input
-# # my @foo = m/(?<foo>\w+)/;
-# # sub foo {
-# #     return m/(?<foo>\W+)/;
-# # }
-#
-# # ===
-# # --- dscr: named capture in array context with siblings is OK
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # my @foo = m/(?<foo>\w+)/;
-# # print $+{foo}, "\n";
-#
-# # ===
-# # --- dscr: named capture not used in replacement
-# # --- failures: 1
-# # --- params:
-# # --- input
-# # s/(?<foo>\w+)/foo$1/g;
-#
-# # ===
-# # --- dscr: named capture used in replacement
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # s/(?<foo>\w+)/foo$+{foo}/g;
-#
-# # ===
-# # --- dscr: subscripted capture
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # s/(foo)/$+[ 1 ]/;
-# # s/(foo)/$-[ 1 ]/;
-# # s/(foo)/$+[ -1 ]/;
-# # s/(foo)/$-[ -1 ]/;
-# # m/(\w+)/ and print substr( $_, $-[ 1 ], $+[ 1 ] - $-[ 1 ] );
-# # m/(\w+)/ and print substr( $_, $-[ -1 ], $+[ -1 ] - $-[ -1 ] );
-#
+while ( m/(?'foo'\d+)/g ) {
+    print $-{foo}[0], "\n";
+}
+
+m/(?P<foo>\w+)|(?<foo>\W+)/ and print $+{foo}, "\n";
+
+# ===
+# --- dscr: named capture in array context is unused
+# --- failures: 2
+# --- params:
+# --- input
+# my @foo = m/(?<foo>\w+)/;
+# sub foo {
+#     return m/(?<foo>\W+)/;
+# }
+
+===
+--- dscr: named capture in array context with siblings is OK
+--- failures: 0
+--- params:
+--- input
+my @foo = m/(?<foo>\w+)/;
+print $+{foo}, "\n";
+
+===
+--- dscr: named capture not used in replacement
+--- failures: 1
+--- params:
+--- input
+s/(?<foo>\w+)/foo$1/g;
+
+===
+--- dscr: named capture used in replacement
+--- failures: 0
+--- params:
+--- input
+s/(?<foo>\w+)/foo$+{foo}/g;
+
+===
+--- dscr: subscripted capture
+--- failures: 0
+--- params:
+--- input
+s/(foo)/$+[ 1 ]/;
+s/(foo)/$-[ 1 ]/;
+s/(foo)/$+[ -1 ]/;
+s/(foo)/$-[ -1 ]/;
+m/(\w+)/ and print substr( $_, $-[ 1 ], $+[ 1 ] - $-[ 1 ] );
+m/(\w+)/ and print substr( $_, $-[ -1 ], $+[ -1 ] - $-[ -1 ] );
+
 # # ===
 # # --- dscr: named capture English name in replacement RT #60002
 # # --- failures: 1

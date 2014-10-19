@@ -131,6 +131,45 @@ sub evaluate {
                         # TODO should track follows number
                         delete $captured_for_each_scope[$sub_depth]->{q<$> . $re_char};
                     }
+                    elsif ($re_char eq '+' || $re_char eq '-') {
+                        my $lbnum = 1;
+                        my $captured_name = '';
+
+                        my $begin_delimiter = '{';
+                        my $end_delimiter = '}';
+                        $re_char = $re_chars[++$j] or next;
+                        if ($re_char eq '[') {
+                            $begin_delimiter = '[';
+                            $end_delimiter = ']';
+                        }
+
+                        for (; $re_char = $re_chars[$j]; $j++) {
+                            if ($re_char eq $begin_delimiter) {
+                                $lbnum++;
+                            }
+                            elsif ($re_char eq $end_delimiter) {
+                                last if --$lbnum <= 0;
+                            }
+                            elsif ($re_char ne ' ') {
+                                $captured_name .= $re_char;
+                            }
+                        }
+
+                        # TODO ここで数字についてみる
+                        if ($begin_delimiter eq '[') {
+                            $captured_name-- if $captured_name > 0;
+
+                            my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys $captured_for_each_scope[$sub_depth];
+
+                            if (my $hit = $num_vars[$captured_name]) {
+                                delete $captured_for_each_scope[$sub_depth]->{$hit};
+                            }
+                        }
+                        else {
+                            delete $captured_for_each_scope[$sub_depth]->{$captured_name};
+                        }
+                    }
+
                     $is_var = 0;
                     next;
                 }
@@ -199,15 +238,44 @@ sub evaluate {
 
                 if ($re_char eq '(') {
                     my $captured_name = '';
-                    if ($re_chars[$j+1] eq '?' && $re_chars[$j+2] eq '<') {
-                        for ($j += 3; $re_char = $re_chars[$j]; $j++) {
-                            if ($re_char eq '>') {
-                                last;
-                            }
-                            $captured_name .= $re_char;
+
+                    if ($re_chars[$j+1] eq '?') {
+                        my $delimiter = $re_chars[$j+2];
+
+                        if ($delimiter eq ':') {
+                            next;
                         }
 
-                        $captured_for_each_scope[$sub_depth]->{$captured_name} = 1;
+                        if ($delimiter eq 'P') {
+                            $delimiter = $re_chars[$j+3];
+                            $j++;
+                        }
+
+                        if ($delimiter eq '<' || $delimiter eq q{'}) {
+                            for ($j += 3; $re_char = $re_chars[$j]; $j++) {
+                                if (
+                                    ($delimiter eq '<' && $re_char eq '>') ||
+                                    ($delimiter eq q{'} && $re_char eq q{'})
+                                ) {
+                                    last;
+                                }
+                                $captured_name .= $re_char;
+                            }
+
+
+                            if ($reg_not_ctx) {
+                                push @violations, {
+                                    filename => $file,
+                                    line     => $token->{line},
+                                    description => DESC,
+                                    explanation => EXPL,
+                                    policy => __PACKAGE__,
+                                };
+                            }
+                            else {
+                                $captured_for_each_scope[$sub_depth]->{$captured_name} = 1;
+                            }
+                        }
                     }
                     elsif ($re_chars[$j+1] ne '?' || $re_chars[$j+2] ne ':') {
                         if ($reg_not_ctx) {
@@ -275,9 +343,21 @@ sub evaluate {
                 next;
             }
 
-            if ($token_data eq '$+') {
+            if ($token_data eq '$+' || $token_data eq '$-') {
                 $token = $tokens->[$i+2] or next;
-                delete $captured_for_each_scope[$sub_depth]->{$token->{data}};
+                $token_data = $token->{data};
+                if ($token_data =~ /\A -? [0-9]+ \Z/x) {
+                    $token_data-- if $token_data > 0;
+
+                    my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys $captured_for_each_scope[$sub_depth];
+
+                    if (my $hit = $num_vars[$token_data]) {
+                        delete $captured_for_each_scope[$sub_depth]->{$hit};
+                    }
+                }
+                else {
+                    delete $captured_for_each_scope[$sub_depth]->{$token->{data}};
+                }
             }
 
             next;
