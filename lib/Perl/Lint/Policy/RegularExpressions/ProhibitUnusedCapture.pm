@@ -21,6 +21,8 @@ sub evaluate {
 
     # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
 
+    my $is_used_english = 0;
+
     my @violations;
     my @captured_for_each_scope = ({});
     my $just_before_regex_token;
@@ -34,6 +36,11 @@ sub evaluate {
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
         $token_data = $token->{data};
+
+        if ($token_type == USED_NAME && $token_data eq 'English') {
+            $is_used_english = 1;
+            next;
+        }
 
         # to ignore regexp which is not pattern matching
         # NOTE: Compiler::Lexer handles all of the content of q*{} operator as regexp token
@@ -107,8 +114,118 @@ sub evaluate {
             $token_type = STRING; # XXX Violence!!
             # fall through
         }
-        if ($token_type == STRING) {
-            # TODO interpolation
+        if ($token_type == STRING || $token_type == HERE_DOCUMENT) {
+            my @chars = split //, $token_data;
+            my $is_var = 0;
+            my $escaped = 0;
+            for (my $j = 0; my $char = $chars[$j]; $j++) {
+                if ($escaped) {
+                    if ($char =~ /[0-9]/) {
+                        # TODO should track follows number
+                        delete $captured_for_each_scope[$sub_depth]->{q<$> . $char};
+                    }
+                    $escaped = 0;
+                    next;
+                }
+
+                if ($is_var) {
+                    if ($char =~ /[a-zA-Z_]/) {
+                        my $var_name = $char;
+                        for ($j++; $char = $chars[$j]; $j++) {
+                            if ($char !~ /[0-9a-zA-Z_]/) {
+                                $j--;
+                                last;
+                            }
+                            $var_name .= $char;
+                        }
+
+                        if (!$is_used_english) {
+                            next;
+                        }
+                        elsif (
+                            $var_name eq 'LAST_PAREN_MATCH' ||
+                            $var_name eq 'LAST_MATCH_END'   ||
+                            $var_name eq 'LAST_MATCH_START'
+                        ) {
+                            $char = '+'; # XXX
+                        }
+                        else {
+                            next;
+                        }
+                    }
+
+                    if ($char eq '{') {
+                        my $var_name = '';
+                        for ($j++; $char = $chars[$j]; $j++) {
+                            if ($char eq '}') {
+                                last;
+                            }
+                            else {
+                                $var_name .= $char;
+                            }
+                        }
+                        delete $captured_for_each_scope[$sub_depth]->{q<$> . $var_name};
+                        next;
+                    }
+
+                    if ($char =~ /[0-9]/) {
+                        # TODO should track follows number
+                        delete $captured_for_each_scope[$sub_depth]->{q<$> . $char};
+                    }
+                    elsif (
+                        $char eq '+' || $char eq '-'
+                    ) {
+                        my $lbnum = 1;
+                        my $captured_name = '';
+
+                        my $begin_delimiter = '{';
+                        my $end_delimiter = '}';
+                        $char = $chars[++$j] or next;
+                        if ($char eq '[') {
+                            $begin_delimiter = '[';
+                            $end_delimiter = ']';
+                        }
+
+                        for ($j++; $char = $chars[$j]; $j++) {
+                            if ($char eq $begin_delimiter) {
+                                $lbnum++;
+                            }
+                            elsif ($char eq $end_delimiter) {
+                                last if --$lbnum <= 0;
+                            }
+                            elsif ($char ne ' ') {
+                                $captured_name .= $char;
+                            }
+                        }
+
+                        if ($begin_delimiter eq '[') {
+                            $captured_name-- if $captured_name > 0;
+
+                            my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys $captured_for_each_scope[$sub_depth];
+
+                            if (my $hit = $num_vars[$captured_name]) {
+                                delete $captured_for_each_scope[$sub_depth]->{$hit};
+                            }
+                        }
+                        else {
+                            delete $captured_for_each_scope[$sub_depth]->{$captured_name};
+                        }
+                    }
+
+                    $is_var = 0;
+                    next;
+                }
+
+                if ($char eq '\\') {
+                    $escaped = 1;
+                    next;
+                }
+
+                if ($char eq q<$>) {
+                    $is_var = 1;
+                    next;
+                }
+            }
             next;
         }
 
@@ -127,11 +244,52 @@ sub evaluate {
                 }
 
                 if ($is_var) {
+                    if ($re_char =~ /[a-zA-Z_]/) {
+                        my $var_name = $re_char;
+                        for ($j++; $re_char = $re_chars[$j]; $j++) {
+                            if ($re_char !~ /[0-9a-zA-Z_]/) {
+                                $j--;
+                                last;
+                            }
+                            $var_name .= $re_char;
+                        }
+
+                        if (!$is_used_english) {
+                            next;
+                        }
+                        elsif (
+                            $var_name eq 'LAST_PAREN_MATCH' ||
+                            $var_name eq 'LAST_MATCH_END'   ||
+                            $var_name eq 'LAST_MATCH_START'
+                        ) {
+                            $re_char = '+'; # XXX
+                        }
+                        else {
+                            next;
+                        }
+                    }
+
+                    if ($re_char eq '{') {
+                        my $var_name = '';
+                        for ($j++; $re_char = $re_chars[$j]; $j++) {
+                            if ($re_char eq '}') {
+                                last;
+                            }
+                            else {
+                                $var_name .= $re_char;
+                            }
+                        }
+                        delete $captured_for_each_scope[$sub_depth]->{q<$> . $var_name};
+                        next;
+                    }
+
                     if ($re_char =~ /[0-9]/) {
                         # TODO should track follows number
                         delete $captured_for_each_scope[$sub_depth]->{q<$> . $re_char};
                     }
-                    elsif ($re_char eq '+' || $re_char eq '-') {
+                    elsif (
+                        $re_char eq '+' || $re_char eq '-'
+                    ) {
                         my $lbnum = 1;
                         my $captured_name = '';
 
@@ -155,7 +313,6 @@ sub evaluate {
                             }
                         }
 
-                        # TODO ここで数字についてみる
                         if ($begin_delimiter eq '[') {
                             $captured_name-- if $captured_name > 0;
 
@@ -273,6 +430,7 @@ sub evaluate {
                                 };
                             }
                             else {
+                                $captured_num++;
                                 $captured_for_each_scope[$sub_depth]->{$captured_name} = 1;
                             }
                         }
@@ -344,6 +502,7 @@ sub evaluate {
             }
 
             if ($token_data eq '$+' || $token_data eq '$-') {
+                # TODO duplicated...
                 $token = $tokens->[$i+2] or next;
                 $token_data = $token->{data};
                 if ($token_data =~ /\A -? [0-9]+ \Z/x) {
@@ -361,6 +520,32 @@ sub evaluate {
             }
 
             next;
+        }
+
+        if ($is_used_english) {
+            if ($token_type == GLOBAL_VAR || $token_type == VAR) {
+                # TODO duplicated...
+                if (
+                    $token_data eq '$LAST_PAREN_MATCH' ||
+                    $token_data eq '$LAST_MATCH_END'   ||
+                    $token_data eq '$LAST_MATCH_START'
+                ) {
+                    $token = $tokens->[$i+2] or next;
+                    $token_data = $token->{data};
+                    if ($token_data =~ /\A -? [0-9]+ \Z/x) {
+                        $token_data-- if $token_data > 0;
+
+                        my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys $captured_for_each_scope[$sub_depth];
+
+                        if (my $hit = $num_vars[$token_data]) {
+                            delete $captured_for_each_scope[$sub_depth]->{$hit};
+                        }
+                    }
+                    else {
+                        delete $captured_for_each_scope[$sub_depth]->{$token->{data}};
+                    }
+                }
+            }
         }
 
         if ($token_type == FUNCTION_DECL) {

@@ -451,174 +451,174 @@ s/(foo)/$-[ -1 ]/;
 m/(\w+)/ and print substr( $_, $-[ 1 ], $+[ 1 ] - $-[ 1 ] );
 m/(\w+)/ and print substr( $_, $-[ -1 ], $+[ -1 ] - $-[ -1 ] );
 
-# # ===
-# # --- dscr: named capture English name in replacement RT #60002
-# # --- failures: 1
-# # --- params:
-# # --- input
-# # s/(?<foo>\w+)/foo$LAST_PAREN_MATCH{foo}/g;
-#
-# # ===
-# # --- dscr: named capture English name in code RT #60002
-# # --- failures: 1
-# # --- params:
-# # --- input
-# #
-# # m/(?P<foo>\w+)|(?<foo>\W+)/ and print $LAST_PAREN_MATCH{foo}, "\n";
-#
-# # ===
-# # --- dscr: named capture English name in replacement RT #60002
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # use English;
-# #
-# # s/(?<foo>\w+)/foo$LAST_PAREN_MATCH{foo}/g;
-#
-# # ===
-# # --- dscr: named capture English name in code RT #60002
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # use English;
-# #
-# # m/(?P<foo>\w+)|(?<foo>\W+)/ and print $LAST_PAREN_MATCH{foo}, "\n";
-# #
-# # ===
-# # --- dscr: English subscripted capture without use English
-# # --- failures: 6
-# # --- params:
-# # --- input
-# # s/(foo)/$LAST_MATCH_END[ 1 ]/;
-# # s/(foo)/$LAST_MATCH_START[ 1 ]/;
-# # s/(foo)/$LAST_MATCH_END[ -1 ]/;
-# # s/(foo)/$LAST_MATCH_START[ -1 ]/;
-# # m/(\w+)/ and print substr(
-# #     $_, $LAST_MATCH_START[ 1 ], $LAST_MATCH_END[ 1 ] - $LAST_MATCH_START[ 1 ] );
-# # m/(\w+)/ and print substr(
-# #     $_, $LAST_MATCH_START[ -1 ],
-# #     $LAST_MATCH_END[ -1 ] - $LAST_MATCH_START[ -1 ] );
-# #
-# # ===
-# # --- dscr: English subscripted capture with use English
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # use English;
-# #
-# # s/(foo)/$LAST_MATCH_END[ 1 ]/;
-# # s/(foo)/$LAST_MATCH_START[ 1 ]/;
-# # s/(foo)/$LAST_MATCH_END[ -1 ]/;
-# # s/(foo)/$LAST_MATCH_START[ -1 ]/;
-# # m/(\w+)/ and print substr(
-# #     $_, $LAST_MATCH_START[ 1 ], $LAST_MATCH_END[ 1 ] - $LAST_MATCH_START[ 1 ] );
-# # m/(\w+)/ and print substr(
-# #     $_, $LAST_MATCH_START[ -1 ],
-# #     $LAST_MATCH_END[ -1 ] - $LAST_MATCH_START[ -1 ] );
-# #
-# # ===
-# # --- dscr: Capture used in substitution portion of s/.../.../e
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # s/(\w+)/$replace{$1} || "<$1>"/ge;
-#
-# # ===
-# # --- dscr: Capture used in double-quotish string. RT #38942 redux
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # m/(\w+)(\W+)/;
-# # print "$+[2] $1";
-# #
-# # m/(?<foo>(\w+)/;
-# # print "$+{foo}";
-# #
-# # m/(\d+)/;
-# # print "${1}234";
-#
-# # ===
-# # --- dscr: Capture used in a here document. RT #38942 redux
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # m/(\w+)(\W+)/;
-# # print <<EOD
-# # $+[2] $1
-# # EOD
-#
-# # ===
-# # --- dscr: Alternation. RT #38942 redux
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # if ( /(a)/ || /(b)/ ) {
-# #     say $1;
-# # }
-# #
-# # # Yes, this is incorrect code, but that's ProhibitCaptureWithoutTest's
-# # # problem.
-# # if ( /(a)/ // /(b)/ ) {
-# #     say $1;
-# # }
-# #
-# # # Contrived, but worse things happen at sea.
-# # if ( ( /(a)/ || undef ) // /(b)/ ) {
-# #     say $1;
-# # }
-# #
-# # if ( /(a)/ or /(b)/ ) {
-# #     say $1;
-# # }
-#
-# # ===
-# # --- dscr: Alternation with conjunction. RT #38942 redux
-# # --- failures: 4
-# # --- params:
-# # --- input
-# # # 1 failure here: the /(b)/
-# # if ( /(a)/ || /(b)/ && /(c)/ ) {
-# #     say $1;
-# # }
-# #
-# # # 1 failure here: the /(b)/
-# # if ( /(a)/ or /(b)/ and /(c)/ ) {
-# #     say $1;
-# # }
-# #
-# # # 2 failures here: the /(a)/ and the /(b)/
-# # if ( /(a)/ || /(b)/ and /(c)/ ) {
-# #     say $1;
-# # }
-#
+===
+--- dscr: named capture English name in replacement RT #60002
+--- failures: 1
+--- params:
+--- input
+s/(?<foo>\w+)/foo$LAST_PAREN_MATCH{foo}/g;
+
+===
+--- dscr: named capture English name in code RT #60002
+--- failures: 1
+--- params:
+--- input
+
+m/(?P<foo>\w+)|(?<foo>\W+)/ and print $LAST_PAREN_MATCH{foo}, "\n";
+
+===
+--- dscr: named capture English name in replacement RT #60002
+--- failures: 0
+--- params:
+--- input
+use English;
+
+s/(?<foo>\w+)/foo$LAST_PAREN_MATCH{foo}/g;
+
+===
+--- dscr: named capture English name in code RT #60002
+--- failures: 0
+--- params:
+--- input
+use English;
+
+m/(?P<foo>\w+)|(?<foo>\W+)/ and print $LAST_PAREN_MATCH{foo}, "\n";
+
+===
+--- dscr: English subscripted capture without use English
+--- failures: 6
+--- params:
+--- input
+s/(foo)/$LAST_MATCH_END[ 1 ]/;
+s/(foo)/$LAST_MATCH_START[ 1 ]/;
+s/(foo)/$LAST_MATCH_END[ -1 ]/;
+s/(foo)/$LAST_MATCH_START[ -1 ]/;
+m/(\w+)/ and print substr(
+    $_, $LAST_MATCH_START[ 1 ], $LAST_MATCH_END[ 1 ] - $LAST_MATCH_START[ 1 ] );
+m/(\w+)/ and print substr(
+    $_, $LAST_MATCH_START[ -1 ],
+    $LAST_MATCH_END[ -1 ] - $LAST_MATCH_START[ -1 ] );
+
+===
+--- dscr: English subscripted capture with use English
+--- failures: 0
+--- params:
+--- input
+use English;
+
+s/(foo)/$LAST_MATCH_END[ 1 ]/;
+s/(foo)/$LAST_MATCH_START[ 1 ]/;
+s/(foo)/$LAST_MATCH_END[ -1 ]/;
+s/(foo)/$LAST_MATCH_START[ -1 ]/;
+m/(\w+)/ and print substr(
+    $_, $LAST_MATCH_START[ 1 ], $LAST_MATCH_END[ 1 ] - $LAST_MATCH_START[ 1 ] );
+m/(\w+)/ and print substr(
+    $_, $LAST_MATCH_START[ -1 ],
+    $LAST_MATCH_END[ -1 ] - $LAST_MATCH_START[ -1 ] );
+
+===
+--- dscr: Capture used in substitution portion of s/.../.../e
+--- failures: 0
+--- params:
+--- input
+s/(\w+)/$replace{$1} || "<$1>"/ge;
+
+===
+--- dscr: Capture used in double-quotish string. RT #38942 redux
+--- failures: 0
+--- params:
+--- input
+m/(\w+)(\W+)/;
+print "$+[2] $1";
+
+m/(?<foo>\w+)/;
+print "$+{foo}";
+
+m/(\d+)/;
+print "${1}234";
+
+===
+--- dscr: Capture used in a here document. RT #38942 redux
+--- failures: 0
+--- params:
+--- input
+m/(\w+)(\W+)/;
+print <<EOD
+$+[2] $1
+EOD
+
 # ===
-# --- dscr: RT #67116 - Incorrect check of here document.
-# --- failures: 1
-# --- params:
-# --- input
-# $x !~ /()/;
-# <<X;
-# .
-# .
-# .
-# X
-#
-# # ===
-# # --- dscr: RT #69867 - Incorrect check of if() statement if regexp negated
-# # --- failures: 0
-# # --- params:
-# # --- input
-# # if ( $ip !~ /^(.*?)::(.*)\z/sx ) {
-# #     @fields = split /:/x, $ip;
-# # } else {
-# #     my ( $before, $after ) = ( $1, $2 );
-# # }
-#
-# ===
-# --- dscr: RT #72086 - False positive with /e and parens
+# --- dscr: Alternation. RT #38942 redux
 # --- failures: 0
 # --- params:
 # --- input
-# s/(.)/($1)/e;
-# s/(.)/ { $1 } /e;
+# if ( /(a)/ || /(b)/ ) {
+#     say $1;
+# }
 #
+# # Yes, this is incorrect code, but that's ProhibitCaptureWithoutTest's
+# # problem.
+# if ( /(a)/ // /(b)/ ) {
+#     say $1;
+# }
+#
+# # Contrived, but worse things happen at sea.
+# if ( ( /(a)/ || undef ) // /(b)/ ) {
+#     say $1;
+# }
+#
+# if ( /(a)/ or /(b)/ ) {
+#     say $1;
+# }
+
+# ===
+# --- dscr: Alternation with conjunction. RT #38942 redux
+# --- failures: 4
+# --- params:
+# --- input
+# # 1 failure here: the /(b)/
+# if ( /(a)/ || /(b)/ && /(c)/ ) {
+#     say $1;
+# }
+#
+# # 1 failure here: the /(b)/
+# if ( /(a)/ or /(b)/ and /(c)/ ) {
+#     say $1;
+# }
+#
+# # 2 failures here: the /(a)/ and the /(b)/
+# if ( /(a)/ || /(b)/ and /(c)/ ) {
+#     say $1;
+# }
+
+===
+--- dscr: RT #67116 - Incorrect check of here document.
+--- failures: 1
+--- params:
+--- input
+$x !~ /()/;
+<<X;
+.
+.
+.
+X
+
+# ===
+# --- dscr: RT #69867 - Incorrect check of if() statement if regexp negated
+# --- failures: 0
+# --- params:
+# --- input
+# if ( $ip !~ /^(.*?)::(.*)\z/sx ) {
+#     @fields = split /:/x, $ip;
+# } else {
+#     my ( $before, $after ) = ( $1, $2 );
+# }
+
+===
+--- dscr: RT #72086 - False positive with /e and parens
+--- failures: 0
+--- params:
+--- input
+s/(.)/($1)/e;
+s/(.)/ { $1 } /e;
+
