@@ -474,10 +474,39 @@ sub evaluate {
             next;
         }
 
+        if ($token_type == BUILTIN_FUNC) {
+            if ($token_data eq 'grep' || $token_data eq 'map') {
+                $token = $tokens->[++$i] or last;
+                $token_type = $token->{type};
+
+                if ($token_type == LEFT_PAREN) {
+                    my $lpnum = 1;
+                    for ($i++; $token = $tokens->[$i]; $i++) {
+                        $token_type = $token->{type};
+                        if ($token_type == LEFT_PAREN) {
+                            $lpnum++;
+                        }
+                        elsif ($token_type == RIGHT_PAREN) {
+                            last if --$lpnum <= 0;
+                        }
+                    }
+                }
+                else {
+                    for ($i++; $token = $tokens->[$i]; $i++) {
+                        if ($token->{type} == SEMI_COLON) {
+                            last;
+                        }
+                    }
+                }
+
+                next;
+            }
+        }
+
         # if (
         #     $token_type == BUILTIN_FUNC ||
         #     $token_type == METHOD
-        #     # $token_type == KEY
+        # #     # $token_type == KEY
         # ) {
         #     $token = $tokens->[++$i] or last;
         #     $token_type = $token->{type};
@@ -493,6 +522,15 @@ sub evaluate {
         #             }
         #         }
         #     }
+        #     else {
+        #         for ($i++; $token = $tokens->[$i]; $i++) {
+        #             if ($token->{type} == SEMI_COLON) {
+        #                 last;
+        #             }
+        #         }
+        #     }
+        #
+        #     next;
         # }
 
         if ($token_type == SPECIFIC_VALUE) {
@@ -564,7 +602,24 @@ sub evaluate {
         if ($token_type == RIGHT_BRACE) {
             $lbnum_for_scope--;
             if (delete $depth_for_each_subs{$lbnum_for_scope}) {
+                my $regexp_in_return_ctx;
+                if ($token = $tokens->[$i-2]) {
+                    if ($token->{type} == REG_EXP) {
+                        $regexp_in_return_ctx = $token;
+                    }
+                    elsif ($token = $tokens->[$i-3]) {
+                        if ($token->{type} == REG_EXP) {
+                            $regexp_in_return_ctx = $token;
+                        }
+                    }
+                }
+
                 if (%{pop @captured_for_each_scope}) {
+                    if ($regexp_in_return_ctx) {
+                        # should check equality between to just before regexp token?
+                        next;
+                    }
+
                     push @violations, {
                         filename => $file,
                         line     => $just_before_regex_token->{line},
@@ -578,7 +633,7 @@ sub evaluate {
         }
     }
 
-    if (%{$captured_for_each_scope[-1]}) {
+    if (%{$captured_for_each_scope[-1] || {}}) {
         push @violations, {
             filename => $file,
             line     => $just_before_regex_token->{line},

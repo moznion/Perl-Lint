@@ -337,18 +337,18 @@ print $1;
 $f = { m/(\w+)=(\w+)/g };
 $f = [ m/(\w+)/g ];
 
-# ===
-# --- dscr: sub returns
-# --- failures: 0
-# --- params:
-# --- input
-# sub foo {
-#    m/(foo)/;
-# }
-# sub foo {
-#    return m/(foo)/;
-# }
-# map { m/(foo)/ } (1, 2, 3);
+===
+--- dscr: sub returns
+--- failures: 0
+--- params:
+--- input
+sub foo {
+   m/(foo)/;
+}
+sub foo {
+   return m/(foo)/;
+}
+map { m/(foo)/ } (1, 2, 3);
 
 # NOTE: ignore
 # ===
