@@ -141,13 +141,13 @@ for (m/(foo)/) {
 # foo 'bar', m/(foo)/;
 # foo m/(foo)/, 'bar';
 
-# ===
-# --- dscr: slurpy with assignment
-# --- failures: 0
-# --- params:
-# --- input
-# my ($foo) = grep {$b++ == 2} m/(foo)/g;
-# my ($foo) = grep {$b++ == 2} $str =~ m/(foo)/g;
+===
+--- dscr: slurpy with assignment
+--- failures: 0
+--- params:
+--- input
+my ($foo) = grep {$b++ == 2} m/(foo)/g;
+my ($foo) = grep {$b++ == 2} $str =~ m/(foo)/g;
 
 ===
 --- dscr: slurpy with array assignment
@@ -174,12 +174,12 @@ my ($foo, @bar) = $str =~ m/(foo)(bar)/;
 my (@bar) = $str =~ m/(foo)(bar)/;
 my ($foo, @bar) = $str =~ m/(foo)(bar)(baz)/;
 
-# ===
-# --- dscr: slurpy captures on string
-# --- failures: 0
-# --- params:
-# --- input
-# map {print} $str =~ m/(foo)/g;
+===
+--- dscr: slurpy captures on string
+--- failures: 0
+--- params:
+--- input
+map {print} $str =~ m/(foo)/g;
 
 ===
 --- dscr: self captures
@@ -350,7 +350,7 @@ sub foo {
 }
 map { m/(foo)/ } (1, 2, 3);
 
-# NOTE: ignore
+## NOTE: ignore
 # ===
 # --- dscr: failing regexp with syntax error
 # --- failures: 0
@@ -365,12 +365,12 @@ map { m/(foo)/ } (1, 2, 3);
 --- input
 (substr $str, 0, 1) = m/(\w+)/;
 
+## TODO lvalue subs are too complex to support
 # ===
 # --- dscr: lvalue sub assigment failure
 # --- failures: 1
 # --- params:
 # --- input
-# ## TODO lvalue subs are too complex to support
 # (substr $str, 0, 1) = m/(\w+)(\d+)/;
 
 ===
