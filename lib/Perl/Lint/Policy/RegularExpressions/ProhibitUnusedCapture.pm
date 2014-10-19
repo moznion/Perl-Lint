@@ -1,6 +1,7 @@
 package Perl::Lint::Policy::RegularExpressions::ProhibitUnusedCapture;
 use strict;
 use warnings;
+use List::Util qw/any all/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
@@ -65,7 +66,11 @@ sub evaluate {
             elsif (
                 $token_type == GLOBAL_ARRAY_VAR ||
                 $token_type == LOCAL_ARRAY_VAR ||
-                $token_type == ARRAY_VAR ||
+                $token_type == ARRAY_VAR
+            ) {
+                $assign_ctx = 'UNLIMITED_ARRAY';
+            }
+            elsif (
                 $token_type == GLOBAL_HASH_VAR ||
                 $token_type == LOCAL_HASH_VAR ||
                 $token_type == HASH_VAR
@@ -454,7 +459,24 @@ sub evaluate {
             }
 
             if ($assign_ctx ne 'NONE') {
+                my $captured = $captured_for_each_scope[$sub_depth];
                 $captured_for_each_scope[$sub_depth] = {};
+
+                if ($assign_ctx eq 'UNLIMITED_ARRAY') {
+                    if (%{$captured || {}}) {
+                        if (any {substr($_, 0, 1) ne q<$> } keys %$captured) {
+                            push @violations, {
+                                filename => $file,
+                                line     => $token->{line},
+                                description => DESC,
+                                explanation => EXPL,
+                                policy => __PACKAGE__,
+                            };
+                        }
+                    }
+                    next;
+                }
+
                 my $maybe_reg_opt = $tokens->[$i+2] or next;
                 if ($maybe_reg_opt->{type} == REG_OPT) {
                     if ($assign_ctx ne 'UNLIMITED' && $maybe_reg_opt->{data} =~ /g/) {
@@ -467,6 +489,7 @@ sub evaluate {
                         };
                     }
                 }
+
                 next;
             }
 
@@ -614,10 +637,12 @@ sub evaluate {
                     }
                 }
 
-                if (%{pop @captured_for_each_scope}) {
+                if (my %captured = %{pop @captured_for_each_scope}) {
                     if ($regexp_in_return_ctx) {
                         # should check equality between to just before regexp token?
-                        next;
+                        if (all {substr($_, 0, 1) eq q<$>} keys %captured) {
+                            next;
+                        }
                     }
 
                     push @violations, {

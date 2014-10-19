@@ -407,15 +407,15 @@ while ( m/(?'foo'\d+)/g ) {
 
 m/(?P<foo>\w+)|(?<foo>\W+)/ and print $+{foo}, "\n";
 
-# ===
-# --- dscr: named capture in array context is unused
-# --- failures: 2
-# --- params:
-# --- input
-# my @foo = m/(?<foo>\w+)/;
-# sub foo {
-#     return m/(?<foo>\W+)/;
-# }
+===
+--- dscr: named capture in array context is unused
+--- failures: 2
+--- params:
+--- input
+my @foo = m/(?<foo>\w+)/;
+sub foo {
+    return m/(?<foo>\W+)/;
+}
 
 ===
 --- dscr: named capture in array context with siblings is OK
