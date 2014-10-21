@@ -460,22 +460,17 @@ sub evaluate {
 
             if ($assign_ctx ne 'NONE') {
                 my $captured = $captured_for_each_scope[$sub_depth];
-                $captured_for_each_scope[$sub_depth] = {};
 
                 if ($assign_ctx eq 'UNLIMITED_ARRAY') {
                     if (%{$captured || {}}) {
-                        if (any {substr($_, 0, 1) ne q<$> } keys %$captured) {
-                            push @violations, {
-                                filename => $file,
-                                line     => $token->{line},
-                                description => DESC,
-                                explanation => EXPL,
-                                policy => __PACKAGE__,
-                            };
+                        if (all {substr($_, 0, 1) eq q<$> } keys %$captured) {
+                            $captured_for_each_scope[$sub_depth] = {};
                         }
                     }
                     next;
                 }
+
+                $captured_for_each_scope[$sub_depth] = {};
 
                 my $maybe_reg_opt = $tokens->[$i+2] or next;
                 if ($maybe_reg_opt->{type} == REG_OPT) {
