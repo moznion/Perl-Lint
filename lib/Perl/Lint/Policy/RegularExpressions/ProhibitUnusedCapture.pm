@@ -2,6 +2,7 @@ package Perl::Lint::Policy::RegularExpressions::ProhibitUnusedCapture;
 use strict;
 use warnings;
 use List::Util qw/any all/;
+use Test::Deep::NoTest qw(eq_deeply);
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
@@ -17,24 +18,36 @@ my %ignore_reg_op = (
     &REG_QUOTE        => 1,
 );
 
+my @captured_for_each_scope;
+my $sub_depth;
+my @violations;
+my $file;
+my $tokens;
+my $just_before_regex_token;
+my $reg_not_ctx;
+my $assign_ctx;
+
 sub evaluate {
-    my ($class, $file, $tokens, $src, $args) = @_;
+    my $class = shift;
+    $file     = shift;
+    $tokens   = shift;
+    my ($src, $args) = @_;
 
     # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
 
     my $is_used_english = 0;
 
-    my @violations;
-    my @captured_for_each_scope = ({});
-    my $just_before_regex_token;
-    my $assign_ctx = 'NONE';
-    my $reg_not_ctx = 0;
+    @violations = ();
+    @captured_for_each_scope = ({});
+    $just_before_regex_token = undef;
+    $assign_ctx = 'NONE';
+    $reg_not_ctx = 0;
 
     my %depth_for_each_subs;
     my $lbnum_for_scope = 0;
-    my $sub_depth = 0;
+    $sub_depth = 0;
 
-    for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
+    TOP: for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
         $token_data = $token->{data};
 
@@ -489,6 +502,7 @@ sub evaluate {
             }
 
             $reg_not_ctx = 0;
+
             next;
         }
 
@@ -550,6 +564,112 @@ sub evaluate {
         #
         #     next;
         # }
+
+        if (
+            $token_type == IF_STATEMENT    ||
+            $token_type == ELSIF_STATEMENT ||
+            $token_type == UNLESS_STATEMENT
+        ) {
+            $token = $tokens->[++$i] or next;
+
+            my @regexs_at_before_and_op;
+            my @regexs_at_after_and_op;
+            my $and_op_token;
+
+            if ($token->{type} eq LEFT_PAREN) {
+                my $lpnum = 1;
+                for ($i++; $token = $tokens->[$i]; $i++) {
+                    $token_type = $token->{type};
+                    if ($token_type == LEFT_PAREN) {
+                        $lpnum++;
+                    }
+                    elsif ($token_type == RIGHT_PAREN) {
+                        last if --$lpnum <= 0;
+                    }
+                    elsif ($token_type == REG_EXP) {
+                        if ($and_op_token) {
+                            push @regexs_at_after_and_op, $token;
+                        }
+                        else {
+                            push @regexs_at_before_and_op, $token;
+                        }
+                    }
+                    elsif ($token_type == AND || $token_type == ALPHABET_AND) {
+                        $and_op_token = $token;
+                    }
+                    elsif ($ignore_reg_op{$token_type} || $token_type == REG_DOUBLE_QUOTE) { # XXX
+                        $i += 2;
+                    }
+                }
+            }
+            else {
+                for ($i++; $token = $tokens->[$i]; $i++) {
+                    $token_type = $token->{type};
+                    if ($token_type == SEMI_COLON) {
+                        last;
+                    }
+                    elsif ($token_type == REG_EXP) {
+                        if ($and_op_token) {
+                            push @regexs_at_after_and_op, $token;
+                        }
+                        else {
+                            push @regexs_at_before_and_op, $token;
+                        }
+                    }
+                    elsif ($token_type == AND || $token_type == ALPHABET_AND) {
+                        $and_op_token = $token;
+                    }
+                    elsif ($ignore_reg_op{$token_type} || $token_type == REG_DOUBLE_QUOTE) { # XXX
+                        $i += 2;
+                    }
+                }
+            }
+
+            if (!@regexs_at_after_and_op) {
+                my @captured;
+                for my $regex (@regexs_at_before_and_op) {
+                    $class->_scan_regex($regex, $i);
+
+                    push @captured, $captured_for_each_scope[$sub_depth];
+                    $captured_for_each_scope[++$sub_depth] = {};
+                }
+
+                my $datam = pop @captured;
+                if ($datam) {
+                    for my $cap (@captured) {
+                        if (!eq_deeply($datam, $cap)) {
+                            # TODO push violation?
+                            next TOP;
+                        }
+                    }
+                }
+
+                $captured_for_each_scope[$sub_depth] = $datam;
+            }
+            else {
+                my $is_captured_at_before_and_op = 0;
+                for my $b_regex (@regexs_at_before_and_op) {
+                    $class->_scan_regex($b_regex, $i);
+
+                    my %captured_this_scope = %{$captured_for_each_scope[$sub_depth] || {}};
+                    if (%captured_this_scope) {
+                        $is_captured_at_before_and_op = 1;
+                        last;
+                    }
+                }
+
+                for my $a_regex (@regexs_at_after_and_op) {
+                    $class->_scan_regex($a_regex, $i);
+
+                    my %captured_this_scope = %{$captured_for_each_scope[$sub_depth] || {}};
+                    if (%captured_this_scope && $is_captured_at_before_and_op) {
+                        last;
+                    }
+                }
+            }
+
+            next;
+        }
 
         if ($token_type == SPECIFIC_VALUE) {
             if ($token_data =~ /\A\$[0-9]+\Z/) {
@@ -664,6 +784,152 @@ sub evaluate {
     }
 
     return \@violations;
+}
+
+sub _scan_regex {
+    my ($class, $token, $i) = @_;
+
+    if (%{$captured_for_each_scope[$sub_depth]}) {
+        push @violations, {
+            filename => $file,
+            line     => $just_before_regex_token->{line},
+            description => DESC,
+            explanation => EXPL,
+            policy => __PACKAGE__,
+        };
+    }
+
+    $captured_for_each_scope[$sub_depth] = {};
+    $just_before_regex_token = $token;
+
+    my $token_data = $token->{data};
+
+    my @re_chars = split //, $token_data;
+
+    my $escaped = 0;
+    my $lbnum = 0;
+    my $captured_num = 0;
+    for (my $j = 0; my $re_char = $re_chars[$j]; $j++) {
+        if ($escaped) {
+            if ($re_char =~ /[0-9]/) {
+                # TODO should track follows number
+                delete $captured_for_each_scope[$sub_depth]->{q<$> . $re_char};
+            }
+            $escaped = 0;
+            return;
+        }
+
+        if ($re_char eq '\\') {
+            $escaped = 1;
+            return;
+        }
+
+        if ($re_char eq '[') {
+            $lbnum++;
+            return;
+        }
+
+        if ($lbnum > 0) { # in [...]
+            if ($re_char eq ']') {
+                $lbnum--;
+                return;
+            }
+
+            return;
+        }
+
+        if ($re_char eq '(') {
+            my $captured_name = '';
+
+            if ($re_chars[$j+1] eq '?') {
+                my $delimiter = $re_chars[$j+2];
+
+                if ($delimiter eq ':') {
+                    return;
+                }
+
+                if ($delimiter eq 'P') {
+                    $delimiter = $re_chars[$j+3];
+                    $j++;
+                }
+
+                if ($delimiter eq '<' || $delimiter eq q{'}) {
+                    for ($j += 3; $re_char = $re_chars[$j]; $j++) {
+                        if (
+                            ($delimiter eq '<' && $re_char eq '>') ||
+                            ($delimiter eq q{'} && $re_char eq q{'})
+                        ) {
+                            last;
+                        }
+                        $captured_name .= $re_char;
+                    }
+
+                    if ($reg_not_ctx) {
+                        push @violations, {
+                            filename => $file,
+                            line     => $token->{line},
+                            description => DESC,
+                            explanation => EXPL,
+                            policy => __PACKAGE__,
+                        };
+                    }
+                    else {
+                        $captured_num++;
+                        $captured_for_each_scope[$sub_depth]->{$captured_name} = 1;
+                    }
+                }
+            }
+            elsif ($re_chars[$j+1] ne '?' || $re_chars[$j+2] ne ':') {
+                if ($reg_not_ctx) {
+                    push @violations, {
+                        filename => $file,
+                        line     => $token->{line},
+                        description => DESC,
+                        explanation => EXPL,
+                        policy => __PACKAGE__,
+                    };
+                }
+                else {
+                    $captured_num++;
+                    $captured_for_each_scope[$sub_depth]->{q<$> . $captured_num} = 1;
+                }
+            }
+        }
+    }
+
+    if ($assign_ctx ne 'NONE') {
+        my $captured = $captured_for_each_scope[$sub_depth];
+
+        if ($assign_ctx eq 'UNLIMITED_ARRAY') {
+            if (%{$captured || {}}) {
+                if (all {substr($_, 0, 1) eq q<$> } keys %$captured) {
+                    $captured_for_each_scope[$sub_depth] = {};
+                }
+            }
+            return;
+        }
+
+        $captured_for_each_scope[$sub_depth] = {};
+
+        my $maybe_reg_opt = $tokens->[$i+2] or return;
+        if ($maybe_reg_opt->{type} == REG_OPT) {
+            if ($assign_ctx ne 'UNLIMITED' && $maybe_reg_opt->{data} =~ /g/) {
+                push @violations, {
+                    filename => $file,
+                    line     => $token->{line},
+                    description => DESC,
+                    explanation => EXPL,
+                    policy => __PACKAGE__,
+                };
+            }
+        }
+
+        return;
+    }
+
+    $reg_not_ctx = 0;
+
+    return;
 }
 
 1;

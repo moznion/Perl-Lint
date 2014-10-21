@@ -547,49 +547,50 @@ print <<EOD
 $+[2] $1
 EOD
 
-# ===
-# --- dscr: Alternation. RT #38942 redux
-# --- failures: 0
-# --- params:
-# --- input
-# if ( /(a)/ || /(b)/ ) {
-#     say $1;
-# }
-#
-# # Yes, this is incorrect code, but that's ProhibitCaptureWithoutTest's
-# # problem.
-# if ( /(a)/ // /(b)/ ) {
-#     say $1;
-# }
-#
-# # Contrived, but worse things happen at sea.
-# if ( ( /(a)/ || undef ) // /(b)/ ) {
-#     say $1;
-# }
-#
-# if ( /(a)/ or /(b)/ ) {
-#     say $1;
-# }
+===
+--- dscr: Alternation. RT #38942 redux
+--- failures: 0
+--- params:
+--- input
+if ( /(a)/ || /(b)/ ) {
+    say $1;
+}
 
-# ===
-# --- dscr: Alternation with conjunction. RT #38942 redux
-# --- failures: 4
-# --- params:
-# --- input
-# # 1 failure here: the /(b)/
-# if ( /(a)/ || /(b)/ && /(c)/ ) {
-#     say $1;
-# }
-#
-# # 1 failure here: the /(b)/
-# if ( /(a)/ or /(b)/ and /(c)/ ) {
-#     say $1;
-# }
-#
-# # 2 failures here: the /(a)/ and the /(b)/
-# if ( /(a)/ || /(b)/ and /(c)/ ) {
-#     say $1;
-# }
+# Yes, this is incorrect code, but that's ProhibitCaptureWithoutTest's
+# problem.
+if ( /(a)/ // /(b)/ ) {
+    say $1;
+}
+
+# Contrived, but worse things happen at sea.
+if ( ( /(a)/ || undef ) // /(b)/ ) {
+    say $1;
+}
+
+if ( /(a)/ or /(b)/ ) {
+    say $1;
+}
+
+===
+--- dscr: Alternation with conjunction. RT #38942 redux
+--- failures: 3
+--- params:
+--- input
+# 1 failure here: the /(b)/
+if ( /(a)/ || /(b)/ && /(c)/ ) {
+    say $1;
+}
+
+# 1 failure here: the /(b)/
+if ( /(a)/ or /(b)/ and /(c)/ ) {
+    say $1;
+}
+
+# 2 failures here: the /(a)/ and the /(b)/
+# NOTE: but handling 1 failure by Perl::Lint
+if ( /(a)/ || /(b)/ and /(c)/ ) {
+    say $1;
+}
 
 ===
 --- dscr: RT #67116 - Incorrect check of here document.
