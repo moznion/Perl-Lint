@@ -128,18 +128,18 @@ for (m/(foo)/) {
    print $foo;
 }
 
-# ===
-# --- dscr: slurpy array loop captures
-# --- failures: 0
-# --- params:
-# --- input
-# map {print} m/(foo)/;
-# foo(m/(foo)/);
-# foo('bar', m/(foo)/);
-# foo(m/(foo)/, 'bar');
-# foo m/(foo)/;
-# foo 'bar', m/(foo)/;
-# foo m/(foo)/, 'bar';
+===
+--- dscr: slurpy array loop captures
+--- failures: 0
+--- params:
+--- input
+map {print} m/(foo)/;
+foo(m/(foo)/);
+foo('bar', m/(foo)/);
+foo(m/(foo)/, 'bar');
+foo m/(foo)/;
+foo 'bar', m/(foo)/;
+foo m/(foo)/, 'bar';
 
 ===
 --- dscr: slurpy with assignment
@@ -604,16 +604,16 @@ $x !~ /()/;
 .
 X
 
-# ===
-# --- dscr: RT #69867 - Incorrect check of if() statement if regexp negated
-# --- failures: 0
-# --- params:
-# --- input
-# if ( $ip !~ /^(.*?)::(.*)\z/sx ) {
-#     @fields = split /:/x, $ip;
-# } else {
-#     my ( $before, $after ) = ( $1, $2 );
-# }
+===
+--- dscr: RT #69867 - Incorrect check of if() statement if regexp negated
+--- failures: 0
+--- params:
+--- input
+if ( $ip !~ /^(.*?)::(.*)\z/sx ) {
+    @fields = split /:/x, $ip;
+} else {
+    my ( $before, $after ) = ( $1, $2 );
+}
 
 ===
 --- dscr: RT #72086 - False positive with /e and parens

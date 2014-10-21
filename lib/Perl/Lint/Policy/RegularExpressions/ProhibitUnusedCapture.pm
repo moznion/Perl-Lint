@@ -535,35 +535,43 @@ sub evaluate {
             }
         }
 
-        # if (
-        #     $token_type == BUILTIN_FUNC ||
-        #     $token_type == METHOD
-        # #     # $token_type == KEY
-        # ) {
-        #     $token = $tokens->[++$i] or last;
-        #     $token_type = $token->{type};
-        #     if ($token_type == LEFT_PAREN) {
-        #         my $lpnum = 1;
-        #         for ($i++; $token = $tokens->[$i]; $i++) {
-        #             $token_type = $token->{type};
-        #             if ($token_type == LEFT_PAREN) {
-        #                 $lpnum++;
-        #             }
-        #             elsif ($token_type == RIGHT_PAREN) {
-        #                 last if --$lpnum <= 0;
-        #             }
-        #         }
-        #     }
-        #     else {
-        #         for ($i++; $token = $tokens->[$i]; $i++) {
-        #             if ($token->{type} == SEMI_COLON) {
-        #                 last;
-        #             }
-        #         }
-        #     }
-        #
-        #     next;
-        # }
+        if (
+            $token_type == BUILTIN_FUNC ||
+            $token_type == METHOD ||
+            $token_type == KEY
+        ) {
+            my $j = $i + 1;
+            $token = $tokens->[$j] or last;
+            $token_type = $token->{type};
+            if ($token_type == LEFT_PAREN) {
+                my $lpnum = 1;
+                for ($j++; $token = $tokens->[$j]; $j++) {
+                    $token_type = $token->{type};
+                    if ($token_type == LEFT_PAREN) {
+                        $lpnum++;
+                    }
+                    elsif ($token_type == RIGHT_PAREN) {
+                        last if --$lpnum <= 0;
+                    }
+                    elsif ($token_type == REG_EXP) {
+                        $token->{type} = -1; # XXX Replace to NOP
+                    }
+                }
+            }
+            else {
+                for (my $j = $i + 1; $token = $tokens->[$j]; $j++) {
+                    $token_type = $token->{type};
+                    if ($token_type == SEMI_COLON) {
+                        last;
+                    }
+                    elsif ($token_type == REG_EXP) {
+                        $token->{type} = -1; # XXX Replace to NOP
+                    }
+                }
+            }
+
+            next;
+        }
 
         if (
             $token_type == IF_STATEMENT    ||
