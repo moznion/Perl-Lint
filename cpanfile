@@ -12,6 +12,7 @@ requires 'Regexp::Parser';
 requires 'Module::Load';
 requires 'Module::Pluggable';
 requires 'List::Flatten';
+requires 'Test::Deep::NoTest';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';
