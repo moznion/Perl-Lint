@@ -4,7 +4,7 @@
       "moznion <moznion@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.1.1, CPAN::Meta::Converter version 2.142060",
+   "generated_by" : "Minilla/v2.1.3, CPAN::Meta::Converter version 2.142060",
    "license" : [
       "perl_5"
    ],
@@ -49,11 +49,14 @@
             "Carp" : "0",
             "Compiler::Lexer" : "0.19",
             "Email::Address" : "0",
+            "List::Flatten" : "0",
+            "List::MoreUtils" : "0.33",
             "List::Util" : "1.38",
             "Module::Load" : "0",
             "Module::Pluggable" : "0",
             "Regexp::Parser" : "0",
             "String::CamelCase" : "0",
+            "Test::Deep::NoTest" : "0",
             "feature" : "0",
             "parent" : "0",
             "perl" : "5.010001"
@@ -71,16 +74,16 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/moznion/Perl-Lint/issues"
+         "web" : "https://git@github.com/moznion/Perl-Lint/issues"
       },
-      "homepage" : "https://github.com/moznion/Perl-Lint",
+      "homepage" : "https://git@github.com/moznion/Perl-Lint",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/moznion/Perl-Lint",
-         "web" : "https://github.com/moznion/Perl-Lint"
+         "url" : "git://git@github.com/moznion/Perl-Lint",
+         "web" : "https://git@github.com/moznion/Perl-Lint"
       }
    },
-   "version" : "0.01_02",
+   "version" : "0.10",
    "x_authority" : "cpan:MOZNION",
    "x_contributors" : [
       "Syohei YOSHIDA <syohex@gmail.com>"
