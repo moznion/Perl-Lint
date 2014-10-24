@@ -219,7 +219,7 @@ sub evaluate {
                         if ($begin_delimiter eq '[') {
                             $captured_name-- if $captured_name > 0;
 
-                            my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys $captured_for_each_scope[$sub_depth];
+                            my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys %{$captured_for_each_scope[$sub_depth]};
 
                             if (my $hit = $num_vars[$captured_name]) {
                                 delete $captured_for_each_scope[$sub_depth]->{$hit};
@@ -334,7 +334,7 @@ sub evaluate {
                         if ($begin_delimiter eq '[') {
                             $captured_name-- if $captured_name > 0;
 
-                            my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys $captured_for_each_scope[$sub_depth];
+                            my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys %{$captured_for_each_scope[$sub_depth]};
 
                             if (my $hit = $num_vars[$captured_name]) {
                                 delete $captured_for_each_scope[$sub_depth]->{$hit};
@@ -692,7 +692,7 @@ sub evaluate {
                 if ($token_data =~ /\A -? [0-9]+ \Z/x) {
                     $token_data-- if $token_data > 0;
 
-                    my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys $captured_for_each_scope[$sub_depth];
+                    my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys %{$captured_for_each_scope[$sub_depth]};
 
                     if (my $hit = $num_vars[$token_data]) {
                         delete $captured_for_each_scope[$sub_depth]->{$hit};
@@ -719,7 +719,7 @@ sub evaluate {
                     if ($token_data =~ /\A -? [0-9]+ \Z/x) {
                         $token_data-- if $token_data > 0;
 
-                        my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys $captured_for_each_scope[$sub_depth];
+                        my @num_vars = sort {$a cmp $b} grep { $_ =~ /\A\$[0-9]+\Z/} keys %{$captured_for_each_scope[$sub_depth]};
 
                         if (my $hit = $num_vars[$token_data]) {
                             delete $captured_for_each_scope[$sub_depth]->{$hit};

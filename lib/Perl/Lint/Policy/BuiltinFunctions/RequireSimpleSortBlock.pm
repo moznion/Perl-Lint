@@ -39,7 +39,7 @@ sub evaluate {
                 }
                 elsif ($token_type == RIGHT_BRACE) {
                     if (--$left_brace_num <= 0) {
-                        if (scalar(split /;/, $concat_stmt) > 1) { # XXX
+                        if (scalar(@_ = split /;/, $concat_stmt) > 1) { # XXX
                             push @violations, {
                                 filename => $file,
                                 line     => $token->{line},
