@@ -50,6 +50,9 @@ sub evaluate {
 
             if ($function_declared_depth{$depth}) {
                 pop @opened_file_handlers_for_each_depth;
+                if (!@opened_file_handlers_for_each_depth) {
+                    @opened_file_handlers_for_each_depth = ([]);
+                }
             }
 
             next;
