@@ -120,14 +120,17 @@ sub evaluate {
             }
         }
 
-        if ($token_type == INT && $token_data != 0 && $token_data =~ /\A-?0/) {
-            push @violations, {
-                filename => $file,
-                line     => $token->{line},
-                description => DESC,
-                explanation => EXPL,
-                policy => __PACKAGE__,
-            };
+        if ($token_type == INT) {
+            my $int = $token_type;
+            if (($int =~ s/_//g) != 0 && $int =~ /\A-?0/) {
+                push @violations, {
+                    filename => $file,
+                    line     => $token->{line},
+                    description => DESC,
+                    explanation => EXPL,
+                    policy => __PACKAGE__,
+                };
+            }
             next;
         }
     }
