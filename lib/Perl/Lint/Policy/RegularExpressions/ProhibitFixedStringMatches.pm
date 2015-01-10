@@ -60,7 +60,15 @@ sub evaluate {
                 }
             }
 
-            my @regexp_tokens = @{tokenize(qr/$token->{data}/)->{tokens}};
+            my @regexp_tokens = eval {
+                @{tokenize(qr/$token->{data}/)->{tokens}};
+            };
+
+            if ($@) {
+                # XXX First aid!
+                # Maybe regexp is produced by `tr///` or `y///` operator if it reaches here.
+                next;
+            }
 
             if (scalar @regexp_tokens < 2) {
                 next;
