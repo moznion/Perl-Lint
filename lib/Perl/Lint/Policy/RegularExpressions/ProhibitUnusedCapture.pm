@@ -364,7 +364,7 @@ sub evaluate {
         }
 
         if ($token_type == REG_EXP || $token_type == REG_REPLACE_FROM) {
-            if (%{$captured_for_each_scope[$sub_depth]}) {
+            if (defined $captured_for_each_scope[$sub_depth] && %{$captured_for_each_scope[$sub_depth]}) {
                 push @violations, {
                     filename => $file,
                     line     => $just_before_regex_token->{line},
@@ -760,7 +760,8 @@ sub evaluate {
                     }
                 }
 
-                if (my %captured = %{pop @captured_for_each_scope}) {
+                my $captured = pop @captured_for_each_scope;
+                if (defined $captured and my %captured = %{$captured}) {
                     if ($regexp_in_return_ctx) {
                         # should check equality between to just before regexp token?
                         if (all {substr($_, 0, 1) eq q<$>} keys %captured) {
