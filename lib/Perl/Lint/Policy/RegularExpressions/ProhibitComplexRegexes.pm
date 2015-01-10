@@ -1,7 +1,6 @@
 package Perl::Lint::Policy::RegularExpressions::ProhibitComplexRegexes;
 use strict;
 use warnings;
-use Perl::Lint::RegexpParser;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
@@ -14,8 +13,6 @@ sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
     my $max_characters = $args->{prohibit_complex_regexes}->{max_characters} || 60;
-
-    my $regexp_parser = Perl::Lint::RegexpParser->new; # to use to check the regexp syntax
 
     my @violations;
     my $is_reg_quote = 0;
@@ -40,11 +37,6 @@ sub evaluate {
 
             if ($_is_reg_quote) {
                 # ignore when reg quote
-                next;
-            }
-
-            if (!$regexp_parser->parse($regexp)) {
-                # invalid regexp with syntax error
                 next;
             }
 

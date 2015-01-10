@@ -1,8 +1,9 @@
 package Perl::Lint::Policy::RegularExpressions::ProhibitFixedStringMatches;
 use strict;
 use warnings;
-use Perl::Lint::RegexpParser;
 use Perl::Lint::Constants::Type;
+use Regexp::Lexer qw(tokenize);
+use Regexp::Lexer::TokenType;
 use parent "Perl::Lint::Policy";
 
 use constant {
@@ -10,18 +11,16 @@ use constant {
     EXPL => [271, 272],
 };
 
-my %fixed_regexp_families = (
-    open   => 1,
-    exact  => 1,
-    close  => 1,
-    group  => 1,
-    branch => 1,
-);
+my $plus_id = Regexp::Lexer::TokenType::Plus->{id};
+my $asterisk_id = Regexp::Lexer::TokenType::Asterisk->{id};
+
+my $beginning_of_line_id = Regexp::Lexer::TokenType::BeginningOfLine->{id};
+my $end_of_line_id = Regexp::Lexer::TokenType::EndOfLine->{id};
+my $escaped_beginning_of_line_id = Regexp::Lexer::TokenType::EscapedBeginningOfString->{id};
+my $escaped_end_of_line_id = Regexp::Lexer::TokenType::EscapedEndOfString->{id};
 
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
-
-    my $regexp_parser = Perl::Lint::RegexpParser->new;
 
     my @violations;
     my $is_reg_quoted = 0;
@@ -52,34 +51,24 @@ sub evaluate {
                 }
             }
 
-            $regexp_parser->parse($token->{data});
+            my $regexp_tokens = tokenize(qr/$token->{data}/)->{tokens};
+            if (grep {($_->{type}->{id} == $asterisk_id) || ($_->{type}->{id} == $plus_id)} @$regexp_tokens) {
+                next;
+            }
 
-            my @anchors;
-            my $is_invalid = 1;
-            my $iter = $regexp_parser->walker;
-            while (my $node = $iter->()) {
-                if (my $family = $node->{family}) {
-                    if ($family eq 'anchor') {
-                        push @anchors, $node->{vis};
-                        next;
-                    }
-
-                    if ($fixed_regexp_families{$family}) {
+            my $first_token_type_id = $regexp_tokens->[0]->{type}->{id};
+            my $last_token_type_id = $regexp_tokens->[-1]->{type}->{id};
+            if (defined $first_token_type_id && defined $last_token_type_id) {
+                if ($is_with_m_opt) {
+                    if ($first_token_type_id == $beginning_of_line_id || $last_token_type_id == $end_of_line_id) {
                         next;
                     }
                 }
 
-                $is_invalid = 0;
-                last;
-            }
-
-            if ($is_invalid) {
-                if (scalar @anchors == 2) {
-                    if ($is_with_m_opt) {
-                        if ($anchors[0] eq '^' || $anchors[1] eq '$') {
-                            next;
-                        }
-                    }
+                if (
+                    ($first_token_type_id == $beginning_of_line_id || $first_token_type_id == $escaped_beginning_of_line_id) &&
+                    ($last_token_type_id == $end_of_line_id || $last_token_type_id == $escaped_end_of_line_id)
+                ) {
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
