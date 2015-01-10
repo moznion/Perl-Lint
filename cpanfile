@@ -3,7 +3,7 @@ requires 'Carp';
 requires 'Compiler::Lexer', '0.19';
 requires 'feature';
 requires 'parent';
-requires 'List::Util', '1.38';
+requires 'List::Util', '1.41';
 requires 'List::MoreUtils', '0.33';
 requires 'String::CamelCase';
 requires 'B::Keywords';
