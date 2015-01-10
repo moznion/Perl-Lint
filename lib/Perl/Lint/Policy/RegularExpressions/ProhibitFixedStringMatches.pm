@@ -11,9 +11,18 @@ use constant {
     EXPL => [271, 272],
 };
 
-my $plus_id = Regexp::Lexer::TokenType::Plus->{id};
-my $asterisk_id = Regexp::Lexer::TokenType::Asterisk->{id};
+# to use sanitize
+my $alternation_id = Regexp::Lexer::TokenType::Alternation->{id};
+my $lparen_id = Regexp::Lexer::TokenType::LeftParenthesis->{id};
+my $rparen_id = Regexp::Lexer::TokenType::RightParenthesis->{id};
+my $question_id = Regexp::Lexer::TokenType::Question->{id};
+my $colon_id = Regexp::Lexer::TokenType::Colon->{id};
 
+# to use check fixed string
+my $character_id = Regexp::Lexer::TokenType::Character->{id};
+my $escaped_character_id = Regexp::Lexer::TokenType::EscapedCharacter->{id};
+
+# anchors
 my $beginning_of_line_id = Regexp::Lexer::TokenType::BeginningOfLine->{id};
 my $end_of_line_id = Regexp::Lexer::TokenType::EndOfLine->{id};
 my $escaped_beginning_of_line_id = Regexp::Lexer::TokenType::EscapedBeginningOfString->{id};
@@ -51,13 +60,15 @@ sub evaluate {
                 }
             }
 
-            my $regexp_tokens = tokenize(qr/$token->{data}/)->{tokens};
-            if (grep {($_->{type}->{id} == $asterisk_id) || ($_->{type}->{id} == $plus_id)} @$regexp_tokens) {
+            my @regexp_tokens = @{tokenize(qr/$token->{data}/)->{tokens}};
+
+            if (scalar @regexp_tokens < 2) {
                 next;
             }
 
-            my $first_token_type_id = $regexp_tokens->[0]->{type}->{id};
-            my $last_token_type_id = $regexp_tokens->[-1]->{type}->{id};
+            my $first_token_type_id = (shift @regexp_tokens)->{type}->{id};
+            my $last_token_type_id = (pop @regexp_tokens)->{type}->{id};
+
             if (defined $first_token_type_id && defined $last_token_type_id) {
                 if ($is_with_m_opt) {
                     if ($first_token_type_id == $beginning_of_line_id || $last_token_type_id == $end_of_line_id) {
@@ -69,6 +80,40 @@ sub evaluate {
                     ($first_token_type_id == $beginning_of_line_id || $first_token_type_id == $escaped_beginning_of_line_id) &&
                     ($last_token_type_id == $end_of_line_id || $last_token_type_id == $escaped_end_of_line_id)
                 ) {
+                    my @not_character_tokens = ();
+
+                    for (my $j = 0, my $type_id; my $regexp_token = $regexp_tokens[$j]; $j++) {
+                        $type_id = $regexp_token->{type}->{id};
+                        if (
+                            $type_id == $alternation_id ||
+                            $type_id == $rparen_id
+                        ) {
+                            next;
+                        }
+
+                        if ($type_id == $lparen_id) {
+                            my $next_regexp_token = $regexp_tokens[$j+1];
+                            if (defined $next_regexp_token && $next_regexp_token->{type}->{id} == $question_id) {
+                                $next_regexp_token = $regexp_tokens[$j+2];
+                                if (defined $next_regexp_token && $next_regexp_token->{type}->{id} == $colon_id) {
+                                    $j += 2;
+                                    next;
+                                }
+                            }
+
+                            next;
+                        }
+
+                        if ($type_id != $character_id && $type_id != $escaped_character_id) {
+                            push @not_character_tokens, $regexp_token;
+                            next;
+                        }
+                    }
+
+                    if (@not_character_tokens) {
+                        next;
+                    }
+
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
