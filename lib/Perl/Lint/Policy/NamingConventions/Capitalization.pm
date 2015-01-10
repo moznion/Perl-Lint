@@ -6,8 +6,9 @@ use String::CamelCase qw/wordsplit/;
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
+# TODO integrate error messages
+
 use constant {
-    DESC => '%s', # TODO msg!
     EXPL => [45, 46],
 };
 
@@ -88,15 +89,24 @@ sub evaluate {
 
         # for variables name
         if ($var_declare_token_types{$token_type}) {
-            my $condition;
             my $exemptions;
             my $is_global_var = 0;
+
+            my $checker       = \&_is_singlecase;
+            my $error_message = '"%s" is not all lower case or all upper case';
+
             if ($local_var_declare_token_types{$token_type}) {
-                $condition  = $class->_choose_condition_dispenser($local_lexical_variables_rule) || \&_is_singlecase;
+                if (my $condition = $class->_choose_condition_dispenser($local_lexical_variables_rule)) {
+                    $checker       = $condition->{checker};
+                    $error_message = $condition->{error_message};
+                }
                 $exemptions = $local_lexical_variable_exemptions;
             }
             else {
-                $condition  = $class->_choose_condition_dispenser($global_variables_rule) || \&_is_singlecase;
+                if (my $condition  = $class->_choose_condition_dispenser($global_variables_rule)) {
+                    $checker       = $condition->{checker};
+                    $error_message = $condition->{error_message};
+                }
                 $exemptions = $global_variable_exemptions;
                 $is_global_var = 1;
             }
@@ -135,15 +145,15 @@ sub evaluate {
                             next;
                         }
 
-                        if (ref $condition ne 'CODE') {
-                            if ($token_data =~ /\A$condition\Z/) {
+                        if (ref $checker ne 'CODE') {
+                            if ($token_data =~ /\A$checker\Z/) {
                                 next;
                             }
 
                             push @violations, {
                                 filename => $file,
                                 line     => $token->{line},
-                                description => sprintf(DESC, $token_data), # TODO
+                                description => sprintf($error_message, $token_data),
                                 explanation => EXPL,
                                 policy => __PACKAGE__,
                             };
@@ -151,11 +161,11 @@ sub evaluate {
                         }
 
                         for my $part (wordsplit($token_data)) {
-                            if (!$condition->($part)) { # include Upper Case
+                            if (!$checker->($part)) { # include Upper Case
                                 push @violations, {
                                     filename => $file,
                                     line     => $token->{line},
-                                    description => sprintf(DESC, $token_data), # TODO
+                                    description => sprintf($error_message, $token_data),
                                     explanation => EXPL,
                                     policy => __PACKAGE__,
                                 };
@@ -187,15 +197,15 @@ sub evaluate {
                 next;
             }
 
-            if (ref $condition ne 'CODE') {
-                if ($token_data =~ /\A$condition\Z/) {
+            if (ref $checker ne 'CODE') {
+                if ($token_data =~ /\A$checker\Z/) {
                     next;
                 }
 
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
-                    description => sprintf(DESC, $token_data), # TODO
+                    description => sprintf($error_message, $token_data),
                     explanation => EXPL,
                     policy => __PACKAGE__,
                 };
@@ -203,11 +213,11 @@ sub evaluate {
             }
 
             for my $part (wordsplit($token_data)) {
-                if (!$condition->($part)) { # include Upper Case
+                if (!$checker->($part)) { # include Upper Case
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
-                        description => sprintf(DESC, $token_data), # TODO
+                        description => sprintf($error_message, $token_data),
                         explanation => EXPL,
                         policy => __PACKAGE__,
                     };
@@ -242,7 +252,12 @@ sub evaluate {
                 next;
             }
 
-            my $condition = $class->_choose_condition_dispenser($subroutines_rule) || \&_is_started_with_lower;
+            my $checker = \&_is_started_with_lower;
+            my $error_message = '"%s" does not start with a lower case letter';
+            if (my $condition = $class->_choose_condition_dispenser($subroutines_rule)) {
+                $checker = $condition->{checker};
+                $error_message = $condition->{error_message};
+            }
 
             $token_data = $token->{data};
 
@@ -250,15 +265,15 @@ sub evaluate {
                 next;
             }
 
-            if (ref $condition ne 'CODE') {
-                if ($token_data =~ /\A$condition\Z/) {
+            if (ref $checker ne 'CODE') {
+                if ($token_data =~ /\A$checker\Z/) {
                     next;
                 }
 
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
-                    description => sprintf(DESC, $token_data), # TODO
+                    description => sprintf($error_message, $token_data),
                     explanation => EXPL,
                     policy => __PACKAGE__,
                 };
@@ -266,11 +281,11 @@ sub evaluate {
             }
 
             for my $part (wordsplit($token_data)) { # to exclude sigils
-                if (!$condition->($part)) {
+                if (!$checker->($part)) {
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
-                        description => sprintf(DESC, $token_data), # TODO
+                        description => sprintf($error_message, $token_data),
                         explanation => EXPL,
                         policy => __PACKAGE__,
                     };
@@ -296,16 +311,21 @@ sub evaluate {
                 next;
             }
 
-            my $condition = $class->_choose_condition_dispenser($packages_rule) || \&_is_started_with_upper;
+            my $checker = \&_is_started_with_upper;
+            my $error_message = '"%s" does not start with a upper case letter';
+            if (my $condition = $class->_choose_condition_dispenser($packages_rule)) {
+                $checker = $condition->{checker};
+                $error_message = $condition->{error_message};
+            }
 
             my $package_full_name = $token_data;
-            if (ref $condition eq 'CODE') {
+            if (ref $checker eq 'CODE') {
                 for my $part (wordsplit($token_data)) {
-                    if (!$condition->($part)) {
+                    if (!$checker->($part)) {
                         push @violations, {
                             filename => $file,
                             line     => $token->{line},
-                            description => sprintf(DESC, $token_data), # TODO
+                            description => sprintf($error_message, $token_data),
                             explanation => EXPL,
                             policy => __PACKAGE__,
                         };
@@ -315,14 +335,14 @@ sub evaluate {
                 }
             }
             elsif ($token_type == CLASS) {
-                if ($package_full_name =~ /\A$condition\Z/) {
+                if ($package_full_name =~ /\A$checker\Z/) {
                     next;
                 }
 
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
-                    description => sprintf(DESC, $token_data), # TODO
+                    description => sprintf($error_message, $token_data),
                     explanation => EXPL,
                     policy => __PACKAGE__,
                 };
@@ -330,7 +350,7 @@ sub evaluate {
             }
 
             if ($token_type == NAMESPACE) {
-                if (ref $condition ne 'CODE') {
+                if (ref $checker ne 'CODE') {
                     for ($i++; $token = $tokens->[$i]; $i++) { # TODO
                         $token_type = $token->{type};
                         $token_data = $token->{data};
@@ -341,14 +361,14 @@ sub evaluate {
                             last;
                         }
                     }
-                    if ($package_full_name =~ /\A$condition\Z/) {
+                    if ($package_full_name =~ /\A$checker\Z/) {
                         next;
                     }
 
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
-                        description => sprintf(DESC, $token_data), # TODO
+                        description => sprintf($error_message, $token_data),
                         explanation => EXPL,
                         policy => __PACKAGE__,
                     };
@@ -360,11 +380,11 @@ sub evaluate {
                     $token_data = $token->{data};
                     if ($token_type == NAMESPACE) {
                         for my $part (wordsplit($token_data)) {
-                            if (!$condition->($part)) {
+                            if (!$checker->($part)) {
                                 push @violations, {
                                     filename => $file,
                                     line     => $token->{line},
-                                    description => sprintf(DESC, $token_data), # TODO
+                                    description => sprintf($error_message, $token_data),
                                     explanation => EXPL,
                                     policy => __PACKAGE__,
                                 };
@@ -409,7 +429,7 @@ sub evaluate {
                         push @violations, {
                             filename => $file,
                             line     => $token->{line},
-                            description => sprintf(DESC, $token_data), # TODO
+                            description => sprintf('"%s" is not all upper case', $token_data),
                             explanation => EXPL,
                             policy => __PACKAGE__,
                         };
@@ -438,7 +458,7 @@ sub evaluate {
                     push @violations, {
                         filename => $file,
                         line     => $token->{line},
-                        description => sprintf(DESC, $key), # TODO
+                        description => sprintf('"%s" is not all upper case', $key),
                         explanation => EXPL,
                         policy => __PACKAGE__,
                     };
@@ -459,28 +479,33 @@ sub evaluate {
                 next;
             }
 
-            my $condition = $class->_choose_condition_dispenser($labels_rule) || \&_is_all_upper;
+            my $checker = \&_is_all_upper;
+            my $error_message = '"%s" is not all upper case';
+            if (my $condition = $class->_choose_condition_dispenser($labels_rule) ) {
+                $checker = $condition->{checker};
+                $error_message = $condition->{error_message};
+            }
 
-            if (ref $condition ne 'CODE') {
-                if ($token_data =~ /\A$condition\Z/) {
+            if (ref $checker ne 'CODE') {
+                if ($token_data =~ /\A$checker\Z/) {
                     next;
                 }
 
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
-                    description => sprintf(DESC, $token_data), # TODO
+                    description => sprintf($error_message, $token_data),
                     explanation => EXPL,
                     policy => __PACKAGE__,
                 };
                 next;
             }
 
-            if (!$condition->($token_data)) {
+            if (!$checker->($token_data)) {
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
-                    description => sprintf(DESC, $token_data), # TODO
+                    description => sprintf($error_message, $token_data),
                     explanation => EXPL,
                     policy => __PACKAGE__,
                 };
@@ -498,25 +523,46 @@ sub _choose_condition_dispenser {
     my ($self, $rule) = @_;
 
     if ($rule eq ':single_case') {
-        return \&_is_singlecase;
+        return {
+            error_message => '"%s" is not all lower case or all upper case',
+            checker       => \&_is_singlecase,
+        };
     }
     elsif ($rule eq ':all_lower') {
-        return \&_is_all_lower;
+        return {
+            error_message => '"%s" is not all lower case',
+            checker       => \&_is_all_lower,
+        };
     }
     elsif ($rule eq ':all_upper') {
-        return \&_is_all_upper;
+        return {
+            error_message => '"%s" is not all upper case',
+            checker       => \&_is_all_upper,
+        };
     }
     elsif ($rule eq ':starts_with_lower') {
-        return \&_is_started_with_lower;
+        return {
+            error_message => '"%s" does not start with a lower case letter',
+            checker       => \&_is_started_with_lower,
+        };
     }
     elsif ($rule eq ':starts_with_upper') {
-        return \&_is_started_with_upper;
+        return {
+            error_message => '"%s" does not start with a upper case letter',
+            checker       => \&_is_started_with_upper,
+        };
     }
     elsif ($rule eq ':no_restriction') {
-        return \&_everything_will_be_alright;
+        return {
+            error_message => 'There is a bug in Perl::Critic if you are reading this',
+            checker       => \&_everything_will_be_alright,
+        }
     }
     elsif ($rule) {
-        return $rule; # XXX
+        return {
+            error_message => qq{"%s" is not matched with $rule},
+            checker => $rule, # XXX
+        };
     }
 
     return;
