@@ -56,6 +56,7 @@ sub evaluate {
 
             my $maybe_regopt = $tokens->[$i+2]; # XXX right!?
             if (
+                $maybe_regopt &&
                 $maybe_regopt->{type} == REG_OPT &&
                 $maybe_regopt->{data} =~ /x/
             ) {
