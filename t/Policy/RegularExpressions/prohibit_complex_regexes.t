@@ -68,12 +68,13 @@ m/foo # this is a foo
 --- input
 m/ foo /;
 
-===
---- dscr: failing regexp with syntax error
---- failures: 0
---- params:
---- input
-m/foofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoo(/x;
+# NOTE: IMO, it is not necessary to support this. Perl implementation should be responsible for this.
+# ===
+# --- dscr: failing regexp with syntax error
+# --- failures: 0
+# --- params:
+# --- input
+# m/foofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoo(/x;
 
 ===
 --- dscr: RT 36098 forgive long (and presumably descriptive) variable names
