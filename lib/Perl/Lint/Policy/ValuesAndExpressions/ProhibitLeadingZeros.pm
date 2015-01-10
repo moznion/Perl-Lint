@@ -121,8 +121,9 @@ sub evaluate {
         }
 
         if ($token_type == INT) {
-            my $int = $token_type;
-            if (($int =~ s/_//g) != 0 && $int =~ /\A-?0/) {
+            my $int = $token_data;
+            $int =~ s/_//g;
+            if ($int != 0 && $int =~ /\A-?0/) {
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},
