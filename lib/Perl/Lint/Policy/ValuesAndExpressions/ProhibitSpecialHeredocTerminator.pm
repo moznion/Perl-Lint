@@ -15,7 +15,7 @@ sub evaluate {
     my @violations;
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         my $token_type = $token->{type};
-        if ($token_type == HERE_DOCUMENT_TAG || $token_type == HERE_DOCUMENT_RAW_TAG) {
+        if ($token_type == HERE_DOCUMENT_TAG || $token_type == HERE_DOCUMENT_RAW_TAG || $token_type == HERE_DOCUMENT_BARE_TAG) {
             my $token_data = $token->{data};
             if (
                 $token_data eq '__FILE__' ||
