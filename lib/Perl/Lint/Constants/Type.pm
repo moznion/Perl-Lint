@@ -23,7 +23,7 @@ our @EXPORT = qw(
     KEY METHOD
     STRING RAW_STRING EXEC_STRING VERSION_STRING
     INT
-    HERE_DOCUMENT RAW_HERE_DOCUMENT HERE_DOCUMENT_END HERE_DOCUMENT_TAG HERE_DOCUMENT_RAW_TAG
+    HERE_DOCUMENT RAW_HERE_DOCUMENT HERE_DOCUMENT_END HERE_DOCUMENT_TAG HERE_DOCUMENT_RAW_TAG HERE_DOCUMENT_BARE_TAG
     REG_QUOTE REG_DOUBLE_QUOTE
     REG_DELIM REG_OPT
     REG_EXP REG_EXEC REG_LIST REG_ALL_REPLACE REG_MATCH REG_REPLACE REG_REPLACE_TO REG_REPLACE_FROM REG_DECL
@@ -130,11 +130,12 @@ use constant {
 
     INT => Compiler::Lexer::TokenType::T_Int,
 
-    HERE_DOCUMENT         => Compiler::Lexer::TokenType::T_HereDocument,
-    RAW_HERE_DOCUMENT     => Compiler::Lexer::TokenType::T_RawHereDocument,
-    HERE_DOCUMENT_TAG     => Compiler::Lexer::TokenType::T_HereDocumentTag,
-    HERE_DOCUMENT_RAW_TAG => Compiler::Lexer::TokenType::T_HereDocumentRawTag,
-    HERE_DOCUMENT_END     => Compiler::Lexer::TokenType::T_HereDocumentEnd,
+    HERE_DOCUMENT          => Compiler::Lexer::TokenType::T_HereDocument,
+    RAW_HERE_DOCUMENT      => Compiler::Lexer::TokenType::T_RawHereDocument,
+    HERE_DOCUMENT_TAG      => Compiler::Lexer::TokenType::T_HereDocumentTag,
+    HERE_DOCUMENT_RAW_TAG  => Compiler::Lexer::TokenType::T_HereDocumentRawTag,
+    HERE_DOCUMENT_BARE_TAG => Compiler::Lexer::TokenType::T_HereDocumentBareTag,
+    HERE_DOCUMENT_END      => Compiler::Lexer::TokenType::T_HereDocumentEnd,
 
     REG_QUOTE        => Compiler::Lexer::TokenType::T_RegQuote,
     REG_DOUBLE_QUOTE => Compiler::Lexer::TokenType::T_RegDoubleQuote,
