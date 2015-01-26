@@ -2,6 +2,11 @@ Revision history for Perl extension Perl-Lint
 
 {{$NEXT}}
 
+0.11 2015-01-26T16:01:45Z
+
+    - Implement some remained policies
+    - Bug fix
+
 0.10 2014-10-24T07:21:09Z
 
     - original not development version
