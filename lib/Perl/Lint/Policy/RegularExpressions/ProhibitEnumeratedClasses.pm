@@ -55,7 +55,7 @@ sub evaluate {
                         }
                     }
 
-                    my @hexs = $in_brackets =~ /\\x{?([0-9a-f]+)}?/gx;
+                    my @hexs = $in_brackets =~ /\\x\{?([0-9a-f]+)}?/gx;
                     for my $hex (@hexs) {
                         if (my $chr = $ordinals{hex $hex}) {
                             push @parts, $chr;
