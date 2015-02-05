@@ -12,7 +12,7 @@ use constant {
 sub evaluate {
     my ($class, $file, $tokens, $src, $args) = @_;
 
-    my $brackets_regex = qr/\A{\Z/;
+    my $brackets_regex = qr/\A\{\Z/;
     if ($args->{require_braces_for_multiline}->{allow_all_brackets}) {
         $brackets_regex = qr/\A[\{\(\[\<]\Z/;
     }
