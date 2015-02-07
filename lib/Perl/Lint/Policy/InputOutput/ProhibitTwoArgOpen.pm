@@ -24,8 +24,11 @@ sub evaluate {
             my $token = $tokens->[$i];
             my $token_type = $token->{type};
             my $token_data = $token->{data};
-            if ($token_type == DOUBLE && $token_data <= 5.005) {
-                return [];
+            if ($token_type == DOUBLE) {
+                $token_data =~ s/_//g;
+                if ($token_data <= 5.005) {
+                    return [];
+                }
             }
         }
         elsif ($token_type == BUILTIN_FUNC && $token_data eq 'open') {

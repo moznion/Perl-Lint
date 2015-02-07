@@ -30,7 +30,8 @@ sub evaluate {
         if ($token_type == USE_DECL) {
             my $next_token = $tokens->[$i+1];
             if ($next_token->{type} == DOUBLE) {
-                if ($next_token->{data} == EQUIVALENT_PERL_VERSION) {
+                (my $next_token_data = $next_token->{data}) =~ s/_//g;
+                if ($next_token_data == EQUIVALENT_PERL_VERSION) {
                     last;
                 }
                 next;

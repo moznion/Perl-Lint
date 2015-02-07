@@ -48,8 +48,11 @@ sub evaluate {
         }
         elsif ($token_type == USE_DECL) {
             $token = $tokens->[++$i];
-            if ($token->{type} == DOUBLE && $token->{data} <= 5.004) {
-                return [];
+            if ($token->{type} == DOUBLE) {
+                ($token_data = $token->{data}) =~ s/_//g;
+                if ($token_data <= 5.004) {
+                    return [];
+                }
             }
         }
     }
