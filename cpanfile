@@ -12,7 +12,7 @@ requires 'Module::Load';
 requires 'Module::Pluggable';
 requires 'List::Flatten';
 requires 'Test::Deep::NoTest';
-requires 'Regexp::Lexer', '0.04';
+requires 'Regexp::Lexer', '0.05';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';
