@@ -28,7 +28,8 @@ sub evaluate {
             my @decimals    = split /_/, $decimal_part;
             my @fractionals = split(/_/, $fractional_part || 0);
 
-            if (join('', @decimals) . '.' . join('', @fractionals) < $min_value) {
+            if (eval(join('', @decimals) . '.' . join('', @fractionals)) < $min_value) { ## no critic
+                                                                                         ## to accept bin, oct and hex decimal
                 next;
             }
 
