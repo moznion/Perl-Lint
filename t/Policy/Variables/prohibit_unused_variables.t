@@ -167,3 +167,37 @@ my %foo;
 
 m/ (?{ $foo{bar} }) /smx;
 
+===
+--- dscr: exist case (https://github.com/moznion/Perl-Lint/issues/80)
+--- failures: 0
+--- params:
+--- input
+for my $num ( qw(1 2 3) ) {
+    print $num;
+}
+foreach my $num ( qw(1 2 3) ) {
+    print $num;
+}
+
+===
+--- dscr: not exist case (https://github.com/moznion/Perl-Lint/issues/80)
+--- failures: 2
+--- params:
+--- input
+for my $num ( qw(1 2 3) ) {
+}
+foreach my $num ( qw(1 2 3) ) {
+}
+
+===
+--- dscr: different scope (https://github.com/moznion/Perl-Lint/issues/80)
+--- failures: 2
+--- params:
+--- input
+for my $num ( qw(1 2 3) ) {
+}
+foreach my $num ( qw(1 2 3) ) {
+}
+
+print $num;
+
