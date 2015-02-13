@@ -32,12 +32,12 @@ sub evaluate {
     for (my $i = 0, my $token_type; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
 
-        if ($token_type == LEFT_PAREN) {
+        if ($token_type == LEFT_BRACE) {
             $depth++;
             next;
         }
 
-        if ($token_type == RIGHT_PAREN) {
+        if ($token_type == RIGHT_BRACE) {
             for my $variable (keys %vars_by_depth) {
                 push @violations, {
                     filename => $file,

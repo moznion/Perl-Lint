@@ -4,7 +4,7 @@
       "moznion <moznion@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.3.0, CPAN::Meta::Converter version 2.143240",
+   "generated_by" : "Minilla/v2.3.0, CPAN::Meta::Converter version 2.142690",
    "license" : [
       "perl_5"
    ],
@@ -54,7 +54,7 @@
             "List::Util" : "1.41",
             "Module::Load" : "0",
             "Module::Pluggable" : "0",
-            "Regexp::Lexer" : "0.04",
+            "Regexp::Lexer" : "0.05",
             "String::CamelCase" : "0",
             "Test::Deep::NoTest" : "0",
             "feature" : "0",
@@ -86,6 +86,7 @@
    "version" : "0.11",
    "x_authority" : "cpan:MOZNION",
    "x_contributors" : [
-      "Syohei YOSHIDA <syohex@gmail.com>"
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "Tom Hukins <tom@eborcom.com>"
    ]
 }
