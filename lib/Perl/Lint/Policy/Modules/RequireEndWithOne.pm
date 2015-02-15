@@ -25,6 +25,11 @@ sub evaluate {
     my $before_last_token_type = $before_last_token->{type};
     my $before_last_token_data = $before_last_token->{data};
     my $extra_before_token = $tokens->[-3];
+
+    if (!%$last_token || !%$before_last_token) {
+        return [];
+    }
+
     if (
         !(
             $before_last_token_type == ASSIGN &&
