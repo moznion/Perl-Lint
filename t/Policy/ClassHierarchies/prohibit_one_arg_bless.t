@@ -48,3 +48,14 @@ my $self = bless [];
 my $self = bless( {} );
 my $self = bless( [] );
 
+===
+--- dscr: no lint
+--- failures: 3
+--- params:
+--- input
+my $self = bless {};
+my $self = bless []; ## no lint
+
+my $self = bless( {} );
+my $self = bless( [] );
+
