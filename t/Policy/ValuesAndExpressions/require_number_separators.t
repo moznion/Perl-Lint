@@ -77,10 +77,12 @@ $var = -123456;
 $var = -100000.01;
 $var = -10_000.01;
 $var = -100_000.01;
+$var = 0x2710;
+$var = 0x3e7_000;
 
 ===
 --- dscr: Above configuration minimum failure
---- failures: 9
+--- failures: 11
 --- params: {require_number_separators => {min_value => 1_000_000}}
 --- input
 $var = 1000001;
@@ -92,4 +94,5 @@ $var = -1234567;
 $var = -1000000.01;
 $var = -1000_000.01;
 $var = -10000_000.01;
-
+$var = 0xf4240;
+$var = 0x3e8_000;
