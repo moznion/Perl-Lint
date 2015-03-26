@@ -215,3 +215,15 @@ my %hash = (
 Exception::Class->throw('an expression') if $error;
 Exception::Class->throw($arg1, $arg2) unless not $error;
 
+===
+--- dscr: no lint
+--- failures: 6
+--- params:
+--- input
+do_something() if $condition;
+do_something() while $condition;
+do_something() until $condition;
+do_something() unless $condition; ## no lint
+do_something() for @list;
+do_something() foreach @list;
+do_something() when @list;

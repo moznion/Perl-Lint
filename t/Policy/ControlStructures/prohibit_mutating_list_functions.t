@@ -219,3 +219,14 @@ __DATA__
 @bar = map { tr/cat/dog/r } @foo;
 @bar = map { y/cat/dog/r } @foo;
 
+===
+--- dscr: no lint
+--- failures: 5
+--- params:
+--- input
+@bar = map {chop $_} @foo;
+@bar = map {chomp $_} @foo;
+@bar = map {undef $_} @foo; ## no lint
+@bar = map {chop($_)} @foo;
+@bar = map {chomp($_)} @foo;
+@bar = map {undef($_)} @foo;

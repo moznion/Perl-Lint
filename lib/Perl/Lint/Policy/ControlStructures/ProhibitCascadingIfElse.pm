@@ -18,8 +18,14 @@ sub evaluate {
     my @violations;
     my $is_chained = 0;
     my $cascading_num = 0;
+    my $top_of_conditional_branch_line_num = 0;
     for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         my $token_type = $token->{type};
+
+        if ($token_type == IF_STATEMENT || $token_type == UNLESS_STATEMENT) {
+            $top_of_conditional_branch_line_num = $token->{line};
+            next;
+        }
 
         if ($token_type == ELSIF_STATEMENT) {
             $cascading_num++;
@@ -27,7 +33,7 @@ sub evaluate {
             if ($is_chained && $cascading_num > $max_elsif) {
                 push @violations, {
                     filename => $file,
-                    line     => $token->{line},
+                    line     => $top_of_conditional_branch_line_num,
                     description => DESC,
                     explanation => EXPL,
                     policy => __PACKAGE__,

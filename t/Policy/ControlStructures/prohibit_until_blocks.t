@@ -39,3 +39,23 @@ until($condition){
   do_something();
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+until($condition){
+  do_something();
+}
+until($condition){
+  do_something();
+}
+until($condition){ ## no lint
+  do_something();
+}
+until($condition){
+  do_something();
+}
+until($condition){
+  do_something();
+}
