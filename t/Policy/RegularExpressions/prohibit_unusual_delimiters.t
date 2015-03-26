@@ -101,3 +101,12 @@ s(foo)<>;
 s[foo]<>;
 s<foo><>;
 
+===
+--- dscr: no lint
+--- failures: 3
+--- params:
+--- input
+m#foo#;
+m|foo|; ## no lint
+m<foo>;
+m(foo);

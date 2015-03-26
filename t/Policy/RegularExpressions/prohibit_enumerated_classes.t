@@ -89,3 +89,15 @@ m/[^\s\w]/;
 # --- input
 # m/[^\w] (/;
 #
+
+===
+--- dscr: negative failures
+--- failures: 4
+--- params:
+--- input
+m/[^\w]/;
+m/[^\s]/;
+m/[^0-9]/; ## no lint
+m/[^A-Za-z0-9_]/;
+m/[^0-9a-z_A-Z]/;
+
