@@ -53,3 +53,14 @@ $hash{format} = 'foo';
 %hash = ( format => 'baz' );
 $object->format();
 
+# TODO Compiler::Lexer cannot tokenize rightly if code contains `format` (and with commentout?) so line number is ambigous.
+===
+--- dscr: standard failures
+--- failures: 0
+--- params:
+--- input
+format STDOUT = ## no lint
+@<<<<<<   @||||||   @>>>>>>
+"left",   "middle", "right"
+.
+

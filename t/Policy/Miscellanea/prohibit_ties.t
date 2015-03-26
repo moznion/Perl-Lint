@@ -49,3 +49,14 @@ $hash{tie} = 'foo';
 %hash = ( tie => 'knot' );
 $object->tie();
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+tie $scalar, 'Some::Class';
+tie @array, 'Some::Class';
+tie %hash, 'Some::Class'; ## no lint
+tie ($scalar, 'Some::Class');
+tie (@array, 'Some::Class');
+

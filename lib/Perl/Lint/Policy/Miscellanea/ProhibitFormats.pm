@@ -13,7 +13,8 @@ sub evaluate {
     my ($class, $file, $tokens, $args) = @_;
 
     my @violations;
-    for (my $i = 0, my $next_token; my $token = $tokens->[$i]; $i++) {
+    my $next_token;
+    for (my $i = 0; my $token = $tokens->[$i]; $i++) {
         if ($token->{type} == FORMAT_DECL) {
             $next_token = $tokens->[$i+1];
             if ($next_token->{type} != ARROW) {
