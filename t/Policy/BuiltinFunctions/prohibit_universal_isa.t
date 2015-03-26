@@ -36,3 +36,14 @@ $foo->isa($pkg);
 isa($foo, $pkg);
 UNIVERSAL::isa($foo, $pkg);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+isa($foo, $pkg);
+isa($foo, $pkg);
+isa($foo, $pkg); ## no lint
+isa($foo, $pkg);
+isa($foo, $pkg);
+

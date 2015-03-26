@@ -124,3 +124,14 @@ split( qq{ }  ), $string, 3;
 split @list;
 split( @list );
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+split 'pattern';
+split 'pattern';
+split 'pattern'; ## no lint
+split 'pattern';
+split 'pattern';
+

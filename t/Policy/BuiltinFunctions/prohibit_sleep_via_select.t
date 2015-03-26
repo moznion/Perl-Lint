@@ -83,3 +83,13 @@ $foo{select};
      ($first, $last) = split ' ', $line;
     }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+select undef, undef, undef, 0.25;
+select undef, undef, undef, 0.25;
+select undef, undef, undef, 0.25; ## no lint
+select undef, undef, undef, 0.25;
+select undef, undef, undef, 0.25;

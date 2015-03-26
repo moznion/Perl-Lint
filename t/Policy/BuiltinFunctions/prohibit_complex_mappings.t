@@ -68,3 +68,14 @@ map {my $a = $foo{$_};$a} @list;
 --- input
 map {my $a = $foo{$_};$a;$b} @list;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params: {prohibit_complex_mappings => {max_statements => 2}}
+--- input
+map {my $a = $foo{$_};$a;$b} @list;
+map {my $a = $foo{$_};$a;$b} @list;
+map {my $a = $foo{$_};$a;$b} @list; ## no lint
+map {my $a = $foo{$_};$a;$b} @list;
+map {my $a = $foo{$_};$a;$b} @list;
+

@@ -79,3 +79,23 @@ delete @hash{ map uc( $_ ), keys %hash };
 # This is the form analogous to what failed under RT #79289.
 delete @hash{ map ( uc( $_ ), keys %hash ) };
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+map { foo($_) }
+  map { bar($_) }
+    map { baz($_) } @list;
+map { foo($_) }
+  map { bar($_) }
+    map { baz($_) } @list;
+map { foo($_) } ## no lint
+  map { bar($_) }
+    map { baz($_) } @list;
+map { foo($_) }
+  map { bar($_) }
+    map { baz($_) } @list;
+map { foo($_) }
+  map { bar($_) }
+    map { baz($_) } @list;

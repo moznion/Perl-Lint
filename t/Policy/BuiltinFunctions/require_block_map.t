@@ -49,3 +49,14 @@ map $_++, @list;
 $hash1{map} = 1;
 %hash2 = (map => 1);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+map $_++, @list;
+map $_++, @list;
+map $_++, @list; ## no lint
+map $_++, @list;
+map $_++, @list;
+

@@ -51,3 +51,23 @@ while (<$fh>) {
     print $_;
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+foreach my $file (<*.pl>) {
+    print $file;
+}
+foreach my $file (<*.pl>) {
+    print $file;
+}
+foreach my $file (<*.pl>) { ## no lint
+    print $file;
+}
+foreach my $file (<*.pl>) {
+    print $file;
+}
+foreach my $file (<*.pl>) {
+    print $file;
+}

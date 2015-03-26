@@ -189,3 +189,13 @@ eval 'no Foo';
 
 eval("#" . substr($^X, 0, 0));
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+eval "$some_code";
+eval( "$some_code" );
+eval( 'sub {'.$some_code.'}' ); ## no lint
+eval q{$some_code};
+eval qq{$some_code};

@@ -70,3 +70,13 @@ use 5.004;
 
 substr( $foo, 0, 0 ) = 'bar';
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+substr( $foo, 2, 1 ) = 'XYZ';
+substr( $foo, 2, 1 ) = 'XYZ';
+substr( $foo, 2, 1 ) = 'XYZ'; ## no lint
+substr( $foo, 2, 1 ) = 'XYZ';
+substr( $foo, 2, 1 ) = 'XYZ';

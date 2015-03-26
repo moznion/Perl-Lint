@@ -60,3 +60,13 @@ sort { $a->[0] <=> $b->[0] } @failed;
 sort{ $isopen{$a}->[0] <=> $isopen{$b}->[0] } @list;
 sort { -M $b <=> -M $a} @entries;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+sort {my $aa = $foo{$a};my $b = $foo{$b};$a cmp $b} @list;
+sort {my $aa = $foo{$a};my $b = $foo{$b};$a cmp $b} @list;
+sort {my $aa = $foo{$a};my $b = $foo{$b};$a cmp $b} @list; ## no lint
+sort {my $aa = $foo{$a};my $b = $foo{$b};$a cmp $b} @list;
+sort {my $aa = $foo{$a};my $b = $foo{$b};$a cmp $b} @list;

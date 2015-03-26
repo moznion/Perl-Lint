@@ -16,7 +16,7 @@ sub evaluate {
 
     my @violations;
     my $is_in_context = 0;
-    my $is_before_comma = 0; # XXX to decide context or not
+    my $is_before_comma = 0; # XXX to decide is in context or not
     my $is_in_map = 0;
     my $is_in_ctrl_statement = 0;
     my $left_brace_num = 0;
