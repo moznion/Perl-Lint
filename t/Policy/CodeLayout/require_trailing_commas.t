@@ -117,3 +117,28 @@ $median = ( $times[ int $array_size / 2 ] +
          $baz --
          );
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+@list = ($foo,
+         $bar,
+         $baz);
+@list = ($foo,
+         $bar,
+         $baz
+        );
+@list = ($foo,
+         $bar,
+         $baz
+); ## no lint
+@list = ($foo,
+         $bar,
+         $baz
+);
+@list = ($foo,
+         $bar,
+         $baz
+);
+
