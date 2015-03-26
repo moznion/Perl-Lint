@@ -123,7 +123,7 @@ sub evaluate {
         if ($token_type == INT) {
             my $int = $token_data;
             $int =~ s/_//g;
-            if ($int =~ /\A-?0/ && eval($int) != 0) { ## no critic: to accept bin, oct and hex decimal
+            if ($int =~ /\A-?0/ && (eval($int) // 0) != 0) { ## no critic: to accept bin, oct and hex decimal
                 push @violations, {
                     filename => $file,
                     line     => $token->{line},

@@ -36,7 +36,8 @@ sub evaluate {
                 $joined = join '', @decimals;
             }
 
-            if ((eval($joined)) < $min_value) { ## no critic
+            if ((eval($joined) // -$min_value - 1) < $min_value) { ## no critic
+                #                 ~~~~~~~~~~~~~~~ If reach here, $joined is not a number
                 next;
             }
 
