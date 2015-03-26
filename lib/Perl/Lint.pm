@@ -91,9 +91,19 @@ sub _lint {
     my $lexer = Compiler::Lexer->new($file);
     my $tokens = $lexer->tokenize($src);
 
+    # list `no lint` lines
+    # TODO improve performance
+    my %no_lint_lines = ();
+    my $line_num = 1;
+    for my $line (split /\r?\n/, $src) {
+        $no_lint_lines{$line_num} = 1 if $line =~ /## no lint\Z/;
+        $line_num++;
+    }
+
     my @violations;
     for my $policy (@{$self->{site_policies}}) {
-        push @violations, @{$policy->evaluate($file, $tokens, $src, $args)};
+        push @violations,
+            grep {!$no_lint_lines{$_->{line}}} @{$policy->evaluate($file, $tokens, $src, $args)};
     }
 
     return \@violations;
