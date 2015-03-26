@@ -91,20 +91,22 @@ sub evaluate {
         if ($path eq 'main' && !$is_directive_declared_after) {
             last;
         }
-        elsif ($file !~ m!/!) {
-            my $last_path = @{[split(/\//, $path)]}[-1] || '';
-            if ($file =~ /$last_path\.p[ml]/) {
+        elsif (defined $file) {
+            if ($file !~ m!/!) {
+                my $last_path = @{[split(/\//, $path)]}[-1] || '';
+                if ($file =~ /$last_path\.p[ml]/) {
+                    $should_be_no_error = 1;
+                }
+            }
+            elsif ($file =~ /$path\.p[ml]/) {
                 $should_be_no_error = 1;
             }
-        }
-        elsif ($file =~ /$path\.p[ml]/) {
-            $should_be_no_error = 1;
-        }
-        elsif ($file =~ m!$module_name(?:-\d[\d\.]*?\d)?/$last_path!) {
-            $should_be_no_error = 1;
-        }
-        elsif ($file =~ m![A-Z]\w*-\d[\d\.]*\d/$last_path!) {
-            $should_be_no_error = 1;
+            elsif ($file =~ m!$module_name(?:-\d[\d\.]*?\d)?/$last_path!) {
+                $should_be_no_error = 1;
+            }
+            elsif ($file =~ m![A-Z]\w*-\d[\d\.]*\d/$last_path!) {
+                $should_be_no_error = 1;
+            }
         }
 
         if (
