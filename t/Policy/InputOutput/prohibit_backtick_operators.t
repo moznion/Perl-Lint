@@ -96,3 +96,14 @@ if ( $blah ) { qx/date/ }
 `date` if $blah
 `date` if ($blah)
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params: { prohibit_backtick_operators => { only_in_void_context => 1 } }
+--- input
+`date`;
+qx/date/;
+if ( $blah ) { `date` } ## no lint
+if ( $blah ) { qx/date/ }
+`date` if $blah
+

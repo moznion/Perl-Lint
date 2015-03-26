@@ -60,3 +60,14 @@ $content = join('', <STDIN>);
 $content = join $var, <STDIN>;
 $content = join($var, <STDIN>);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+$answer = <STDIN>;
+$answer = <STDIN>;
+$answer = <STDIN>; ## no lint
+$answer = <STDIN>;
+$answer = <STDIN>;
+

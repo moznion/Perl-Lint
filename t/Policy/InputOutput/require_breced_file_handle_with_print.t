@@ -244,3 +244,14 @@ say { $fh } print_report();
 say { $fh } "foo" or die;
 say( { $fh } "foo" );
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+print $fh "something" . "something else";
+print $fh generate_report();
+print $fh "something" if $DEBUG; ## no lint
+print $fh @list;
+print $fh $foo, $bar;
+

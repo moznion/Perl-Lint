@@ -61,3 +61,14 @@ select( undef, undef, undef, 0.25 );
 --- input
 sub select { }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+select STDERR;
+select STDERR;
+select STDERR; ## no lint
+select STDERR;
+select STDERR;
+

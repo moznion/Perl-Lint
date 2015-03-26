@@ -188,3 +188,14 @@ use autodie;
     close $filehandle;
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+close( $filehandle );
+close( $filehandle );
+close( $filehandle ); ## no lint
+close( $filehandle );
+close( $filehandle );
+

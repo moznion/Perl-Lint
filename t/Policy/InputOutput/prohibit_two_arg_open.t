@@ -128,3 +128,14 @@ use 5.006;
 --- input
 open my $a, 'testing' or die 'error: ', $!;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+open $fh, ">$output";
+open($fh, ">$output");
+open($fh, ">$output") or die; ## no lint
+open(my $fh, ">$output");
+open(my $fh, ">$output") or die;
+

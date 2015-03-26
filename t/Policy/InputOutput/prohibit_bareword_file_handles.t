@@ -57,3 +57,14 @@ open(my $fh, '>', $some_file) or die;
 $foo{open}; # not a function call
 {open}; # zero args, for Devel::Cover
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+open FH, '>', $some_file;
+open FH, '>', $some_file or die;
+open(FH, '>', $some_file); ## no lint
+open(FH, '>', $some_file) or die;
+open(STDERROR, '>', '/dev/null') or die;
+
