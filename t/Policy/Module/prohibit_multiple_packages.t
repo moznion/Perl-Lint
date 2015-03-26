@@ -45,3 +45,13 @@ $some_code = undef;
 package foo;
 $some_code = undef;
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+package foo;
+package bar; ## no lint
+package nuts; ## no lint
+$some_code = undef;
+

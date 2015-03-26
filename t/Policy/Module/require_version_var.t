@@ -110,10 +110,10 @@ package Foo 0.001;
 --- input
 package Foo;
 
-# ===
-# --- dscr: pass with "no critic" on
-# --- failures: 0
-# --- params:
-# --- input
-# #!anything              ## no critic (RequireVersionVar)
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+#!anything ## no lint
 

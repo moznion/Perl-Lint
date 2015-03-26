@@ -128,3 +128,13 @@ use Foo::Bar;
 
 package Foo::Bar;
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+$foo = $bar; ## no lint
+$foo = $bar;
+package foo;
+END_PERL
+

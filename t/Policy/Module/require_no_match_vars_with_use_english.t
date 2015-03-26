@@ -215,3 +215,11 @@ use English qw< blah blah blah >;
 --- input
 use English qw(-no_mactch_vars);
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+use Acme;
+use English; ## no lint
+use Acme::Buffy;

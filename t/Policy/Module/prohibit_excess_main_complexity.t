@@ -143,3 +143,30 @@ $hoge ||= 1;
 $hoge ||= 1;
 $hoge ||= 1;
 $hoge ||= 1;
+
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+$hoge ||= 1; ## no lint
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
+$hoge ||= 1;
