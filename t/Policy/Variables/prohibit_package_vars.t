@@ -143,3 +143,13 @@ $Override::Defaults::tango = 47;
 --- input
 $::foo = 1;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+our $var1 = 'foo';
+our (%var2, %var3) = 'foo';
+our (%VAR4, $var5) = (); ## no lint
+$Package::foo;
+@Package::list = ('nuts');

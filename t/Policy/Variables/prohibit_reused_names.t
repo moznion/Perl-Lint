@@ -284,3 +284,19 @@ our @ISA;
 package Bar;
 our @ISA;
 
+===
+--- dscr: no lint
+--- failures: 2
+--- params:
+--- input
+my $x;
+{
+    my $x; ## no lint
+}
+
+sub foo {
+    my $x;
+    {
+        my $x;
+    }
+}

@@ -424,3 +424,13 @@ qr/foo$/
 # --- input
 # "${$}";
 #
+
+===
+--- dscr: no lint
+--- failures: 2
+--- params:
+--- input
+$/ = undef;
+$| = 1; ## no lint
+$> = 3;
+

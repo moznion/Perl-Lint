@@ -41,7 +41,7 @@ sub evaluate {
             for my $variable (keys %vars_by_depth) {
                 push @violations, {
                     filename => $file,
-                    line     => $variable,
+                    line     => $vars_by_depth{$variable},
                     description => sprintf(DESC, $variable),
                     explanation => EXPL,
                     policy => __PACKAGE__,
@@ -151,7 +151,7 @@ sub evaluate {
     for my $variable (keys %vars_by_depth) {
         push @violations, {
             filename => $file,
-            line     => $variable,
+            line     => $vars_by_depth{$variable},
             description => sprintf(DESC, $variable),
             explanation => EXPL,
             policy => __PACKAGE__,

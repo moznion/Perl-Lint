@@ -43,3 +43,13 @@ $_foo;
 \$_foo;
 $::_foo;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+$Other::Package::_foo;
+@Other::Package::_bar;
+%Other::Package::_baz; ## no lint
+&Other::Package::_quux;
+*Other::Package::_xyzzy;

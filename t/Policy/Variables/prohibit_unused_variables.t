@@ -201,3 +201,13 @@ foreach my $num ( qw(1 2 3) ) {
 
 print $num;
 
+===
+--- dscr: no lint
+--- failures: 1
+--- params:
+--- input
+for my $num ( qw(1 2 3) ) {
+}
+foreach my $num ( qw(1 2 3) ) { ## no lint
+}
+

@@ -108,5 +108,17 @@ local ($foo, $bar) = 1 for @baz;
     is scalar @$violations, 0;
 };
 
+subtest 'no lint' => sub {
+    my $src = <<'...';
+my $foo = 1 unless $bar;
+our $foo = 1 unless $bar;
+my ($foo, $baz) = @list unless $bar; ## no lint
+our ($foo, $baz) = 1 unless $bar;
+...
+    my $violations = fetch_violations($class_name, $src);
+
+    is scalar @$violations, 3;
+};
+
 done_testing;
 
