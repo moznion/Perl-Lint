@@ -337,3 +337,11 @@ given ( 'abc' ) {
 # BAZ:
 # }
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+'some string' =~ m/(s)/;
+my $s = $1; ## no lint
+

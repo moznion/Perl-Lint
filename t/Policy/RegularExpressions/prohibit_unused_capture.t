@@ -623,3 +623,23 @@ if ( $ip !~ /^(.*?)::(.*)\z/sx ) {
 s/(.)/($1)/e;
 s/(.)/ { $1 } /e;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+m/(foo)/;
+my ($foo) = m/(foo)/g;
+
+if (m/(foo)/) {
+   print "bar";
+}
+if (m/(foo)(bar)/) { ## no lint
+   my $foo = $1;
+   print $foo;
+}
+
+for (m/(foo)/) {
+   print "bar";
+}
+

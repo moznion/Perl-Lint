@@ -68,4 +68,15 @@ m/\A (?: qq| qr | qx | q | s | y | tr ) \z/xms;
 # --- params:
 # --- input
 # m/\A (?: a | d | i | q | r | w | x ) ( \z/xms;
-#
+
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+m/\A (?: a | d | i | q | r | w | x ) \z/xms;
+m/\A (?: qq| qr | qx | q | s | y | tr ) \z/xms;
+m/\A (?: qq| qr | qx | q | s | y | tr ) \z/xms; ## no lint
+m/\A (?: qq| qr | qx | q | s | y | tr ) \z/xms;
+m/\A (?: qq| qr | qx | q | s | y | tr ) \z/xms;
+

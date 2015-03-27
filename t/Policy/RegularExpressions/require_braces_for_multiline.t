@@ -117,3 +117,22 @@ qr<
    foo
    >;
 
+====
+--- dscr: no lint
+--- failures: 3
+--- params:
+--- input
+m/
+ foo
+ /;
+s/
+ foo
+ //; ## no lint
+qr/
+  foo
+ /;
+m#
+ foo
+ #;
+ #
+

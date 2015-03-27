@@ -141,3 +141,14 @@ qq{\A foo \z};
 qq{\A foo \z};
 qq{^ foo $};
 qq{\A foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo \z};
+
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+qr/\A(foo|bar)\z/;
+qr/\A(foo|)\z/;
+qr/\A(?:foo|bar)\z/; ## no lint
+/^(?:foo|bar)$/;
+/^(?:foo|bar|baz|spam|splunge)$/;
