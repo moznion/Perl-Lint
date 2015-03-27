@@ -69,3 +69,19 @@ $x = q
 
 $x = qq
 <1>;
+
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+$x = "1
+2";
+$x = '1
+2';
+$x = qq{1
+2}; ## no lint
+$x = q{1
+2};
+$x = "12
+";

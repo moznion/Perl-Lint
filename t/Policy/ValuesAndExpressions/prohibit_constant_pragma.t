@@ -38,3 +38,14 @@ our $NUTS = 16;
 use constant FOO => 42;
 use constant BAR => 24;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+use constant FOO => 42;
+use constant BAR => 24;
+use constant BAR => 24; ## no lint
+use constant FOO => 42;
+use constant BAR => 24;
+

@@ -40,3 +40,13 @@ q{\x7f};
 "\127\006\030Z";
 "\x7F\x06\x22Z";
 qq{\x7F\x06\x22Z};
+
+===
+--- dscr: no lint
+--- failures: 2
+--- params:
+--- input
+"\127\006\030Z";
+"\x7F\x06\x22Z"; ## no lint
+qq{\x7F\x06\x22Z};
+

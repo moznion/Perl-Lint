@@ -27,7 +27,7 @@ __DATA__
 --- params:
 --- input
 $var = "";
-$var = ''
+$var = '';
 $var = '     ';
 $var = "     ";
 
@@ -37,7 +37,7 @@ $var = "     ";
 --- params:
 --- input
 $var = qq{};
-$var = q{}
+$var = q{};
 $var = qq{     };
 $var = q{     };
 
@@ -47,10 +47,22 @@ $var = q{     };
 --- params:
 --- input
 $var = qq{this};
-$var = q{that}
+$var = q{that};
 $var = qq{the};
 $var = q{other};
 $var = "this";
 $var = 'that';
 $var = 'the';
 $var = "other";
+
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+$var = "";
+$var = '';
+$var = ''; ## no lint
+$var = '     ';
+$var = "     ";
+

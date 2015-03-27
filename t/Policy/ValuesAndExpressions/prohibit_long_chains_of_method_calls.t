@@ -87,3 +87,12 @@ $blargh = $x->[1]->{z}->[3]->{u};
 $c->response->content_type( 'text/html; charset=utf-8' )
     unless $c->response->content_type;
 
+===
+--- dscr: no lint
+--- failures: 3
+--- params:
+--- input
+$x->y->z->w->u;
+$x->y()->z()->w()->u();
+$x->y(@foo)->z(@bar)->w(%baz)->u($qux); ## no lint
+$x->y(\%foo, *bar)->z($baz, $qux)->w(\@xyzzy, $plugh)->u(@joe, @blow);

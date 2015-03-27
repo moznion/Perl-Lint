@@ -173,3 +173,14 @@ $x =~ m``;
 # $x =~ tr```;
 # $x =~ y```;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+$x = q"";
+$x = qq"";
+$x = qx""; ## no lint
+$x = qr"";
+$x = qw"";
+

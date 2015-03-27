@@ -311,3 +311,13 @@ Note 1: These are not documented in perop that I can find, but the code in
 '\y';
 '\z';
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+print 'this is not $literal';
+print q{this is not $literal};
+print 'this is not literal\n'; ## no lint
+print q{this is not literal\n};
+print 'this is not @literal';

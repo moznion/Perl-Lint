@@ -155,3 +155,14 @@ umask ( 002 );
 umask 002;
 umask ( 002 );
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+$var = 01;
+$var = 010;
+$var = 001; ## no lint
+$var = 0010;
+$var = -01;
+
