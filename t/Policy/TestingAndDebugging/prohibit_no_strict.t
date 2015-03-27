@@ -91,3 +91,10 @@ no strict "refs", "subs";
 package foo;
 no strict "refs", 'vars', "subs";
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params: {}
+--- input
+package foo;
+no strict; ## no lint

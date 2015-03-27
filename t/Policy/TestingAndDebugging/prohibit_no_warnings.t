@@ -128,3 +128,11 @@ no warnings qw< uninitialized glob >;
 no warnings 'qw';   # Yes, 'qw' is an actual warnings category.
 no warnings ( foo => "bar" );
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params: {prohibit_no_warnings => {allow_with_category_restriction => 1}}
+--- input
+package foo;
+
+no warnings; ## no lint

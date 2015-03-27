@@ -190,9 +190,20 @@ $foo = $bar;
 use 5.11.0;
 $foo = $bar;
 
+===
 --- dscr: "use perl-version" in lexical context
 --- failures: 1
 --- params:
 --- input
 sub foo { use 5.011 };
 $this_is_not_strict
+
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+$foo = $bar; ## no lint
+$baz = $nuts;
+$blamo;
+use strict;

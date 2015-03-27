@@ -23,14 +23,14 @@ sub evaluate {
 
     my @violations;
     my $token_num = scalar @$tokens;
-    my $no_strict = 0;
+    my $no_strict = undef;
     my $statements_num_of_after_no_strict = 0;
     TOP: for (my $i = 0; $i < $token_num; $i++) {
         my $token = $tokens->[$i];
         my $token_type = $token->{type};
 
         if ($token_type == FUNCTION_DECL) {
-            my $no_strict = 0;
+            my $no_strict = undef;
             my $statements_num_of_after_no_strict = 0;
             my $left_brace_num = 0;
             for ($i++; $i < $token_num; $i++) {
@@ -43,7 +43,7 @@ sub evaluate {
 
                     my @allows;
                     if ($token_type == KEY && $token->{data} eq 'strict') {
-                        $no_strict = 1;
+                        $no_strict = $token;
                         $i++;
                     }
                 }
@@ -52,7 +52,7 @@ sub evaluate {
                     if ($statements_num_of_after_no_strict > $allow_statements_num) {
                         push @violations, {
                             filename => $file,
-                            line     => $token->{line},
+                            line     => $no_strict->{line},
                             description => DESC,
                             explanation => EXPL,
                             policy => __PACKAGE__,
@@ -77,7 +77,7 @@ sub evaluate {
 
             my @allows;
             if ($token_type == KEY && $token->{data} eq 'strict') {
-                $no_strict = 1;
+                $no_strict = $token;
                 $i++;
             }
         }
@@ -86,7 +86,7 @@ sub evaluate {
             if ($statements_num_of_after_no_strict > $allow_statements_num) {
                 push @violations, {
                     filename => $file,
-                    line     => $token->{line},
+                    line     => $no_strict->{line},
                     description => DESC,
                     explanation => EXPL,
                     policy => __PACKAGE__,

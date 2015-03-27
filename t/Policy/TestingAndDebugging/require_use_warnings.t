@@ -206,3 +206,13 @@ BEGIN { use warnings }  # notice this is first statement in file
 
 sub foo { use warnings }  # notice this is first statement in file
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+$foo = $bar; ## no lint
+$foo = $bar;
+$foo = $bar;
+use warnings;
+

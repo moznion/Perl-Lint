@@ -113,3 +113,15 @@ use Test::More;
 is_deeply( { foo => 1 }, { foo => 1 }, 'Boldly criticize where nobody has criticize before.' );
 
 is_deeply( { get_empty_array() }, {}, 'Wrap sub-call in hash constructor' );
+
+===
+--- dscr: no lint
+--- failures: 4
+--- params: {}
+--- input
+use Test::More tests => 10;
+ok($foo);
+ok(!$foo);
+is(1,2); ## no lint
+isnt(1,2);
+like('foo',qr/f/);
