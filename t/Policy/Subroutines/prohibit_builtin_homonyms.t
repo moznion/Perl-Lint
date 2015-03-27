@@ -56,3 +56,16 @@ INIT  { do_something(); }
 CHECK { do_something(); }
 END   { do_something(); }
 
+===
+--- dscr: no lint
+--- failures: 6
+--- params:
+--- input
+sub open {}
+sub map {}
+sub eval {} ## no lint
+sub if {}
+sub sub {}
+sub foreach {}
+sub while {}
+

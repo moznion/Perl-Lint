@@ -73,3 +73,16 @@ sub quack {
         sub bar { return $foo }
     }
 }
+
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+sub quack {
+    my $foo = 1;
+
+    sub bar { ## no lint
+        return $foo
+    }
+}

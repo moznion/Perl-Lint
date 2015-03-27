@@ -96,3 +96,21 @@ sub test_sub {
 sub test_sub {
 }
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params: {prohibit_excess_complexity => {max_mccabe => 1}}
+--- input
+sub test_sub { ## no lint
+    if ( $foo && $bar || $baz ) {
+        open my $fh, '<', $file or die $!;
+    }
+    elsif ( $blah >>= some_function() ) {
+        return if $barf;
+    }
+    else {
+        $results = $condition ? 1 : 0;
+    }
+    croak unless $result;
+}
+

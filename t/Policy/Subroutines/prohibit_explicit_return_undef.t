@@ -60,3 +60,21 @@ sub test_sub3 {
 $foo{return}; # hash key, not keyword
 sub foo {return}; # no sibling
 
+===
+--- dscr: no lint
+--- failures: 2
+--- params:
+--- input
+sub test_sub1 {
+    $foo = shift;
+    return undef;
+}
+
+sub test_sub2 {
+    shift || return undef; ## no lint
+}
+
+sub test_sub3 {
+    return undef if $bar;
+}
+

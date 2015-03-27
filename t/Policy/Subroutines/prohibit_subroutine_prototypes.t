@@ -37,3 +37,10 @@ sub my_sub2 (@@) {}
 sub my_sub1 {}
 sub my_sub1 {}
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+sub my_sub1 ($@) {} ## no lint
+sub my_sub2 (@@) {} ## no lint

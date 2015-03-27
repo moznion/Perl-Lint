@@ -27,6 +27,7 @@ sub evaluate {
             $token_type == FUNCTION_DECL ||
             ($token_type == KEY && $next_token->{type} == LEFT_BRACE)
         ) {
+            my $function_token = $token;
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};
 
@@ -56,7 +57,7 @@ sub evaluate {
                                     ) {
                                         push @violations, {
                                             filename => $file,
-                                            line     => $token->{line}, # TODO
+                                            line     => $function_token->{line},
                                             description => DESC,
                                             explanation => EXPL,
                                             policy => __PACKAGE__,

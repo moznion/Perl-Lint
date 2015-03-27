@@ -82,3 +82,16 @@ goto &foo;
 --- params:
 --- input
 sort &foo($x)
+
+===
+--- dscr: no lint
+--- failures: 5
+--- params:
+--- input
+&function_call();
+&my_package::function_call();
+&function_call( $args );
+&my_package::function_call( %args );
+&function_call( &other_call( @foo ), @bar ); ## no lint
+&::function_call();
+

@@ -135,3 +135,26 @@ sub foo ($+) { return 1 }
 --- input
 sub foo ($$+) { return 1 }
 
+===
+--- dscr: no lint
+--- failures: 1
+--- params:
+--- input
+sub foo {
+   my ($self, $bar1, $bar2, $bar3, $bar4, $bar5) = @_; ## no lint
+}
+
+sub fu {
+   my $self = shift;
+   my $bar1 = shift;
+   my $bar2 = shift;
+   my $bar3 = shift;
+   my $bar4 = shift;
+   my $bar5 = shift; ## no lint
+}
+
+sub foo($$$$$$) { # no lint
+   print $_[0];
+   return;
+}
+

@@ -21,6 +21,7 @@ sub evaluate {
         my $left_brace_num = 0;
         if ($token_type == FUNCTION_DECL) {
             my $mccabe = 0;
+            my $function_decl_token = $token;
             for ($i++; $token = $tokens->[$i]; $i++) {
                 $token_type = $token->{type};
 
@@ -62,7 +63,7 @@ sub evaluate {
             if ($mccabe > $max_mccabe) {
                 push @violations, {
                     filename => $file,
-                    line     => $token->{line},
+                    line     => $function_decl_token->{line},
                     description => DESC,
                     explanation => EXPL,
                     policy => __PACKAGE__,
