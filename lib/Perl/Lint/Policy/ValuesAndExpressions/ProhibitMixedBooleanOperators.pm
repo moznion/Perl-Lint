@@ -45,7 +45,7 @@ sub evaluate {
             $left_paren_num++;
         }
         elsif ($token_type == RIGHT_PAREN) {
-            if (my $status = splice @context_for_each_depth, $left_paren_num) {
+            if (@context_for_each_depth and my $status = splice @context_for_each_depth, $left_paren_num) {
                 if ($status == INVALID) {
                     push @violations, {
                         filename => $file,

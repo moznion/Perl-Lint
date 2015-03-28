@@ -6,10 +6,9 @@ use Test::Deep::NoTest qw(eq_deeply);
 use Perl::Lint::Constants::Type;
 use parent "Perl::Lint::Policy";
 
-# TODO msg!
 use constant {
-    DESC => '',
-    EXPL => '',
+    DESC => 'Only use a capturing group if you plan to use the captured value',
+    EXPL => [252],
 };
 
 my %ignore_reg_op = (
@@ -32,8 +31,6 @@ sub evaluate {
     $file     = shift;
     $tokens   = shift;
     my ($src, $args) = @_;
-
-    # use Data::Dumper::Concise; warn Dumper($tokens); # TODO remove
 
     my $is_used_english = 0;
 
@@ -798,10 +795,12 @@ sub evaluate {
 sub _scan_regex {
     my ($class, $token, $i) = @_;
 
-    if (%{$captured_for_each_scope[$sub_depth]}) {
+    my $line_num = defined $just_before_regex_token ? $just_before_regex_token->{line} : 1;
+    my $captured = $captured_for_each_scope[$sub_depth];
+    if (defined $captured && %$captured) {
         push @violations, {
             filename => $file,
-            line     => $just_before_regex_token->{line},
+            line     => $line_num,
             description => DESC,
             explanation => EXPL,
             policy => __PACKAGE__,
