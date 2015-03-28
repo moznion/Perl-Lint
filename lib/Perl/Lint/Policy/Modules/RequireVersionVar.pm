@@ -57,7 +57,7 @@ sub evaluate {
     unless ($does_exist_version_ver) {
         push @violations, {
             filename => $file,
-            line     => 0, # TODO
+            line     => 1, # TODO
             description => DESC,
             explanation => EXPL,
             policy => __PACKAGE__,

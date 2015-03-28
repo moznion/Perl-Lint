@@ -37,3 +37,15 @@ use base 'Foo';
 our @ISA = qw(Foo);
 push @ISA, 'Foo';
 @ISA = ('Foo');
+
+===
+--- dscr: Basic failure
+--- failures: 4
+--- params:
+--- input
+our @ISA = qw(Foo);
+our @ISA = qw(Foo);
+our @ISA = qw(Foo); ## no lint
+our @ISA = qw(Foo);
+our @ISA = qw(Foo);
+

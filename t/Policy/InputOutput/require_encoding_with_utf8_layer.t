@@ -166,3 +166,14 @@ binmode FH, ':encoding(utf8)' or die;
 
 $foo{open}; # not a function call
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+open $fh, ">:utf8", $output;
+open($fh, ">:utf8", $output);
+open($fh, ">:utf8", $output) or die; ## no lint
+open(my $fh, ">:utf8", $output);
+open(my $fh, ">:utf8", $output) or die;
+

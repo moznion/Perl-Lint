@@ -99,3 +99,13 @@ sort();
 
 is( pcritique($policy, \$code), 0, $policy );
 
+===
+--- dscr: no lint
+--- failures: 3
+--- params:
+--- input
+sort {$b cmp $a} @list;
+sort {$b <=> $a} @list;
+sort {$alpha{$b} <=> $beta{$a}} @list; ## no lint
+sort {$b->[0] <=> $a->[0] && $b->[1] <=> $a->[1]} @list;
+

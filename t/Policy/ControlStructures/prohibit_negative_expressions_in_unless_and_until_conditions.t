@@ -1750,3 +1750,14 @@ blah() unless $foo cmp $bar;
 
 blah() until $foo cmp $bar;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+blah() unless $foo cmp $bar;
+blah() until $foo cmp $bar;
+blah() until $foo cmp $bar; ## no lint
+blah() until $foo cmp $bar;
+blah() until $foo cmp $bar;
+

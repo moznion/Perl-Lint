@@ -203,3 +203,73 @@ if ($condition1) {
     }
   }
 }
+
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+if ($condition1) {
+  if ($condition2) {
+    if ($condition3) {
+      if ($condition4) {
+        if ($condition5) {
+          if ($condition6) {
+          }
+        }
+      }
+    }
+  }
+}
+
+if ($condition1) {
+  if ($condition2) {
+    if ($condition3) {
+      if ($condition4) {
+        if ($condition5) {
+          if ($condition6) {
+          }
+        }
+      }
+    }
+  }
+}
+
+if ($condition1) { ## no lint
+  if ($condition2) {
+    if ($condition3) {
+      if ($condition4) {
+        if ($condition5) {
+          if ($condition6) {
+          }
+        }
+      }
+    }
+  }
+}
+
+if ($condition1) {
+  if ($condition2) {
+    if ($condition3) {
+      if ($condition4) {
+        if ($condition5) {
+          if ($condition6) {
+          }
+        }
+      }
+    }
+  }
+}
+
+if ($condition1) {
+  if ($condition2) {
+    if ($condition3) {
+      if ($condition4) {
+        if ($condition5) {
+          if ($condition6) {
+          }
+        }
+      }
+    }
+  }
+}

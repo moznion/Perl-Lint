@@ -234,3 +234,28 @@ sub foo { print "hello\n"; }
     exit;
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+{
+    exit;
+    require Foo;
+}
+{
+    exit;
+    require Foo;
+}
+{
+    exit;
+    require Foo; ## no lint
+}
+{
+    exit;
+    require Foo;
+}
+{
+    exit;
+    require Foo;
+}

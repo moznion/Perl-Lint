@@ -106,3 +106,24 @@ use Foo ('foo', 'bar', '1/2');
          '-123',
          '#@$%');
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+@list = ('foo',
+         'bar',
+         'baz-bot');
+@list = ('foo',
+         'bar',
+         'baz-bot');
+@list = ('foo',
+         'bar',
+         'baz-bot'); ## no lint
+@list = ('foo',
+         'bar',
+         'baz-bot');
+@list = ('foo',
+         'bar',
+         'baz-bot');
+

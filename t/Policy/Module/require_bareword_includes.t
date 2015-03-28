@@ -57,3 +57,14 @@ use MyModule;
 no MyModule;
 use strict;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+require 'Exporter';
+require 'My/Module.pl';
+use 'SomeModule'; ## no lint
+use q{OtherModule.pm};
+use qq{OtherModule.pm};
+

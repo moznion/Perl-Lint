@@ -130,3 +130,14 @@ $bar = grep({foo()} @list) && 1;
 --- input
 $hash->{grep};
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+(1 && grep);
+(1 && grep);
+(1 && grep); ## no lint
+(1 && grep);
+(1 && grep);
+

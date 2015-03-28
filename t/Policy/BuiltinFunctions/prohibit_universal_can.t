@@ -36,3 +36,14 @@ $foo->can($funcname);
 can($foo, $funcname);
 UNIVERSAL::can($foo, $funcname);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+can($foo, $funcname);
+can($foo, $funcname);
+can($foo, $funcname); ## no lint
+can($foo, $funcname);
+can($foo, $funcname);
+

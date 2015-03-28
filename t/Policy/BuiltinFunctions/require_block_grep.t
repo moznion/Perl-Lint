@@ -49,3 +49,13 @@ grep $_ eq 'foo', @list;
 $hash1{grep} = 1;
 %hash2 = (grep => 1);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+grep $_ eq 'foo', @list;
+grep $_ eq 'foo', @list;
+grep $_ eq 'foo', @list; ## no lint
+grep $_ eq 'foo', @list;
+grep $_ eq 'foo', @list;

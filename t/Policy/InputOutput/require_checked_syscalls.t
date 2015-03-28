@@ -361,3 +361,14 @@ foo();
 --- input
 say 'The sun is a mass of incandessent gas';
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+open $filehandle, $mode, $filename;
+open $filehandle, $mode, $filename;
+open $filehandle, $mode, $filename; ## no lint
+open $filehandle, $mode, $filename;
+open $filehandle, $mode, $filename;
+

@@ -34,3 +34,14 @@ if (-t) { }
 --- input
 -toomany;
 -f _;
+
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+-t;
+-t;
+-t; ## no lint
+-t;
+-t;

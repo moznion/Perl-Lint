@@ -73,3 +73,14 @@ my $a = tan $_ + 5;
 my @backwards = reverse $_;
 my @backwards = reverse($_);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+my $x = -s $_;
+my $x = -s $_;
+my $x = -s $_; ## no lint
+my $x = -s $_;
+my $x = -s $_;
+

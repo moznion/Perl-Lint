@@ -273,3 +273,28 @@ END_COMPARATOR_CODE
 
     return;
 }
+
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+unless (\$foo $operator \$bar) {
+    blah();
+}
+
+until (\$foo $operator \$bar) {
+    blah();
+}
+
+until (\$foo $operator \$bar) { ## no lint
+    blah();
+}
+
+until (\$foo $operator \$bar) {
+    blah();
+}
+
+until (\$foo $operator \$bar) {
+    blah();
+}

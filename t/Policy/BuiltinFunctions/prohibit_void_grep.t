@@ -79,3 +79,28 @@ delete @hash{ grep m/ foo /smx, keys %hash };
 # The following is the form that was actually failing.
 delete @hash{ grep ( m/ foo /smx, keys %hash ) };
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+grep { spam($_) }
+  grep { foo($_) }
+    grep { bar($_) }
+      grep { baz($_) } @list;
+grep { spam($_) }
+  grep { foo($_) }
+    grep { bar($_) }
+      grep { baz($_) } @list;
+grep { spam($_) } ## no lint
+  grep { foo($_) }
+    grep { bar($_) }
+      grep { baz($_) } @list;
+grep { spam($_) }
+  grep { foo($_) }
+    grep { bar($_) }
+      grep { baz($_) } @list;
+grep { spam($_) }
+  grep { foo($_) }
+    grep { bar($_) }
+      grep { baz($_) } @list;

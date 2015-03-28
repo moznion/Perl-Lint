@@ -101,3 +101,11 @@ print 123; # no exporting at all; for test coverage
 --- input
 our @Foo::EXPORT::Bar = qw(foo bar);
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+require Exporter;
+our @EXPORT = qw(foo bar); ## no lint
+

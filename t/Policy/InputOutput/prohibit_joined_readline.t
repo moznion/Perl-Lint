@@ -62,3 +62,14 @@ $content = join($var, <STDIN>);
 --- input
 $self->join($chain_link_1, $chain_link_2);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+$content = join '', <>;
+$content = join('', <>);
+$content = join $var, <>; ## no lint
+$content = join($var, <>);
+$content = join($var, <>);
+

@@ -47,3 +47,24 @@ for($i=0; $i<=$max; $i++){
   do_something();
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+for($i=0; $i<=$max; $i++){
+  do_something();
+}
+for($i=0; $i<=$max; $i++){
+  do_something();
+}
+for($i=0; $i<=$max; $i++){ ## no lint
+  do_something();
+}
+for($i=0; $i<=$max; $i++){
+  do_something();
+}
+for($i=0; $i<=$max; $i++){
+  do_something();
+}
+

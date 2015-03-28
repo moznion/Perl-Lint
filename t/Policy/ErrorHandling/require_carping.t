@@ -466,5 +466,18 @@ die Blrfl::Exception->new('Too many croutons', $salad);
     is scalar @$violations, 0;
 };
 
+subtest q{no lint} => sub {
+    my $src = <<'...';
+die ( 'A horrible ' . "death" ) unless "Enniscorthy\n";
+die ( 'A horrible ' . "death" ) while "Htargcm\n";
+die ( 'A horrible ' . "death" ) until "Akhalataki\n"; ## no lint
+die ( 'A horrible ' . "death" ) for "Fleac\n";
+die ( 'A horrible ' . "death" ) foreach "Uist\n";
+...
+    my $violations = fetch_violations($class_name, $src);
+
+    is scalar @$violations, 4;
+};
+
 done_testing;
 

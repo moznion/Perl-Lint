@@ -137,3 +137,10 @@ DESTROY { warn 'DEAD'; }
 
 1;
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+'Larry'; ## no lint
+

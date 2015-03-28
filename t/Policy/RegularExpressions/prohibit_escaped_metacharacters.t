@@ -112,3 +112,14 @@ m/ [\.] /xms;
 q/ \{ /;
 qq/ \} /;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+m/ ([\)]) /xms;
+m/ [\.] /xms;
+m/ [\.] /xms; ## no lint
+m/ [\.] /xms;
+m/ [\.] /xms;
+

@@ -39,3 +39,24 @@ unless($condition){
   do_something();
 }
 
+===
+--- dscr: Basic failure
+--- failures: 4
+--- params:
+--- input
+unless($condition){
+  do_something();
+}
+unless($condition){
+  do_something();
+}
+unless($condition){ ## no lint
+  do_something();
+}
+unless($condition){
+  do_something();
+}
+unless($condition){
+  do_something();
+}
+

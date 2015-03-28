@@ -750,6 +750,16 @@ our $G_;
 our $G_foo_bar;
 our @THING;
 
+===
+--- dscr: no lint
+--- failures: 3
+--- params: {capitalization => {global_variables => 'G_(?:(?!_)\w)+', global_variable_exemptions => '.*THINGY.*'}}
+--- input
+our $FooBar;
+our $G_;
+our $G_foo_bar; ## no lint
+our @THING;
+
 END_FOOTER
 
     return;

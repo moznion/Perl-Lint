@@ -91,3 +91,87 @@ else {
   $nuts;
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+if ($condition1){
+  $foo;
+}
+elsif ($condition2){
+  $bar;
+}
+elsif ($condition3){
+  $baz;
+}
+elsif ($condition4){
+  $barf;
+}
+else {
+  $nuts;
+}
+
+if ($condition1){
+  $foo;
+}
+elsif ($condition2){
+  $bar;
+}
+elsif ($condition3){
+  $baz;
+}
+elsif ($condition4){
+  $barf;
+}
+else {
+  $nuts;
+}
+
+if ($condition1){ ## no lint
+  $foo;
+}
+elsif ($condition2){
+  $bar;
+}
+elsif ($condition3){
+  $baz;
+}
+elsif ($condition4){
+  $barf;
+}
+else {
+  $nuts;
+}
+
+if ($condition1){
+  $foo;
+}
+elsif ($condition2){
+  $bar;
+}
+elsif ($condition3){
+  $baz;
+}
+elsif ($condition4){
+  $barf;
+}
+else {
+  $nuts;
+}
+
+if ($condition1){
+  $foo;
+}
+elsif ($condition2){
+  $bar;
+}
+elsif ($condition3){
+  $baz;
+}
+elsif ($condition4){
+  $barf;
+}
+else {
+  $nuts;
+}

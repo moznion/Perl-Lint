@@ -52,3 +52,13 @@ CHECK :     { $x = 1; }
 INIT :      { $x = 1; }
 UNITCHECK : { $x = 1; }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+BEGIN:      { $x = 1; }
+END:        { $x = 1; }
+CHECK:      { $x = 1; } ## no lint
+INIT:       { $x = 1; }
+UNITCHECK:  { $x = 1; }

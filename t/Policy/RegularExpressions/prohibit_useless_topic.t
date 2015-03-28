@@ -119,3 +119,13 @@ my ( $line, $dummy ) = grep { $_ =~ $stat->{regex} } @contents;
 if ($_ !~ $pat) { foo(); }
 =head1 $_ =~ /foo/
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+$_ =~ /foo/;
+$_ =~ m/foo/;
+$_ =~ s/foo/bar/; ## no lint
+$_ =~ tr/a-mn-z/n-za-m/;
+$_ =~ y/a-mn-z/n-za-m/;

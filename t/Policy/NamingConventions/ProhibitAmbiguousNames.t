@@ -111,3 +111,14 @@ my $bar;
 my $left;
 my $close;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params: {}
+--- input
+my $left = 1;
+my @right = ('foo');
+our $no = undef; ## no lint
+my %abstract;
+local *main::contract;
+

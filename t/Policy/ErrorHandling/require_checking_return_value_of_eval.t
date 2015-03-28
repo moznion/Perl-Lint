@@ -346,3 +346,14 @@ foreach ( grep ! eval $_, @bar ) { say }
 
 # grep $_, map eval $_, @foo;   # Should this be accepted?
 grep { $_ } map { eval $_ } @foo;   # Should this be rejected?
+
+===
+--- dscr: no lint
+--- failures: 4
+--- input
+$result = 1, eval { foo; };
+@result = 1, eval { bar; };
+$result = 1, { eval { baz; } }; ## no lint
+$result = 1, [ eval { buz; } ];
+@result = 1, ( eval { blrfl; } );
+

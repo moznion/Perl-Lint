@@ -152,3 +152,14 @@ use 5.010;
 
 state ( $foo );
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+grep( { do_something($_) }, $foo, $bar) and do_something();
+grep( { do_something($_) }, $foo, $bar) and do_something();
+grep( { do_something($_) }, $foo, $bar) and do_something(); ## no lint
+grep( { do_something($_) }, $foo, $bar) and do_something();
+grep( { do_something($_) }, $foo, $bar) and do_something();
+

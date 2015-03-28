@@ -16,17 +16,22 @@ sub evaluate {
 
     my @violations;
     my $lbnum = 0;
+    my $parent_of_nests_line_number = 0;
     for (my $i = 0, my $token_type, my $token_data; my $token = $tokens->[$i]; $i++) {
         $token_type = $token->{type};
         $token_data = $token->{data};
 
         if ($token_type == LEFT_BRACE) {
+            if ($lbnum == 0) {
+                $parent_of_nests_line_number = $token->{line};
+            }
+
             $lbnum++;
 
             if ($lbnum > $max_nexts) {
                 push @violations, {
                     filename => $file,
-                    line     => $token->{line},
+                    line     => $parent_of_nests_line_number,
                     description => DESC,
                     explanation => EXPL,
                     policy => __PACKAGE__,

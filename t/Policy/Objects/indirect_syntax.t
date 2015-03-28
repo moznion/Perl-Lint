@@ -82,5 +82,24 @@ delete {$foo};
     }
 };
 
+subtest 'no lint' => sub {
+    my $src = <<'...';
+new Foo;
+new Foo();
+new Foo( bar => 'baz' ); ## no lint
+
+new $foo;
+
+new {$foo};
+
+my $bar;
+new $bar;
+...
+    my $violations = fetch_violations($class_name, $src);
+
+    is scalar @$violations, 5;
+    # TODO
+};
+
 done_testing;
 

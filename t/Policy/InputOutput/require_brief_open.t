@@ -371,3 +371,14 @@ if (! close $fh) {
     croak "Error closing $file after reading: $!";
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+CORE::GLOBAL::open(my $fh1, '<', $filename);
+CORE::GLOBAL::open(my $fh2, '<', $filename);
+CORE::GLOBAL::open(my $fh3, '<', $filename); ## no lint
+CORE::GLOBAL::open(my $fh4, '<', $filename);
+CORE::GLOBAL::open(my $fh5, '<', $filename);
+

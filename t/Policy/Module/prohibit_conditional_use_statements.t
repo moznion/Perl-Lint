@@ -828,3 +828,37 @@ do {
 use Foo::Bar;
 } if ($a == 1);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+if ($a == 1) {
+print 1;
+} else {
+use Foo::Bar;
+}
+
+if ($a == 1) {
+print 1;
+} else {
+use Foo::Bar;
+}
+
+if ($a == 1) {
+print 1;
+} else {
+use Foo::Bar; ## no lint
+}
+
+if ($a == 1) {
+print 1;
+} else {
+use Foo::Bar;
+}
+
+if ($a == 1) {
+print 1;
+} else {
+use Foo::Bar;
+}

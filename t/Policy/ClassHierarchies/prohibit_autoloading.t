@@ -47,3 +47,29 @@ sub AUTOLOAD {
      return $baz;
 }
 
+===
+--- dscr: Empty AUTOLOAD()
+--- failures: 4
+--- params:
+--- input
+sub AUTOLOAD {
+     $foo, $bar = @_;
+     return $baz;
+}
+sub AUTOLOAD {
+     $foo, $bar = @_;
+     return $baz;
+}
+sub AUTOLOAD { ## no lint
+     $foo, $bar = @_;
+     return $baz;
+}
+sub AUTOLOAD {
+     $foo, $bar = @_;
+     return $baz;
+}
+sub AUTOLOAD {
+     $foo, $bar = @_;
+     return $baz;
+}
+

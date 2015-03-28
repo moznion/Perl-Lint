@@ -131,3 +131,12 @@ use Evil;
 use Fatal qw< open close >;
 use Getopt::Std;
 
+===
+--- dscr: no lint
+--- failures: 3
+--- params: {prohibit_evil_modules => {modules => ' /Evil::/ Demonic::Module /Acme/'}}
+--- input
+use Evil::Module qw(bad stuff);
+use Super::Evil::Module;
+use Demonic::Module; ## no lint
+use Acme::Foo;

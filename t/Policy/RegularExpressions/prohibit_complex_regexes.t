@@ -111,3 +111,14 @@ m' $now_is_the_time_for_all_good_men_to_come_to ';
 q{ foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo};
 qq{ foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo foo};
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params: {prohibit_complex_regexes => {max_characters => 2}}
+--- input
+m/ foo /;
+m/ foo /;
+m/ foo /; ## no lint
+m/ foo /;
+m/ foo /;
+

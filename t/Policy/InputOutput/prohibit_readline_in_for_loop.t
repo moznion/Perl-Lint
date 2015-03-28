@@ -48,3 +48,14 @@ while( my $foo = <> ){}
 while( $foo = <> ){}
 while( <> ){}
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+for my $foo (<FH>) {}
+for $foo (<$fh>) {}
+for (<>) {} ## no lint
+$_ for <$fh>
+$_ for <>
+
