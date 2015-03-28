@@ -94,6 +94,7 @@ sub _lint {
     # list `no lint` lines
     # TODO improve performance
     my %no_lint_lines = ();
+    my %used_no_lint_lines = ();
     my $line_num = 1;
     for my $line (split /\r?\n/, $src) {
         if ($line =~ /(#.+)?##\s*no\slint(?:\s+(?:qw)?([(][^)]*[)]|"[^"]*"|'[^']*'))?/) {
@@ -109,20 +110,34 @@ sub _lint {
         $line_num++;
     }
 
+    my $prohibit_useless_no_lint_policy;
+
     my @violations;
     for my $policy (@{$self->{site_policies}}) {
-        if (
-            $policy eq 'Perl::Lint::Policy::Miscellanea::ProhibitUnrestrictedNoLint' ||
-            $policy eq 'Perl::Lint::Policy::Miscellanea::ProhibitUselessNoLint'
-        ) {
+        if ($policy eq 'Perl::Lint::Policy::Miscellanea::ProhibitUselessNoLint') {
+            $prohibit_useless_no_lint_policy = $policy;
+            next;
+        }
+
+        if ($policy eq 'Perl::Lint::Policy::Miscellanea::ProhibitUnrestrictedNoLint') {
             push @violations, @{$policy->evaluate($file, $tokens, $src, $args, \%no_lint_lines)};
             next;
         }
 
-        push @violations, grep {
-            my $no_lint = $no_lint_lines{$_->{line}};
-            !$no_lint || !$no_lint->{pop [split(/::/, $_->{policy})]};
-        } @{$policy->evaluate($file, $tokens, $src, $args)};
+
+        for my $violation (@{$policy->evaluate($file, $tokens, $src, $args)}) {
+            my $violation_line = $violation->{line};
+            my $no_lint = $no_lint_lines{$violation_line};
+            if (!$no_lint || (keys %$no_lint > 0 && !$no_lint->{(split /::/, $violation->{policy})[-1]})) {
+                push @violations, $violation;
+            }
+            $used_no_lint_lines{$violation_line} = 1;
+        }
+    }
+
+    if ($prohibit_useless_no_lint_policy) {
+        push @violations,
+            @{$prohibit_useless_no_lint_policy->evaluate($file, \%no_lint_lines, \%used_no_lint_lines)};
     }
 
     return \@violations;

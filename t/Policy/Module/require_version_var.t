@@ -115,5 +115,5 @@ package Foo;
 --- failures: 0
 --- params:
 --- input
-#!anything ## no lint
+our $Version; ## no lint
 
