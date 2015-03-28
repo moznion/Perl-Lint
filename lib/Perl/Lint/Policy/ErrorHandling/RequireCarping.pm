@@ -82,7 +82,7 @@ sub evaluate {
                         if ($is_in_sub || !($is_in_main && $allow_in_main_unless_in_subroutine)) {
                             push @violations, {
                                 filename => $file,
-                                line     => $token->{line},
+                                line     => $token->{line} // $tokens->[-1]->{line},
                                 description => DESC,
                                 explanation => EXPL,
                                 policy => __PACKAGE__,
