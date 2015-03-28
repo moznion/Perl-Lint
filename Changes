@@ -2,6 +2,12 @@ Revision history for Perl extension Perl-Lint
 
 {{$NEXT}}
 
+0.20 2015-03-28T15:52:01Z
+
+    - Fix some bugs
+    - Implement some policies
+    - Support `## no lint` annotation!
+
 0.11 2015-01-26T16:01:45Z
 
     - Implement some remained policies

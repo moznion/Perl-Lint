@@ -15,10 +15,6 @@ Perl::Lint - Yet Another Perl Source Code Linter
 
 Perl::Lint is the yet another source code linter for perl.
 
-__THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE__
-
-__PLEASE DO NOT BELIEVE THE RESULT OF THIS MODULE YET.__
-
 # AIMS
 
 Development of this module aims to create a fast and flexible static analyzer for Perl5 that has compatibility with Perl::Critic

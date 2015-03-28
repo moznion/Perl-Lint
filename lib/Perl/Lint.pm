@@ -7,7 +7,7 @@ use Compiler::Lexer;
 use Module::Pluggable;
 use Module::Load;
 
-our $VERSION = "0.11";
+our $VERSION = "0.20";
 
 sub new {
     my ($class, $args) = @_;
@@ -164,10 +164,6 @@ Perl::Lint - Yet Another Perl Source Code Linter
 =head1 DESCRIPTION
 
 Perl::Lint is the yet another source code linter for perl.
-
-B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>
-
-B<PLEASE DO NOT BELIEVE THE RESULT OF THIS MODULE YET.>
 
 =head1 AIMS
 

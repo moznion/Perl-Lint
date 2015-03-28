@@ -4,7 +4,7 @@
       "moznion <moznion@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.3.0, CPAN::Meta::Converter version 2.142690",
+   "generated_by" : "Minilla/v2.3.0, CPAN::Meta::Converter version 2.143240",
    "license" : [
       "perl_5"
    ],
@@ -47,7 +47,7 @@
          "requires" : {
             "B::Keywords" : "0",
             "Carp" : "0",
-            "Compiler::Lexer" : "0.21",
+            "Compiler::Lexer" : "0.22",
             "Email::Address" : "0",
             "List::Flatten" : "0",
             "List::MoreUtils" : "0.33",
@@ -83,7 +83,7 @@
          "web" : "https://github.com/moznion/Perl-Lint"
       }
    },
-   "version" : "0.11",
+   "version" : "0.20",
    "x_authority" : "cpan:MOZNION",
    "x_contributors" : [
       "Syohei YOSHIDA <syohex@gmail.com>",
