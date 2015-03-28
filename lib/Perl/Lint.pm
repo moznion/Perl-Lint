@@ -128,7 +128,7 @@ sub _lint {
         for my $violation (@{$policy->evaluate($file, $tokens, $src, $args)}) {
             my $violation_line = $violation->{line};
             my $no_lint = $no_lint_lines{$violation_line};
-            if (!$no_lint || (keys %$no_lint > 0 && !$no_lint->{pop split(/::/, $violation->{policy})})) {
+            if (!$no_lint || (keys %$no_lint > 0 && !$no_lint->{(split /::/, $violation->{policy})[-1]})) {
                 push @violations, $violation;
             }
             $used_no_lint_lines{$violation_line} = 1;
