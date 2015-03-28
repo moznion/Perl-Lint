@@ -121,7 +121,7 @@ sub _lint {
 
         push @violations, grep {
             my $no_lint = $no_lint_lines{$_->{line}};
-            !$no_lint || !$no_lint->{pop [split(/::/, $_->{policy})]};
+            !$no_lint || (keys %$no_lint > 0 && !$no_lint->{pop [split(/::/, $_->{policy})]});
         } @{$policy->evaluate($file, $tokens, $src, $args)};
     }
 
