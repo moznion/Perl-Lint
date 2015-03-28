@@ -13,7 +13,7 @@ sub evaluate {
     my ($class, $file, $no_lint_lines, $used_no_lint_lines) = @_;
 
     my @violations;
-    for my $line (keys $no_lint_lines) {
+    for my $line (keys %$no_lint_lines) {
         unless ($used_no_lint_lines->{$line}) {
             push @violations, {
                 filename => $file,
