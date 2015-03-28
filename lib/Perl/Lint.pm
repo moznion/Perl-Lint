@@ -96,14 +96,33 @@ sub _lint {
     my %no_lint_lines = ();
     my $line_num = 1;
     for my $line (split /\r?\n/, $src) {
-        $no_lint_lines{$line_num} = 1 if $line =~ /## no lint\Z/;
+        if ($line =~ /(#.+)?##\s*no\slint(?:\s+(?:qw)?([(][^)]*[)]|"[^"]*"|'[^']*'))?/) {
+            next if $1; # Already commented out at before
+
+            my $annotations = {};
+            if ($2) {
+                my $annotation = substr $2, 1, -1;
+                $annotations = {map {$_ => 1} grep {$_} split /[, ]/, $annotation};
+            }
+            $no_lint_lines{$line_num} = $annotations;
+        }
         $line_num++;
     }
 
     my @violations;
     for my $policy (@{$self->{site_policies}}) {
-        push @violations,
-            grep {!$no_lint_lines{$_->{line}}} @{$policy->evaluate($file, $tokens, $src, $args)};
+        if (
+            $policy eq 'Perl::Lint::Policy::Miscellanea::ProhibitUnrestrictedNoLint' ||
+            $policy eq 'Perl::Lint::Policy::Miscellanea::ProhibitUselessNoLint'
+        ) {
+            push @violations, @{$policy->evaluate($file, $tokens, $src, $args, \%no_lint_lines)};
+            next;
+        }
+
+        push @violations, grep {
+            my $no_lint = $no_lint_lines{$_->{line}};
+            !$no_lint || !$no_lint->{pop [split(/::/, $_->{policy})]};
+        } @{$policy->evaluate($file, $tokens, $src, $args)};
     }
 
     return \@violations;
