@@ -182,6 +182,14 @@ On default, this function checks the all of policies that are in C<Perl::Lint::P
 
 =back
 
+=head1 PERFORMANCE
+
+Benchmark script: L<https://github.com/moznion/Perl-Lint/blob/master/author/benchmark_lint_vs_critic.pl>.
+
+                   Rate Perl::Critic   Perl::Lint
+    Perl::Critic 20.6/s           --         -78%
+    Perl::Lint   92.0/s         348%           --
+
 =head1 SEE ALSO
 
 L<Perl::Critic>

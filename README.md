@@ -28,6 +28,14 @@ Please see also [http://news.perlfoundation.org/2014/03/grant-proposal-perllint-
     `lint` checks the violations of target files. It can export.
     On default, this function checks the all of policies that are in `Perl::Lint::Policy::*`.
 
+# PERFORMANCE
+
+Benchmark script: [https://github.com/moznion/Perl-Lint/blob/master/author/benchmark\_lint\_vs\_critic.pl](https://github.com/moznion/Perl-Lint/blob/master/author/benchmark_lint_vs_critic.pl).
+
+                   Rate Perl::Critic   Perl::Lint
+    Perl::Critic 20.6/s           --         -78%
+    Perl::Lint   92.0/s         348%           --
+
 # SEE ALSO
 
 [Perl::Critic](https://metacpan.org/pod/Perl::Critic)
