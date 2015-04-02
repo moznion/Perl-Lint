@@ -90,8 +90,8 @@ m/[^\s\w]/;
 # m/[^\w] (/;
 #
 
-===
 --- dscr: no lint
+--- dscr: negative failures
 --- failures: 4
 --- params:
 --- input
