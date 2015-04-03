@@ -110,3 +110,4 @@ m#foo#;
 m|foo|; ## no lint
 m<foo>;
 m(foo);
+

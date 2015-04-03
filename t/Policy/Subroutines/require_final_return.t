@@ -251,3 +251,17 @@ sub foo {
 #         }
 #     }
 # }
+
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+sub foo {
+    if( $condition ) {
+        return if $today_is_tuesday;
+    }
+    else {
+        exit unless $today_is_wednesday;
+    }
+} ## no lint

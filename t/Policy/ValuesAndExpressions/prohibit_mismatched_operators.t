@@ -132,3 +132,14 @@ $a .= 1;
 -B 'file' lt "1";
 -A 'file' eq "1";
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+-M 'file' gt "0";
+-r 'file' lt "1";
+-w 'file' ne "1"; ## no lint
+-x 'file' eq "0";
+-o 'file' eq "1234";
+

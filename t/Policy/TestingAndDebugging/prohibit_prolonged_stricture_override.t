@@ -95,3 +95,30 @@ sub foo {
     print 5;
     print 6;
 }
+
+===
+--- dscr: no lint 1
+--- failures: 0
+--- params:
+--- input
+use strict;
+no strict; ## no lint
+print 1;
+print 2;
+print 3;
+print 4;
+
+===
+--- dscr: no lint 2
+--- failures: 0
+--- params:
+--- input
+use strict;
+sub foo {
+    no strict; ## no lint
+    print 1;
+    print 2;
+    print 3;
+    print 4;
+}
+

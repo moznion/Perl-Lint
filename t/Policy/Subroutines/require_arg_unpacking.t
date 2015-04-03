@@ -418,3 +418,17 @@ sub foo {
         unless ( @_ == 2 );
 
 }
+
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+sub quux { ## no lint
+    my $self = shift @_;
+    print $self;
+}
+my $x = bar { ## no lint
+  print $_[0];
+  print $_[1];
+}

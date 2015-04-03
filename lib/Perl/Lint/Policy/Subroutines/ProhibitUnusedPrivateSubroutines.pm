@@ -31,6 +31,7 @@ sub evaluate {
         if ($token_type == FUNCTION_DECL) {
             $token = $tokens->[++$i];
             $token_data = $token->{data};
+            my $function_token = $token;
             if (substr($token_data, 0, 1) eq '_' && !$allow{$token_data}) {
                 if (!$allow_regex || $token_data !~ /$allow_regex/) {
                     my $declared_private_function = '';
@@ -43,7 +44,7 @@ sub evaluate {
                             last;
                         }
                         elsif ($token_type == LEFT_BRACE) {
-                            push @private_functions, $token_data;
+                            push @private_functions, $function_token;
 
                             my $left_brace_num = 1;
                             for ($i++; $token = $tokens->[$i]; $i++) {
@@ -125,15 +126,16 @@ sub evaluate {
     }
 
     for my $private_function (@private_functions) {
-        if ($ignores{$private_function}) {
+        my $private_function_name = $private_function->{data};
+        if ($ignores{$private_function_name}) {
             next;
         }
 
-        unless ($called{$private_function}) {
+        unless ($called{$private_function_name}) {
             push @violations, {
                 filename => $file,
-                line     => 0, # TODO $token->{line},
-                description => sprintf(DESC, $private_function),
+                line     => $private_function->{line},
+                description => sprintf(DESC, $private_function_name),
                 explanation => EXPL,
                 policy => __PACKAGE__,
             };

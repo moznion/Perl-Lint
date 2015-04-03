@@ -167,3 +167,14 @@ Other::Package::_foo;
 Other::Package->_bar;
 $self->Other::Package::_baz();
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params: {protect_private_subs => {private_name_regex => '__\w+'}}
+--- input
+Other::Package::_foo();
+Other::Package->_bar();
+Other::Package::_foo; ## no lint
+Other::Package->_bar;
+$self->Other::Package::_baz();
+

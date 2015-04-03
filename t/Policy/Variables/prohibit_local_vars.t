@@ -48,3 +48,11 @@ our $var2 = 'bar';
 local $SIG{HUP} \&handler;
 local $INC{$module} = $path;
 
+===
+--- dscr: no lint
+--- failures: 2
+--- params:
+--- input
+local $foo = $bar;
+local ($foo, $bar) = (); ## no lint
+local ($foo, %SIG);

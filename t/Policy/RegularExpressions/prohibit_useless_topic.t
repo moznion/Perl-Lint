@@ -129,3 +129,4 @@ $_ =~ m/foo/;
 $_ =~ s/foo/bar/; ## no lint
 $_ =~ tr/a-mn-z/n-za-m/;
 $_ =~ y/a-mn-z/n-za-m/;
+

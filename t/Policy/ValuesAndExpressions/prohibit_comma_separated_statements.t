@@ -282,3 +282,10 @@ sub new {
     return bless { foo => 1, bar => 2 }, __PACKAGE__;
 }
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+@x = @y, @z; ## no lint
+

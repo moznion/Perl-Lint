@@ -163,3 +163,10 @@ print 'First subscript is ', $[, "\n";
 local $SIG{__DIE__} = sub {warn "I cannot die!"};
 print $^S ? 'Executing eval' : defined $^S ? 'Otherwise' : 'Parsing';
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params: {prohibit_evil_variables => {variables => '$foo $bar'}}
+--- input
+my $foo = "I'm evil"; ## no lint
+print $bar; ## no lint

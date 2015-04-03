@@ -1081,3 +1081,9 @@ package Maggot 0.01;
 # package 42; # Illegal, but check anyway.
 # package Maggot 0.01 42;
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+$Aleax = 5.8.1; ## no lint

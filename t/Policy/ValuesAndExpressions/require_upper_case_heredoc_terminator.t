@@ -82,3 +82,11 @@ print <<  'END_QUOTE';
 The only thing we have to fear is fear itself...
 END_QUOTE
 
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+print <<"endquote"; ## no lint
+Four score and seven years ago...
+endquote

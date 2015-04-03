@@ -168,3 +168,13 @@ use re qw{ /smx };
     my $string =~ m{pattern.};
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+my $string =~ m{pattern.};
+my $string =~ m{pattern.}gim;
+my $string =~ m{pattern.}gis; ## no lint
+my $string =~ m{pattern.}gms;
+my $string =~ m/pattern./;

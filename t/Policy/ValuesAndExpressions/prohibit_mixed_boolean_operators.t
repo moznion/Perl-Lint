@@ -74,3 +74,11 @@ eval {
     }
 };
 
+===
+--- dscr: no lint
+--- failures: 2
+--- params:
+--- input
+next if not $finished || $foo < $bar;
+if( $foo && not $bar or $baz ){ do_something() } ## no lint
+this() and ! that() or the_other();

@@ -224,3 +224,13 @@ use SomeOtherModule; our $VERSION = $SomeOtherModule::VERSION;
 use SomeOtherModule; our $VERSION = SomeOtherModule::VERSION;
 use base 'SomeOtherModule'; our $VERSION = $SomeOtherModule::VERSION;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+our $VERSION = $SomeOtherModule::VERSION;
+our $VERSION = ((require SomeOtherModule), $SomeOtherModule::VERSION)[1];
+our $VERSION = SomeOtherModule::RCSVersion('$Revision$'); ## no lint
+our $VERSION = SomeOtherModule::VERSION;
+our $VERSION = do { require mod_perl2; $mod_perl2::VERSION };

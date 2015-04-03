@@ -254,3 +254,11 @@ print $';
 $foo = \&';
 *foo = *';
 
+===
+--- dscr: no lint
+--- failures: 2
+--- params:
+--- input
+package Foo'Bar;
+package Foo::Bar'Baz; ## no lint
+package Foo'Bar::Baz;

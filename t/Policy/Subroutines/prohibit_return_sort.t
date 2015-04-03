@@ -80,3 +80,24 @@ sub test_sub2 {
 --- input
 $foo{sort}; # hash key, not keyword
 sub foo {return}; # no sibling
+
+===
+--- dscr: no lint
+--- failures: 3
+--- params:
+--- input
+sub test_sub1 {
+    return sort @list; ## no lint
+    return sort(@list);
+}
+
+sub test_sub2 {
+    return sort { $a <=> $b } @list;
+    return sort({ $a <=> $b } @list); ## no lint
+}
+
+sub test_sub3 {
+    return sort @list  if $bar; ## no lint
+    return sort(@list) if $bar;
+}
+

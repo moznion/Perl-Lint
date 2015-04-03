@@ -85,3 +85,12 @@ $var = "}]";
 $var = "{[";
 $var = "]}";
 
+===
+--- dscr: no lint
+--- failures: 3
+--- params:
+--- input
+$var = "!";
+$var = '!';
+$var = '!!'; ## no lint
+$var = "||";

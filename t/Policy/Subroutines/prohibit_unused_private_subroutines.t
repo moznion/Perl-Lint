@@ -232,3 +232,16 @@ sub first {
 sub _second {
     print "A private sub\n";
 }
+
+===
+--- dscr: no lint
+--- failures: 0
+--- params:
+--- input
+use strict;
+sub _foo { ## no lint
+    # do something
+};
+
+$self->SUPER::_foo();
+

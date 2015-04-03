@@ -134,5 +134,18 @@ my $data .= &stripzerobytes(inet_aton($self->address()));
     is scalar @$violations, 8;
 };
 
+subtest 'no lint' => sub {
+    my $src = <<'...';
+my $foo **=  0;
+my $foo  +=  0;
+my $foo  -=  0; ## no lint
+my $foo  .=  0;
+my $foo  *=  0;
+...
+    my $violations = fetch_violations($class_name, $src);
+
+    is scalar @$violations, 4;
+};
+
 done_testing;
 

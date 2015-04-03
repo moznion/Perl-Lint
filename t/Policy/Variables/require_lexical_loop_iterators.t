@@ -82,3 +82,18 @@ foreach $foo ( @list ) {
     bar( $foo );
 }
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+for $foo ( @list ) {
+}
+foreach $foo ( @list ) {
+}
+for $foo ( @list ) { ## no lint
+}
+foreach $foo ( @list ) {
+}
+for $foo ( @list ) {
+}

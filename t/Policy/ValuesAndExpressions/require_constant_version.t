@@ -296,3 +296,13 @@ our $VERSION = version->new(qw$Revision$);
 
 sprintf( q{%s/%s}, __PACKAGE__, $VERSION ) =~ s{ o \z }{}xms;
 
+===
+--- dscr: no lint
+--- failures: 3
+--- params:
+--- input
+our $VERSION = "$foo";
+our $VERSION = eval $VERSION;
+our $VERSION = qq{foo\\$bar}; ## no lint
+our ( $VERSION ) = q$REVISION: 42$ =~ m/(\d+)/;
+

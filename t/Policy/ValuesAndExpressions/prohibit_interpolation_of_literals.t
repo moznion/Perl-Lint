@@ -163,3 +163,13 @@ $text = qq{\\\$I think, therefore ...};
 $text = qq{Anyone \\\@home?};
 $text = qq{Here we do not have\\\\ta tab};
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+print "this is literal";
+print qq{this is literal};
+print qq{this is literal}; ## no lint
+print "this is literal";
+print qq{this is literal};

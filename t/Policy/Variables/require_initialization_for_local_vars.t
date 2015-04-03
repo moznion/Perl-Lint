@@ -54,3 +54,16 @@ our ($foo, $bar);
 --- input
 $x->{local};
 
+===
+--- dscr: Basic
+--- failures: 5
+--- params:
+--- input
+local $foo;
+local ($foo, $bar);
+
+local $|; ## no lint
+local ($|, $$);
+
+local $OUTPUT_RECORD_SEPARATOR;
+local ($OUTPUT_RECORD_SEPARATOR, $PROGRAM_NAME);

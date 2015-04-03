@@ -23,8 +23,9 @@ sub evaluate {
                 $token_type = $token->{type};
                 if ($token_type == LEFT_BRACE) {
                     my $left_brace_num = 1;
-                    my $num_of_vers = 0;
-                    my $num_of_vers_per_one_line = 0;
+                    my $num_of_vars = 0;
+                    my $num_of_vars_per_one_line = 0;
+                    my $last_var_token;
                     for ($i++; $token = $tokens->[$i]; $i++) {
                         $token_type = $token->{type};
 
@@ -33,10 +34,10 @@ sub evaluate {
                         }
                         elsif ($token_type == RIGHT_BRACE) {
                             if (--$left_brace_num <= 0) {
-                                if ($num_of_vers > $max_arguments) {
+                                if ($num_of_vars > $max_arguments) {
                                     push @violations, {
                                         filename => $file,
-                                        line     => $token->{line}, # TODO
+                                        line     => $last_var_token->{line},
                                         description => DESC,
                                         explanation => EXPL,
                                         policy => __PACKAGE__,
@@ -57,7 +58,7 @@ sub evaluate {
                             $token_type == GLOBAL_HASH_VAR
                         ) {
                             if ($left_brace_num == 1) { # XXX
-                                $num_of_vers_per_one_line++;
+                                $num_of_vars_per_one_line++;
                             }
                         }
                         elsif ($token_type == ASSIGN) {
@@ -69,11 +70,12 @@ sub evaluate {
                                 $next_token_type == ARGUMENT_ARRAY ||
                                 ($next_token_type == BUILTIN_FUNC && $next_token_data eq 'shift')
                             ) {
-                                $num_of_vers += $num_of_vers_per_one_line;
+                                $num_of_vars += $num_of_vars_per_one_line;
+                                $last_var_token = $token;
                             }
                         }
                         elsif ($token_type == SEMI_COLON) {
-                            $num_of_vers_per_one_line = 0;
+                            $num_of_vars_per_one_line = 0;
                         }
                     }
                 }
@@ -83,7 +85,7 @@ sub evaluate {
                     if (length $prototype > $max_arguments) {
                         push @violations, {
                             filename => $file,
-                            line     => $token->{line}, # TODO
+                            line     => $token->{line},
                             description => DESC,
                             explanation => EXPL,
                             policy => __PACKAGE__,

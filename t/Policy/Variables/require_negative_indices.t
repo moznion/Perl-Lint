@@ -79,3 +79,15 @@ my $ref = $some->{complicated}->[$data_structure];
 $some->{complicated}->[$data_structure]->[$#{$ref} -1];
 $ref->[$#{$some->{complicated}->[$data_structure]} -1];
 
+# XXX OMG
+# ===
+# --- dscr: no lint
+# --- failures: 4
+# --- params:
+# --- input
+# $arr[$#arr];
+# $arr[$#arr-1];
+# $arr[ $#arr - 2 ]; ## no lint
+# $arr[@arr-1];
+# $arr[@arr - 2];
+

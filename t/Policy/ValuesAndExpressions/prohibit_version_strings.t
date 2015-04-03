@@ -77,3 +77,13 @@ use Foo::Bar
 # With Foo::Bar 1.2.3 we can use the 'plugh' option.
 plugh => 1;
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+use 5.6.1;
+use v5.6.1;
+use Foo 1.2.3; ## no lint
+use Foo v1.2.3;
+use Foo 1.2.3 qw(foo bar);

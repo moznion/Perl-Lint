@@ -56,3 +56,14 @@ use English;
 use English qw(-no_match_vars);
 use English qw($EVAL_ERROR);
 
+===
+--- dscr: no lint
+--- failures: 4
+--- params:
+--- input
+use English qw($PREMATCH);
+use English qw($MATCH);
+use English qw($POSTMATCH); ## no lint
+$`;
+$&;
+
