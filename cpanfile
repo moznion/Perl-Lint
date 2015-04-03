@@ -13,13 +13,16 @@ requires 'Module::Pluggable';
 requires 'List::Flatten';
 requires 'Test::Deep::NoTest';
 requires 'Regexp::Lexer', '0.05';
+requires 'Path::Tiny', '0.068';
+requires 'Test::Builder::Module';
+requires 'Test::More', '0.98';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';
 };
 
 on test => sub {
-    requires 'Test::More', '0.98';
+    requires 'Test::Builder::Tester';
     requires 'File::Temp';
     requires 'Test::Base::Less';
     requires 'Capture::Tiny';
