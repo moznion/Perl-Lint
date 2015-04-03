@@ -56,6 +56,10 @@ sub evaluate {
         }
 
         if ($token_type == REG_EXP || $token_type == REG_REPLACE_FROM) {
+            # XXX
+            if ($depth < 0 && scalar @is_tested_by_depth < -$depth) {
+                next;
+            }
             $is_tested_by_depth[$depth] = $is_in_context_to_assign ? 1 : 0;
 
             for ($i++; $token = $tokens->[$i]; $i++) {
@@ -131,6 +135,10 @@ sub evaluate {
                         last if --$lpnum <= 0;
                     }
                     elsif ($token_type == REG_EXP || $token_type == REG_REPLACE_FROM) {
+                        # XXX
+                        if ($depth + 1 < 0 && scalar @is_tested_by_depth < -$depth + 1) {
+                            next;
+                        }
                         $is_tested_by_depth[$depth + 1] = 1;
                     }
                 }
@@ -152,7 +160,14 @@ sub evaluate {
         }
 
         if ($token_type == LEFT_BRACE) {
-            $is_tested_by_depth[++$depth] ||= 0;
+            $depth++;
+
+            # XXX
+            if ($depth < 0 && scalar @is_tested_by_depth < -$depth) {
+                next;
+            }
+
+            $is_tested_by_depth[$depth] ||= 0;
             next;
         }
 

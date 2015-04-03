@@ -97,6 +97,10 @@ sub evaluate {
                             next;
                         }
 
+                        # XXX
+                        if ($depth < 0 && scalar @local_vars_by_depth < -$depth) {
+                            next;
+                        }
                         push @{$local_vars_by_depth[$depth]}, $token_data;
                         next;
                     }
@@ -122,6 +126,11 @@ sub evaluate {
                     explanation => EXPL,
                     policy => __PACKAGE__,
                 };
+                next;
+            }
+
+            # XXX
+            if ($depth < 0 && scalar @local_vars_by_depth < -$depth) {
                 next;
             }
 
