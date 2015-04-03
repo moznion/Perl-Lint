@@ -33,10 +33,8 @@ Please see also [http://news.perlfoundation.org/2014/03/grant-proposal-perllint-
 Benchmark script: [https://github.com/moznion/Perl-Lint/blob/master/author/benchmark\_lint\_vs\_critic.pl](https://github.com/moznion/Perl-Lint/blob/master/author/benchmark_lint_vs_critic.pl).
 
                    Rate Perl::Critic   Perl::Lint
-    Perl::Critic 25.7/s           --         -77%
-    Perl::Lint    113/s         341%           --
-
-(This script uses Perl::Lint version 0.20 and Perl::Critic version 1.125)
+    Perl::Critic 20.6/s           --         -78%
+    Perl::Lint   92.0/s         348%           --
 
 # SEE ALSO
 

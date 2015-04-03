@@ -1423,13 +1423,3 @@ for my $entry (
    print;
 }
 
-===
---- dscr: no lint
---- failures: 4
---- params:
---- input
-$+[0] = 'bar';
-$-[0] = 'bar';
-$LAST_MATCH_START[0] = 'bar'; ## no lint
-$ARGV[0] = 'bar';
-$F[0] = 'bar';
