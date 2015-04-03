@@ -97,6 +97,9 @@ sub _lint {
     my %used_no_lint_lines = ();
     my $line_num = 1;
     for my $line (split /\r?\n/, $src) {
+        $line =~ s/"(?:[^"]*?#[^"]*?)*"//g;
+        $line =~ s/'(?:[^']*?#[^']*?)*'//g;
+        $line =~ s/\[(?:[^\[]*?#[^\]]*?)*\]//g;
         if ($line =~ /(#.+)?##\s*no\slint(?:\s+(?:qw)?([(][^)]*[)]|"[^"]*"|'[^']*'))?/) {
             next if $1; # Already commented out at before
 
