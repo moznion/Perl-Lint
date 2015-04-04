@@ -22,7 +22,7 @@ on configure => sub {
 };
 
 on test => sub {
-    requires 'Test::Builder::Tester';
+    requires 'Test::Builder::Tester', '1.28';
     requires 'File::Temp';
     requires 'Test::Base::Less';
     requires 'Capture::Tiny';
