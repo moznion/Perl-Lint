@@ -2,6 +2,10 @@ Revision history for Perl extension Perl-Lint
 
 {{$NEXT}}
 
+0.22 2015-04-04T16:53:59Z
+
+    - Add testing module (Test::Perl::Lint)
+
 0.21 2015-04-03T05:26:40Z
 
     - Fix line number to point out the violation
