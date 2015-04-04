@@ -11,6 +11,8 @@ use Carp ();
 use Path::Tiny 0.068 qw/path/;
 use Perl::Lint;
 
+our $VERSION = "0.01";
+
 our @EXPORT = (@test_more_exports, qw/all_policies_ok/);
 
 sub all_policies_ok {
@@ -18,10 +20,10 @@ sub all_policies_ok {
 
     my ($args) = @_;
 
-    my $target_dirs = $args->{target_dir} // Carp::croak "Target directories must not be empty";
+    my $targets = $args->{targets} // Carp::croak "Targets must not be empty";
     my $ignore_files = $args->{ignore_files};
 
-    if (defined $target_dirs && ref $target_dirs ne 'ARRAY') {
+    if (defined $targets && ref $targets ne 'ARRAY') {
         Carp::croak 'Target directories are must be an array reference';
     }
 
@@ -35,16 +37,26 @@ sub all_policies_ok {
     });
 
     my @paths;
-    for my $dir (@$target_dirs) {
-        path($dir)->visit(sub {
-            my ($path) = @_;
-            if ($path->is_file) {
-                my $path_string = $path->stringify;
-                if (!grep {$_ eq $path_string} @$ignore_files) {
-                    push @paths, $path_string;
+    for my $target (@$targets) {
+        if (-d $target) {
+            path($target)->visit(sub {
+                my ($path) = @_;
+                if ($path->is_file) {
+                    my $path_string = $path->stringify;
+                    if (!grep {$_ eq $path_string} @$ignore_files) {
+                        push @paths, $path_string;
+                    }
                 }
+            }, {recurse => 1});
+        }
+        elsif (-f $target) {
+            if (!grep {$_ eq $target} @$ignore_files) {
+                push @paths, $target;
             }
-        }, {recurse => 1});
+        }
+        else {
+            Carp::carp "'$target' doesn't exist";
+        }
     }
     @paths = sort {$a cmp $b} @paths;
 
@@ -78,4 +90,79 @@ $violation->{description} at line $violation->{line}. $explanation.
 }
 
 1;
+
+__END__
+
+=encoding utf-8
+
+=head1 NAME
+
+Test::Perl::Lint - A testing module to analyze your Perl code with L<Perl::Lint>
+
+=head1 SYNOPSIS
+
+    use Test::Perl::Lint;
+
+    all_policies_ok({
+        targets => ['lib', 'script/bar.pl'],
+        ignore_files => ['lib/Foo/Buz.pm', 'lib/Foo/Qux.pm'],
+        filter => ['LikePerlCritic::Stern'],
+        ignore_policies => ['Modules::RequireVersionVar'],
+    });
+
+=head1 DESCRIPTION
+
+A testing module to analyze your Perl code with L<Perl::Lint>.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item * C<all_policies_ok($args:HASHREF)>
+
+This function tests your codes whether they conform to the policies.
+C<$args> accepts following fields;
+
+=over 8
+
+=item targets (ARRAYREF)
+
+THIS FIELD IS ESSENTIAL.
+
+Specify targets to test.
+If you specify directory as an item, this function checks the all of
+files which are contained in that directory.
+
+=item ignore_files (ARRAYREF)
+
+Specify files to exclude from testing target.
+
+=item filter (ARRAYREF)
+
+Apply Perl::Lint filters.
+
+=item ignore_policies (ARRAYREF)
+
+Specify policies to ignore violations.
+
+=back
+
+=back
+
+=head1 SEE ALSO
+
+L<Perl::Lint>
+
+=head1 LICENSE
+
+Copyright (C) moznion.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 AUTHOR
+
+moznion E<lt>moznion@gmail.comE<gt>
+
+=cut
 

@@ -10,7 +10,7 @@ test_out(
 );
 
 all_policies_ok({
-    target_dir => ['t/Test/resources'],
+    targets => ['t/Test/resources'],
     ignore_files => ['t/Test/resources/should_be_ignore.pl'],
     filter => ['LikePerlCritic::Stern'],
     ignore_policies => ['Modules::RequireVersionVar'],
