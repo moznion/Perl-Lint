@@ -34,38 +34,44 @@ sub all_policies_ok {
         filter => $args->{filter},
     });
 
+    my @paths;
     for my $dir (@$target_dirs) {
         path($dir)->visit(sub {
             my ($path) = @_;
             if ($path->is_file) {
                 my $path_string = $path->stringify;
                 if (!grep {$_ eq $path_string} @$ignore_files) {
-                    my $violations = $linter->lint($path_string);
-                    if (scalar @$violations == 0) {
-                        Test::More::pass(__PACKAGE__ . ' for ' . $path_string);
-                    }
-                    else {
-                        my $package = __PACKAGE__;
-                        my $error_msg = <<"...";
+                    push @paths, $path_string;
+                }
+            }
+        }, {recurse => 1});
+    }
+    @paths = sort {$a cmp $b} @paths;
+
+    for my $path_string (@paths) {
+        my $violations = $linter->lint($path_string);
+        if (scalar @$violations == 0) {
+            Test::More::pass(__PACKAGE__ . ' for ' . $path_string);
+        }
+        else {
+            my $package = __PACKAGE__;
+            my $error_msg = <<"...";
 
 $package found these violations in "$path_string":
 ...
 
-                        for my $violation (@$violations) {
-                            my $explanation = $violation->{explanation};
-                            if (ref $explanation eq 'ARRAY') {
-                                $explanation = 'See page ' . join(', ', @$explanation) . ' of PBP';
-                            }
-                            $error_msg .= <<"...";
+            for my $violation (@$violations) {
+                my $explanation = $violation->{explanation};
+                if (ref $explanation eq 'ARRAY') {
+                    $explanation = 'See page ' . join(', ', @$explanation) . ' of PBP';
+                }
+                $error_msg .= <<"...";
 $violation->{description} at line $violation->{line}. $explanation.
 ...
-                        }
-
-                        Test::More::ok(0, "$package for $path_string") or Test::More::diag($error_msg);
-                    }
-                }
             }
-        }, {recurse => 1});
+
+            Test::More::ok(0, "$package for $path_string") or Test::More::diag($error_msg);
+        }
     }
 
     return;
