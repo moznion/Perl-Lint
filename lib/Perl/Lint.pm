@@ -7,7 +7,7 @@ use Compiler::Lexer;
 use Module::Pluggable;
 use Module::Load;
 
-our $VERSION = "0.22";
+our $VERSION = "0.23";
 
 sub new {
     my ($class, $args) = @_;

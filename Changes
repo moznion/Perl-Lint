@@ -2,6 +2,10 @@ Revision history for Perl extension Perl-Lint
 
 {{$NEXT}}
 
+0.23 2015-05-30T04:03:15Z
+
+    - Fix bug about analysis of dereference (@daleevans++)
+
 0.22 2015-04-04T16:53:59Z
 
     - Add testing module (Test::Perl::Lint)

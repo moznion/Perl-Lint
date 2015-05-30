@@ -86,10 +86,11 @@
          "web" : "https://github.com/moznion/Perl-Lint"
       }
    },
-   "version" : "0.22",
+   "version" : "0.23",
    "x_authority" : "cpan:MOZNION",
    "x_contributors" : [
       "Syohei YOSHIDA <syohex@gmail.com>",
-      "Tom Hukins <tom@eborcom.com>"
+      "Tom Hukins <tom@eborcom.com>",
+      "Dale Evans <dale.evans@mycanadapayday.com>"
    ]
 }

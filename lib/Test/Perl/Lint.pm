@@ -11,7 +11,7 @@ use Carp ();
 use Path::Tiny 0.068 qw/path/;
 use Perl::Lint;
 
-our $VERSION = "0.22";
+our $VERSION = "0.23";
 
 our @EXPORT = (@test_more_exports, qw/all_policies_ok/);
 
