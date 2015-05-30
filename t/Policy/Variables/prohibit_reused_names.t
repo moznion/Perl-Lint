@@ -20,6 +20,17 @@ done_testing;
 __DATA__
 
 ===
+--- dscr: Dereference
+--- failures: 0
+--- params:
+--- input
+%{$x};
+@{$x};
+${$x};
+
+package Z;
+
+===
 --- dscr: Simple block
 --- failures: 2
 --- params:
