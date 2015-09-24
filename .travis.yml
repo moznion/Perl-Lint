@@ -1,11 +1,12 @@
 language: perl
+sudo: false
 perl:
-  - 5.10
-  - 5.12
-  - 5.14
-  - 5.16
-  - 5.18
-  - 5.20
+  - "5.10"
+  - "5.12"
+  - "5.14"
+  - "5.16"
+  - "5.18"
+  - "5.20"
 before_script:
   - perl t/Policy/Variables/require_localized_punctuation_vars.PL
   - perl t/Policy/ControlStructures/prohibit_negative_expressions_in_unless_and_until_conditions.PL
