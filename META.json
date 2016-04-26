@@ -45,7 +45,7 @@
       },
       "runtime" : {
          "requires" : {
-            "B::Keywords" : "0",
+            "B::Keywords" : "1.15",
             "Carp" : "0",
             "Compiler::Lexer" : "0.22",
             "Email::Address" : "0",
