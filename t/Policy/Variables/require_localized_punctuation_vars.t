@@ -70,6 +70,8 @@ local $' = ();
 local $POSTMATCH = ();
 local $+ = ();
 local $LAST_PAREN_MATCH = ();
+local $* = ();
+local $MULTILINE_MATCHING = ();
 local $. = ();
 local $INPUT_LINE_NUMBER = ();
 local $NR = ();
@@ -77,7 +79,7 @@ local $/ = ();
 local $INPUT_RECORD_SEPARATOR = ();
 local $RS = ();
 local $| = ();
-local $OUTPUT_AUTOFLUSH = ();
+local $OUTPUT_AUTO_FLUSH = ();
 local $, = ();
 local $OUTPUT_FIELD_SEPARATOR = ();
 local $OFS = ();
@@ -228,6 +230,8 @@ local ($') = ();
 local ($POSTMATCH) = ();
 local ($+) = ();
 local ($LAST_PAREN_MATCH) = ();
+local ($*) = ();
+local ($MULTILINE_MATCHING) = ();
 local ($.) = ();
 local ($INPUT_LINE_NUMBER) = ();
 local ($NR) = ();
@@ -235,7 +239,7 @@ local ($/) = ();
 local ($INPUT_RECORD_SEPARATOR) = ();
 local ($RS) = ();
 local ($|) = ();
-local ($OUTPUT_AUTOFLUSH) = ();
+local ($OUTPUT_AUTO_FLUSH) = ();
 local ($,) = ();
 local ($OUTPUT_FIELD_SEPARATOR) = ();
 local ($OFS) = ();
@@ -386,6 +390,8 @@ local (*STDERR) = ();
 (local $POSTMATCH) = ();
 (local $+) = ();
 (local $LAST_PAREN_MATCH) = ();
+(local $*) = ();
+(local $MULTILINE_MATCHING) = ();
 (local $.) = ();
 (local $INPUT_LINE_NUMBER) = ();
 (local $NR) = ();
@@ -393,7 +399,7 @@ local (*STDERR) = ();
 (local $INPUT_RECORD_SEPARATOR) = ();
 (local $RS) = ();
 (local $|) = ();
-(local $OUTPUT_AUTOFLUSH) = ();
+(local $OUTPUT_AUTO_FLUSH) = ();
 (local $,) = ();
 (local $OUTPUT_FIELD_SEPARATOR) = ();
 (local $OFS) = ();
@@ -544,6 +550,8 @@ local (*STDERR) = ();
 @foo = (local $POSTMATCH) = ();
 @foo = (local $+) = ();
 @foo = (local $LAST_PAREN_MATCH) = ();
+@foo = (local $*) = ();
+@foo = (local $MULTILINE_MATCHING) = ();
 @foo = (local $.) = ();
 @foo = (local $INPUT_LINE_NUMBER) = ();
 @foo = (local $NR) = ();
@@ -551,7 +559,7 @@ local (*STDERR) = ();
 @foo = (local $INPUT_RECORD_SEPARATOR) = ();
 @foo = (local $RS) = ();
 @foo = (local $|) = ();
-@foo = (local $OUTPUT_AUTOFLUSH) = ();
+@foo = (local $OUTPUT_AUTO_FLUSH) = ();
 @foo = (local $,) = ();
 @foo = (local $OUTPUT_FIELD_SEPARATOR) = ();
 @foo = (local $OFS) = ();
@@ -693,7 +701,7 @@ local $SIG{foo} = 'bar';
 ===
 --- dscr: Named magic variables, pass non-local but in exception list
 --- failures: 0
---- params: {require_localized_punctuation_vars =>  {allow => '@+ $LAST_MATCH_END @- @LAST_MATCH_START @ARGV @F @INC @_ @ARG %OVERLOAD %+ %LAST_MATCH_END %- %LAST_MATCH_START %! %OS_ERROR %ERRNO %^H %INC %ENV %SIG $a $b $_ $ARG $& $MATCH $` $PREMATCH $\' $POSTMATCH $+ $LAST_PAREN_MATCH $. $INPUT_LINE_NUMBER $NR $/ $INPUT_RECORD_SEPARATOR $RS $| $OUTPUT_AUTOFLUSH $, $OUTPUT_FIELD_SEPARATOR $OFS $\\ $OUTPUT_RECORD_SEPARATOR $ORS $" $LIST_SEPARATOR $; $SUBSCRIPT_SEPARATOR $SUBSEP $# $OFMT $% $FORMAT_PAGE_NUMBER $= $FORMAT_LINES_PER_PAGE $- $FORMAT_LINES_LEFT $~ $FORMAT_NAME $^ $FORMAT_TOP_NAME $: $FORMAT_LINE_BREAK_CHARACTERS $? $CHILD_ERROR $^CHILD_ERROR_NATIVE $! $ERRNO $OS_ERROR $@ $EVAL_ERROR $$ $PROCESS_ID $PID $< $REAL_USER_ID $UID $> $EFFECTIVE_USER_ID $EUID $( $REAL_GROUP_ID $GID $) $EFFECTIVE_GROUP_ID $EGID $0 $PROGRAM_NAME $[ $] $^A $ACCUMULATOR $^C $COMPILING $^CHILD_ERROR_NATIVE $^D $DEBUGGING $^E $EXTENDED_OS_ERROR $^ENCODING $^F $SYSTEM_FD_MAX $^GLOBAL_PHASE $^H $^I $INPLACE_EDIT $^L $FORMAT_FORMFEED $^LAST_FH $^M $^MATCH $^N $LAST_SUBMATCH_RESULT $^O $OSNAME $^OPEN $^P $PERLDB $^PREMATCH $^POSTMATCH $^R $LAST_REGEXP_CODE_RESULT $^RE_DEBUG_FLAGS $^RE_TRIE_MAXBUF $^S $EXCEPTIONS_BEING_CAUGHT $^T $BASETIME $^TAINT $^UNICODE $^UTF8CACHE $^UTF8LOCALE $^V $PERL_VERSION $^W $WARNING $^WARNING_BITS $^WIDE_SYSTEM_CALLS $^WIN32_SLOPPY_STAT $^X $EXECUTABLE_NAME $ARGV *ARGV *_ *ARGVOUT *DATA *STDIN *STDOUT *STDERR'}}
+--- params: {require_localized_punctuation_vars =>  {allow => '@+ $LAST_MATCH_END @- @LAST_MATCH_START @ARGV @F @INC @_ @ARG %OVERLOAD %+ %LAST_MATCH_END %- %LAST_MATCH_START %! %OS_ERROR %ERRNO %^H %INC %ENV %SIG $a $b $_ $ARG $& $MATCH $` $PREMATCH $\' $POSTMATCH $+ $LAST_PAREN_MATCH $* $MULTILINE_MATCHING $. $INPUT_LINE_NUMBER $NR $/ $INPUT_RECORD_SEPARATOR $RS $| $OUTPUT_AUTO_FLUSH $, $OUTPUT_FIELD_SEPARATOR $OFS $\\ $OUTPUT_RECORD_SEPARATOR $ORS $" $LIST_SEPARATOR $; $SUBSCRIPT_SEPARATOR $SUBSEP $# $OFMT $% $FORMAT_PAGE_NUMBER $= $FORMAT_LINES_PER_PAGE $- $FORMAT_LINES_LEFT $~ $FORMAT_NAME $^ $FORMAT_TOP_NAME $: $FORMAT_LINE_BREAK_CHARACTERS $? $CHILD_ERROR $^CHILD_ERROR_NATIVE $! $ERRNO $OS_ERROR $@ $EVAL_ERROR $$ $PROCESS_ID $PID $< $REAL_USER_ID $UID $> $EFFECTIVE_USER_ID $EUID $( $REAL_GROUP_ID $GID $) $EFFECTIVE_GROUP_ID $EGID $0 $PROGRAM_NAME $[ $] $^A $ACCUMULATOR $^C $COMPILING $^CHILD_ERROR_NATIVE $^D $DEBUGGING $^E $EXTENDED_OS_ERROR $^ENCODING $^F $SYSTEM_FD_MAX $^GLOBAL_PHASE $^H $^I $INPLACE_EDIT $^L $FORMAT_FORMFEED $^LAST_FH $^M $^MATCH $^N $LAST_SUBMATCH_RESULT $^O $OSNAME $^OPEN $^P $PERLDB $^PREMATCH $^POSTMATCH $^R $LAST_REGEXP_CODE_RESULT $^RE_DEBUG_FLAGS $^RE_TRIE_MAXBUF $^S $EXCEPTIONS_BEING_CAUGHT $^T $BASETIME $^TAINT $^UNICODE $^UTF8CACHE $^UTF8LOCALE $^V $PERL_VERSION $^W $WARNING $^WARNING_BITS $^WIDE_SYSTEM_CALLS $^WIN32_SLOPPY_STAT $^X $EXECUTABLE_NAME $ARGV *ARGV *_ *ARGVOUT *DATA *STDIN *STDOUT *STDERR'}}
 --- input
 @+ = ();
 $LAST_MATCH_END = ();
@@ -725,6 +733,8 @@ $' = ();
 $POSTMATCH = ();
 $+ = ();
 $LAST_PAREN_MATCH = ();
+$* = ();
+$MULTILINE_MATCHING = ();
 $. = ();
 $INPUT_LINE_NUMBER = ();
 $NR = ();
@@ -732,7 +742,7 @@ $/ = ();
 $INPUT_RECORD_SEPARATOR = ();
 $RS = ();
 $| = ();
-$OUTPUT_AUTOFLUSH = ();
+$OUTPUT_AUTO_FLUSH = ();
 $, = ();
 $OUTPUT_FIELD_SEPARATOR = ();
 $OFS = ();
@@ -847,7 +857,7 @@ $ARGV = ();
 
 ===
 --- dscr: Named magic variables, fail non-local, non-carats
---- failures: 112
+--- failures: 114
 --- params:
 --- input
 @+ = ();
@@ -879,6 +889,8 @@ $' = ();
 $POSTMATCH = ();
 $+ = ();
 $LAST_PAREN_MATCH = ();
+$* = ();
+$MULTILINE_MATCHING = ();
 $. = ();
 $INPUT_LINE_NUMBER = ();
 $NR = ();
@@ -886,7 +898,7 @@ $/ = ();
 $INPUT_RECORD_SEPARATOR = ();
 $RS = ();
 $| = ();
-$OUTPUT_AUTOFLUSH = ();
+$OUTPUT_AUTO_FLUSH = ();
 $, = ();
 $OUTPUT_FIELD_SEPARATOR = ();
 $OFS = ();
@@ -1051,7 +1063,7 @@ $^X= ();
 
 ===
 --- dscr: Named magic variables, fail = (non-local) =
---- failures: 149
+--- failures: 151
 --- params:
 --- input
 @foo = (@+) = ();
@@ -1084,6 +1096,8 @@ $^X= ();
 @foo = ($POSTMATCH) = ();
 @foo = ($+) = ();
 @foo = ($LAST_PAREN_MATCH) = ();
+@foo = ($*) = ();
+@foo = ($MULTILINE_MATCHING) = ();
 @foo = ($.) = ();
 @foo = ($INPUT_LINE_NUMBER) = ();
 @foo = ($NR) = ();
@@ -1091,7 +1105,7 @@ $^X= ();
 @foo = ($INPUT_RECORD_SEPARATOR) = ();
 @foo = ($RS) = ();
 @foo = ($|) = ();
-@foo = ($OUTPUT_AUTOFLUSH) = ();
+@foo = ($OUTPUT_AUTO_FLUSH) = ();
 @foo = ($,) = ();
 @foo = ($OUTPUT_FIELD_SEPARATOR) = ();
 @foo = ($OFS) = ();
@@ -1206,7 +1220,7 @@ $^X= ();
 
 ===
 --- dscr: Named magic variables, fail (non-local)
---- failures: 149
+--- failures: 151
 --- params:
 --- input
 (@+) = ();
@@ -1239,6 +1253,8 @@ $^X= ();
 ($POSTMATCH) = ();
 ($+) = ();
 ($LAST_PAREN_MATCH) = ();
+($*) = ();
+($MULTILINE_MATCHING) = ();
 ($.) = ();
 ($INPUT_LINE_NUMBER) = ();
 ($NR) = ();
@@ -1246,7 +1262,7 @@ $^X= ();
 ($INPUT_RECORD_SEPARATOR) = ();
 ($RS) = ();
 ($|) = ();
-($OUTPUT_AUTOFLUSH) = ();
+($OUTPUT_AUTO_FLUSH) = ();
 ($,) = ();
 ($OUTPUT_FIELD_SEPARATOR) = ();
 ($OFS) = ();

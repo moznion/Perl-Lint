@@ -4,7 +4,7 @@
       "moznion <moznion@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.3.0, CPAN::Meta::Converter version 2.143240",
+   "generated_by" : "Minilla/v3.0.1, CPAN::Meta::Converter version 2.143240",
    "license" : [
       "perl_5"
    ],
@@ -45,7 +45,7 @@
       },
       "runtime" : {
          "requires" : {
-            "B::Keywords" : "1.15",
+            "B::Keywords" : "0",
             "Carp" : "0",
             "Compiler::Lexer" : "0.22",
             "Email::Address" : "0",
@@ -86,11 +86,12 @@
          "web" : "https://github.com/moznion/Perl-Lint"
       }
    },
-   "version" : "0.23",
+   "version" : "0.24",
    "x_authority" : "cpan:MOZNION",
    "x_contributors" : [
       "Syohei YOSHIDA <syohex@gmail.com>",
-      "Tom Hukins <tom@eborcom.com>",
-      "Dale Evans <dale.evans@mycanadapayday.com>"
+      "Dale Evans <dale.evans@mycanadapayday.com>",
+      "James Raspass <jraspass@gmail.com>",
+      "Tom Hukins <tom@eborcom.com>"
    ]
 }

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/moznion/Perl-Lint.svg?branch=master)](https://travis-ci.org/moznion/Perl-Lint) [![Coverage Status](https://img.shields.io/coveralls/moznion/Perl-Lint/master.svg)](https://coveralls.io/r/moznion/Perl-Lint?branch=master)
+[![Build Status](https://travis-ci.org/moznion/Perl-Lint.svg?branch=master)](https://travis-ci.org/moznion/Perl-Lint) [![Coverage Status](https://img.shields.io/coveralls/moznion/Perl-Lint/master.svg?style=flat)](https://coveralls.io/r/moznion/Perl-Lint?branch=master)
 # NAME
 
 Perl::Lint - Yet Another Perl Source Code Linter

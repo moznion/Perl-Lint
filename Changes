@@ -2,6 +2,10 @@ Revision history for Perl extension Perl-Lint
 
 {{$NEXT}}
 
+0.24 2016-05-22T16:37:08Z
+
+    - Test fixes for B::Keywords 1.15 (Tom Hukins++)
+
 0.23 2015-05-30T04:03:15Z
 
     - Fix bug about analysis of dereference (@daleevans++)
