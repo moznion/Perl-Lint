@@ -857,7 +857,7 @@ $ARGV = ();
 
 ===
 --- dscr: Named magic variables, fail non-local, non-carats
---- failures: 112
+--- failures: 114
 --- params:
 --- input
 @+ = ();
@@ -889,6 +889,8 @@ $' = ();
 $POSTMATCH = ();
 $+ = ();
 $LAST_PAREN_MATCH = ();
+$* = ();
+$MULTILINE_MATCHING = ();
 $. = ();
 $INPUT_LINE_NUMBER = ();
 $NR = ();
@@ -896,7 +898,7 @@ $/ = ();
 $INPUT_RECORD_SEPARATOR = ();
 $RS = ();
 $| = ();
-$OUTPUT_AUTOFLUSH = ();
+$OUTPUT_AUTO_FLUSH = ();
 $, = ();
 $OUTPUT_FIELD_SEPARATOR = ();
 $OFS = ();
@@ -1061,7 +1063,7 @@ $^X= ();
 
 ===
 --- dscr: Named magic variables, fail = (non-local) =
---- failures: 149
+--- failures: 151
 --- params:
 --- input
 @foo = (@+) = ();
@@ -1094,6 +1096,8 @@ $^X= ();
 @foo = ($POSTMATCH) = ();
 @foo = ($+) = ();
 @foo = ($LAST_PAREN_MATCH) = ();
+@foo = ($*) = ();
+@foo = ($MULTILINE_MATCHING) = ();
 @foo = ($.) = ();
 @foo = ($INPUT_LINE_NUMBER) = ();
 @foo = ($NR) = ();
@@ -1101,7 +1105,7 @@ $^X= ();
 @foo = ($INPUT_RECORD_SEPARATOR) = ();
 @foo = ($RS) = ();
 @foo = ($|) = ();
-@foo = ($OUTPUT_AUTOFLUSH) = ();
+@foo = ($OUTPUT_AUTO_FLUSH) = ();
 @foo = ($,) = ();
 @foo = ($OUTPUT_FIELD_SEPARATOR) = ();
 @foo = ($OFS) = ();
@@ -1216,7 +1220,7 @@ $^X= ();
 
 ===
 --- dscr: Named magic variables, fail (non-local)
---- failures: 149
+--- failures: 151
 --- params:
 --- input
 (@+) = ();
@@ -1249,6 +1253,8 @@ $^X= ();
 ($POSTMATCH) = ();
 ($+) = ();
 ($LAST_PAREN_MATCH) = ();
+($*) = ();
+($MULTILINE_MATCHING) = ();
 ($.) = ();
 ($INPUT_LINE_NUMBER) = ();
 ($NR) = ();
@@ -1256,7 +1262,7 @@ $^X= ();
 ($INPUT_RECORD_SEPARATOR) = ();
 ($RS) = ();
 ($|) = ();
-($OUTPUT_AUTOFLUSH) = ();
+($OUTPUT_AUTO_FLUSH) = ();
 ($,) = ();
 ($OUTPUT_FIELD_SEPARATOR) = ();
 ($OFS) = ();

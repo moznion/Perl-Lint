@@ -2,6 +2,10 @@ Revision history for Perl extension Perl-Lint
 
 {{$NEXT}}
 
+0.25 2016-09-27T02:08:05Z
+
+    - Fix interaction with B::Keywords properly (Tom Hukins++)
+
 0.24 2016-05-22T16:37:08Z
 
     - Test fixes for B::Keywords 1.15 (Tom Hukins++)
